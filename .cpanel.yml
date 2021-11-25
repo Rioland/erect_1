@@ -3,3 +3,6 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home4/avpvgymy/public_html/erect1
     - /bin/cp * $DEPLOYPATH
+    - /bin/cp /admin/* $DEPLOYPATH
+    - /bin/cp /app/* $DEPLOYPATH
+    - /bin/cp /coinchat/* $DEPLOYPATH
