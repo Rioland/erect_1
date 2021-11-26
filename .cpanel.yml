@@ -7,7 +7,7 @@ deployment:
     # access to change owner. So this folder must stay as-is to keep the nobody
     # group, which is critical to the site working. A new folder won't work.
     # - export DEPLOYPATH=/home/USER/public_html
-    - export REPOPATH=/home/USER/repositories/erect1
+    # - export REPOPATH=/home/USER/repositories/erect1
     # Remove previous old files, if any.
     # - /bin/rm -Rf ${DEPLOYPATH}_old
     # Copy old site files to another directory.
@@ -17,6 +17,7 @@ deployment:
     # --delete-after will remove deleted files and folders after syncing.
     # - /bin/rsync -aP --exclude '.git' --exclude '.well-known' ${REPOPATH}/ ${DEPLOYPATH} --delete-after
     # Set correct permissions.
+    - export DEPLOYPATH=/home4/avpvgymy/public_html/erect1
     - /bin/chmod 755 ${DEPLOYPATH}
     - /bin/find ${DEPLOYPATH} -type d -exec /bin/chmod 755 '{}' \;
     - /bin/find ${DEPLOYPATH} -type f -exec /bin/chmod 644 '{}' \;
