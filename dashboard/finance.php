@@ -13,7 +13,7 @@
 
 <body>
     <?php
-    require "./dashnav.php";
+    // require "./dashnav.php";
     ?>
 
     <div class="container">
@@ -1369,7 +1369,7 @@
     </div>
 
     <?php
-    require "./dashfooter.php";
+    // require "./dashfooter.php";
     ?>
     <!-- Page specific script -->
     <!-- InputMask -->

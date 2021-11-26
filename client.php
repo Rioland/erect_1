@@ -1,8 +1,10 @@
 <?php
 include 'app/Apis/database/DataBase.php';
+include "app/vendor/autoload.php";
+// require '../app/Apis/database/DataBase.php';i
 if (DataBase::is_login()==false) {
 
-    header('location:buysell');
+    header('location:/');
 }
 $USER=$_SESSION["USER"];
 $connection=DataBase::getConn();
@@ -91,4 +93,7 @@ if(isset($_SESSION['router']) and !empty($_SESSION['router'])){
 <?php
 require "./footerwmain.php";
 require "./dashfooter.php";
+?>
+<?php
+// session_destroy();
 ?>

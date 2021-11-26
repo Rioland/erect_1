@@ -2,11 +2,42 @@
 session_start();
 //Import PHPMailer classes into the global namespace
 //These must be at the top of your script, not inside a function
+// include "./vendor/autoload.php";
+use Codenixsv\CoinGeckoApi\CoinGeckoClient;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class DataBase
 {
+
+
+    public static function coinGateCheckout($data=array()){
+        // _xPuRzXpsxQ41pWfMz8tfpjQZ5Camgy7Q5zTzLNc
+    }
+
+
+    public static function getBTCPrice(){
+      return self::getCryptoPrice("bitcoin","usd");
+    }
+    public static function getETHPrice(){
+        return self::getCryptoPrice("ethereum","usd");
+      }
+
+      public static function getBTHPrice(){
+        return self::getCryptoPrice("bitcoin-cash","usd");
+      }
+  
+    public static function getCryptoPrice($crptotype,$currency)
+    {
+        
+
+$client = new CoinGeckoClient();
+// $data = $client->ping();
+$data = $client->simple()->getPrice($crptotype, $currency);
+return($data[$crptotype][$currency]);
+    }
+    
+
 
     public static function GetCode($address)
     {
@@ -56,7 +87,7 @@ class DataBase
         return $country;
 
     }
-    public static function createInvoice($amt, $address)
+    public static function createInvoice($data=array())
     {
         try {
             $myconn = self::getConn();
@@ -68,21 +99,17 @@ class DataBase
             $ip = self::getIp();
             $uid = $_SESSION["userid"];
 
-            $sql = "INSERT INTO `invoices` (`code`, `address`, `price`, `status`, `uid`,`ip`)
-    VALUES (:code, :address, :amt, :status, :uid, :ip)";
+            $sql = "INSERT INTO `invoices` (`address`, `value`, `status`, `uid`, `ip`, `txt`)
+    VALUES (?,?,?,?,?,?)";
             $stm = $myconn->prepare($sql);
-            $stm->bindParam('status', $status);
-            $stm->bindParam('address', $address);
-            $stm->bindParam('amt', $amt);
-            $stm->bindParam('code', $code);
-            $stm->bindParam('uid', $uid);
-            $stm->bindParam('ip', $ip);
-
-            if ($stm->execute()) {
-                return $code;
-            } else {
-                return null;
-            }
+            $stm->bindValue(1, $data['address']);
+            $stm->bindValue(2, $data['value']);
+            $stm->bindValue(3, $data['status']);
+            $stm->bindValue(4, $uid);
+            $stm->bindValue(5, $ip);
+            $stm->bindValue(6, $data['txt']);
+            $stm->execute();
+           
 
         } catch (\Throwable $th) {
             $th;
@@ -872,23 +899,23 @@ class DataBase
         }
         return $randomString;
     }
-    public static function getBTCPrice($currency)
-    {
-        try {
-            $content = file_get_contents("https://www.blockonomics.co/api/price?currency=" . $currency);
-            $content = json_decode($content);
-            $price = $content->price;
-            if ($price > 0) {
-                $_SESSION['btcprice'] = $price;
-                return $price;
-            } else if (isset($_SESSION['btcprice']) and !empty($_SESSION['btcprice'])) {
-                return $_SESSION['btcprice'];
-            }
-            return $price;
-        } catch (Exception $e) {
-            print $e;
-        }
-    }
+    // public static function getBTCPrice($currency)
+    // {
+    //     try {
+    //         $content = file_get_contents("https://www.blockonomics.co/api/price?currency=" . $currency);
+    //         $content = json_decode($content);
+    //         $price = $content->price;
+    //         if ($price > 0) {
+    //             $_SESSION['btcprice'] = $price;
+    //             return $price;
+    //         } else if (isset($_SESSION['btcprice']) and !empty($_SESSION['btcprice'])) {
+    //             return $_SESSION['btcprice'];
+    //         }
+    //         return $price;
+    //     } catch (Exception $e) {
+    //         print $e;
+    //     }
+    // }
     public static function generateAddress()
     {
 

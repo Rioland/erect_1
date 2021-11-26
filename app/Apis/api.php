@@ -196,4 +196,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "not deleted";
         }
     }
+
+
+    // router
+    if (isset($_REQUEST['action']) and $_REQUEST['action']=="router" ) {
+      $route=  $_REQUEST['router'];
+      $_SESSION['router']=$route;
+      echo $route;
+    }
+    // make payment makedeposit
+    if(isset($_REQUEST['action'])and $_REQUEST['action']=="makedeposit" ){
+        $addr=DataBase::generateAddress();
+        $qr=DataBase::generateQR($addr);
+        $qrcode=" <img src='$qr' width='250px' height='250px' />";
+        echo json_encode(array("address"=>$addr,"qr"=>$qrcode));
+    }
+    
 }

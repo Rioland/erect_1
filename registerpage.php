@@ -3,7 +3,7 @@
 require 'app/Apis/database/DataBase.php';
 if (DataBase::is_login()) {
 
-    header('location:buysell');
+    header('location:client');
 }
 
 

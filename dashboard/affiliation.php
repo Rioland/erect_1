@@ -14,7 +14,7 @@
 <body>
     <!-- navigation bar  -->
     <?php
-    require "./dash3nav.php";
+    // require "./dash3nav.php";
     ?>
     <!-- /.  -->
 
@@ -342,7 +342,7 @@
 
     <!-- Footer  -->
     <?php
-    require "./dashfooter.php";
+    // require "./dashfooter.php";
     ?>
     <!-- scripts  -->
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

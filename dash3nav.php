@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -121,34 +122,34 @@
                 <!-- ---- Left navbar links ---- -->
                 <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                     <ul class="navbar-nav">
-                        <li id="bs" class="nav-item">
-                            <a href="" class="nav-link">BUY/SELL</a>
+                        <li id="bs"  class="nav-item">
+                            <a  href="#" class="nav-link">BUY/SELL</a>
                         </li>
                         <li id="tr" class="nav-item">
-                            <a href="./trade.php" class="nav-link">TRADE</a>
+                            <a  href="#" class="nav-link">TRADE</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Settings</a>
                             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                                 <!-- <li><a href="#" class="dropdown-item">CARDS </a></li> -->
-                                <li><a href="./dashboard/finance.php" class="dropdown-item">FINANCE </a></li>
-                                <li><a href="./dashboard/verificationpage.php" class="dropdown-item"> VERIFICATION </a></li>
+                                <li id="fin" ><a href="" class="dropdown-item">FINANCE </a></li>
+                                <li id="ver" ><a href="" class="dropdown-item"> VERIFICATION </a></li>
                                 <li class="dropdown-divider"></li>
 
                                 <!-- Level two dropdown-->
                                 <li class="dropdown-submenu dropdown-hover">
                                     <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">My Services...</a>
                                     <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                                        <li>
-                                        <li><a href="./dashboard/finance.php" class="dropdown-item">AFFILIATES</a></li>
-                                </li>
+                                        
+                                        <li id="af"><a href="" class="dropdown-item">AFFILIATES</a></li>
+                                
 
                                 <!-- Level three dropdown-->
                                 <li class="dropdown-submenu">
                                     <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">more >> </a>
                                     <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                                        <li><a href="#" class="dropdown-item">LOANS</a></li>
-                                        <li><a href="#" class="dropdown-item">INVESTMENT</a></li>
+                                        <li id="lo"><a href="#" class="dropdown-item">LOANS</a></li>
+                                        <li id="inv" ><a href="#" class="dropdown-item">INVESTMENT</a></li>
                                     </ul>
                                 </li>
                                 <!-- End Level three -->
@@ -160,8 +161,8 @@
                         <!-- End Level two -->
                     </ul>
                     </li>
-                    <li class="nav-item">
-                        <a href="./card.php" class="nav-link">CARDS</a>
+                    <li id="ca" class="nav-item">
+                        <a href="" class="nav-link">CARDS</a>
                     </li>
                     </ul>
 
@@ -336,15 +337,15 @@
                         <div class="navbar navbar-expand mr-auto float-sm-right">
                             <ul class="navbar-nav">
 
-                                <li class="nav-item mr-1">
-                                    <a href="./dashboard/deposit.php">
+                                <li id="dp" class="nav-item mr-1">
+                                    <a href="#">
                                         <button type="button" class="btn btn-block btn-success">Deposit <i class="fas fa-level-down-alt"></i>
                                         </button>
                                     </a>
                                 </li>
 
-                                <li class="nav-item ml-1">
-                                    <a href="./dashboard/deposit.php">
+                                <li id="wd" class="nav-item ml-1">
+                                    <a href="#">
                                         <button type="button" class="btn btn-block btn-primary">Withdraw
                                             <i class="fas fa-level-up-alt"></i>
                                         </button>
@@ -467,18 +468,41 @@
 
         <script>
     $(document).ready(function () {
+        
+       
 
 
-   $("#bs a").click(function (e) { 
+
+        $("#dp a").click(function (e) { 
        e.preventDefault();
        $.ajax({
            type: "post",
            url: "auth",
            data: {
-               router:"./pages/buy_sell.php"
+               router:"./dashboard/deposit.php",
+               action:"router"
            },
            dataType: "text",
            success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
+
+   $("#wd a").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./dashboard/deposit.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
                window.location.reload();
            }
        });
@@ -486,6 +510,122 @@
    });
 
 
+
+
+
+
+        $("#ca a").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./card.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
+
+   $("#bs a").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./pages/buy_sell.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
+
+
+   $("#tr a").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./pages/trade.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
+
+   $("#fin a").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./dashboard/finance.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
+
+   $("#af a").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./dashboard/affiliation.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
+
+
+   
+   $("#ver a").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./dashboard/verificationpage.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
+
+   
 
         // close tnotification
         $(".close").click(function (e) { 
@@ -501,7 +641,7 @@
                 dataType: "text",
                 success: function (response) {
                     console.log(response);
-                    // alert(response)
+                    alert(response)
                 }
             });
             

@@ -1,3 +1,11 @@
+<?php
+$bth = DataBase::getBTHPrice();
+$bitcoin = Database::getBTCPrice();
+$eth = DataBase::getETHPrice();
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -214,11 +222,7 @@
 </head>
 
 <body>
-    <!-- navigation bar  -->
-    <?php
-    require "./dash3nav.php";
-    ?>
-    <!-- /.  -->
+
 
     <div class="container">
         <div class="content">
@@ -239,12 +243,14 @@
                                             <div class="col-sm-6">
                                                 <p>Scan QR code</p>
                                                 <p>
-                                                <div style="width: 500px" id="reader"></div>
+                                                    <div style="width: 500px" id="reader">
+
+                                                    </div>
                                                 </p>
-                                                <p><i class="fa-solid fa-qrcode"></i></p>
+                                                <!-- <p><i class="fa-solid fa-qrcode"></i></p> -->
                                                 <p>or send funds to the address below</p>
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control rounded-0" value="396MTn4Z7drQZUvyXEgDTVjpXxxGTcSZ59" readonly>
+                                                    <input type="text" class="form-control rounded-0 addr " value="" readonly>
                                                     <span class="input-group-append">
                                                         <button type="button" class="btn btn-info btn-flat">copy</button>
                                                     </span>
@@ -261,14 +267,14 @@
                                                     <!-- Select your Currency and Amount -->
                                                     <div class="input-group-prepend">
                                                         <select class="custom-select">
-                                                            <option>(ETH)<i class="fab fa-ethereum"></i></option>
-                                                            <option>(USDT)<i class="fas fa-dollar-sign"></i></option>
-                                                            <option>(BTC)<i class="fab fa-btc"></i></option>
-                                                            <option>(EUR)<i class="fas fa-euro-sign"></i></option>
+                                                            <option value="ethereum">(ETH)<i class="fab fa-ethereum"></i></option>
+                                                            <option value="bitcoincash">(BTH)<i class="fas fa-dollar-sign"></i></option>
+                                                            <option value="bitcoin">(BTC)<i class="fab fa-btc"></i></option>
+                                                            <option value="euro">(EUR)<i class="fas fa-euro-sign"></i></option>
                                                             <!-- <option>option 5</option> -->
                                                         </select>
                                                     </div>
-                                                    <input type="text" class="form-control" placeholder="enter amount...">
+                                                    <input type="number" class="form-control amtt" min="0" placeholder="enter amount...">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">.00</span>
                                                     </div>
@@ -279,9 +285,9 @@
                                                 <!-- all charges here  -->
                                                 <dl class="row">
                                                     <dt class="col-sm-4">Total Amount:</dt>
-                                                    <dd class="col-sm-8"><b>$</b> 0.00000</dd>
+                                                    <dd class="col-sm-8"><b>$</b> <label class="total">0</label></dd>
                                                     <dt class="col-sm-4">Available:</dt>
-                                                    <dd class="col-sm-8"><b>$</b> 0.00000</dd>
+                                                    <dd class="col-sm-8"><b>$</b> <label class="ava">0</label></dd>
                                                     <!-- na here transaction notification and warning go dey  -->
                                                     <dd class="col-sm-8 offset-sm-4">
                                                         <a class="su1">
@@ -290,7 +296,7 @@
                                                     </dd>
                                                     <!-- /.  -->
                                                     <dt class="col-sm-4">In orders</dt>
-                                                    <dd class="col-sm-8"><b>BTC</b> 0.0000000</dd>
+                                                    <dd class="col-sm-8"><b>BTC</b> <label class="btc">0</label></dd>
                                                     <!-- <dt class="col-sm-4">Felis euismod semper eget lacinia</dt>
                                                     <dd class="col-sm-8">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
                                                         fermentum massa justo
@@ -299,7 +305,8 @@
                                                 </dl>
                                                 <!-- /.  -->
                                                 <hr>
-                                                <button type="button" class="btn btn-default btn-block">confirm payment</button>
+                                                <center> <img id="loading" style="display: none;" src="https://i.gifer.com/1amw.gif" width="50px" height="50px" alt="" srcset=""></center>
+                                                <button type="button" class="btn btn-default btn-block gene">Generate</button>
 
 
                                             </div>
@@ -388,6 +395,23 @@
                                                         <td>11-7-2014</td>
                                                         <td>789</td>
                                                         <td><span class="tag tag-primary">Approved</span></td>
+                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
+                                                    </tr>
+                                                    <tr>
+                                                        <td>982</td>
+                                                        <td>ETH</td>
+                                                        <td>11-7-2014</td>
+                                                        <td>95</td>
+                                                        <td><span class="tag tag-danger">Denied</span></td>
+                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>982</td>
+                                                        <td>ETH</td>
+                                                        <td>11-7-2014</td>
+                                                        <td>95</td>
+                                                        <td><span class="tag tag-danger">Denied</span></td>
                                                         <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
                                                     </tr>
                                                     <tr>
@@ -803,10 +827,7 @@
     </div>
 
 
-    <!-- Footer  -->
-    <?php
-    require "./dashfooter.php";
-    ?>
+
     <!-- /.  -->
     <!-- For multi-form stepper  -->
     <script>
@@ -915,6 +936,162 @@
                 fps: 10,
                 qrbox: 250
             });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+
+            $(".gene").click(function(e) {
+                e.preventDefault();
+                // generateAddress()
+                let amt = $(".amtt").val();
+                let type = $(".custom-select").val();
+
+                if (amt !== "" && amt !=0) {
+                    $("#loading").show();
+                    $(this).hide();
+                    if (type === "bitcoin") {
+                        let rate = "<?php echo  $eth ?>";
+                        let todoller = amt * rate;
+
+                        $.ajax({
+                            type: "post",
+                            url: "auth",
+                            data: {
+                                action: "makedeposit"
+                            },
+                            dataType: "text",
+                            success: function(response) {
+                                let jsonrep = jQuery.parseJSON(response);
+                                $(".addr").val(jsonrep['address']);
+                                $("#reader").html(jsonrep['qr']);
+                                $("#loading").hide();
+                                $(".gene").show();
+                                //    console.log(jsonrep['address']);
+                            }
+                        });
+
+                    }else
+
+                    if (type === "bitcoincash") {
+                        let rate = "<?php echo  $bth ?>";
+                        let todoller = amt * rate;
+
+                        $.ajax({
+                            type: "post",
+                            url: "auth",
+                            data: {
+                                action: "makedeposit"
+                            },
+                            dataType: "text",
+                            success: function(response) {
+                                let jsonrep = jQuery.parseJSON(response);
+                                $(".addr").val(jsonrep['address']);
+                                $("#reader").html(jsonrep['qr']);
+                                $("#loading").hide();
+                                $(".gene").show();
+                                //    console.log(jsonrep['address']);
+                            }
+                        });
+
+                    }else  if (type === "ethereum") {
+                      alert("Coming soon");
+                      $("#loading").hide();
+                                $(".gene").show();
+                    }
+                }else{
+                    alert("enter a valid amount ")
+                }
+            });
+
+
+            $(".custom-select").change(function(e) {
+                e.preventDefault();
+                let type = $(this).val();
+                let amt = $(".amtt").val(0);
+                $(".total").html(0.0000);
+                $(".ava").html(0.0000);
+                $(".btc").html(0.0000);
+
+
+            });
+
+
+            $(".amtt").change(function(e) {
+                e.preventDefault();
+                let type = $(".custom-select").val();
+                let amt = $(this).val();
+                if (amt !== "" ) {
+                    // alert(type);
+                    if (type === "ethereum") {
+                        let rate = "<?php echo  $eth ?>";
+                        let c = $(this).val() * rate;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".total").html(c);
+                        $(".ava").html(c);
+                        $(".btc").html(c * btcrate);
+                        // alert(price);
+                    } else if (type === "bitcoincash") {
+                        let rate = "<?php echo  $bth ?>";
+                        let c = $(this).val() * rate;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".total").html(c);
+                        $(".ava").html(c);
+                        $(".btc").html(c * btcrate);
+                    } else if (type === "bitcoin") {
+                        let rate = "<?php echo  $bitcoin ?>";
+                        let c = $(this).val() * rate;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".total").html(c);
+                        $(".ava").html(c);
+                        $(".btc").html(btcrate);
+                    }
+                } else {
+                    $(".total").html(parseFloat(0));
+                    $(".ava").html(parseFloat(0));
+                    $(".btc").html(parseFloat(0));
+                }
+
+            });
+
+
+
+
+            $(".amtt").keyup(function(e) {
+                let type = $(".custom-select").val();
+                let amt = $(this).val();
+                if (amt !== "") {
+                    // alert(type);
+                    if (type === "ethereum") {
+                        let rate = "<?php echo  $eth ?>";
+                        let c = $(this).val() * rate;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".total").html(c);
+                        $(".ava").html(c);
+                        $(".btc").html(c * btcrate);
+                        // alert(price);
+                    } else if (type === "bitcoincash") {
+                        let rate = "<?php echo  $bth ?>";
+                        let c = $(this).val() * rate;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".total").html(c);
+                        $(".ava").html(c);
+                        $(".btc").html(c * btcrate);
+                    } else if (type === "bitcoin") {
+                        let rate = "<?php echo  $bitcoin ?>";
+                        let c = $(this).val() * rate;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".total").html(c);
+                        $(".ava").html(c);
+                        $(".btc").html(btcrate);
+                    }
+                } else {
+                    $(".total").html(parseFloat(0));
+                    $(".ava").html(parseFloat(0));
+                    $(".btc").html(parseFloat(0));
+                }
+            });
+        });
     </script>
     <!-- this is for modal/pop up   -->
     <!-- THIS CODE IS NOT NEEDED FOR BOOTSTRAP 4  -->

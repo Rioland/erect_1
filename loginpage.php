@@ -2,7 +2,7 @@
 include 'app/Apis/database/DataBase.php';
 if (DataBase::is_login()) {
 
-    header('location:buysell');
+    header('location:client');
 }
 // UPDATE `apis` SET `redirect`='https://erect1.org/app/google' WHERE `name`='google'
 

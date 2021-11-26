@@ -7,6 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All posts</title>
     <link rel="shortcut icon" href="./img/erect-1-bg.png" type="image/x-icon">
+    <style>
+        .rr{
+            display: grid;
+            grid-template-columns: 30% 30% 30%;
+            grid-column-gap: 1rem;
+            justify-content: center;
+            width: fit-content;
+        }
+    </style>
 </head>
 
 <body>
