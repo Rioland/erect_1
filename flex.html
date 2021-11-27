@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLexbox Responsive Display</title>
+    <style>
+        .r{
+            display: grid;
+            grid-template-columns: auto auto auto;
+            
+        }
+        * {
+            box-sizing: border-box;
+        }
+
+        .flex-head {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        /* TYPICAL DEVICE BREAKDOWN  */
+        /* Extra small devices (phones, 600px and down) */
+        @media only screen and (max-width: 600px) {
+
+            /* ... */
+            .item3-i {
+                max-height: 10.1rem;
+            }
+
+            .item1-i {
+                padding-bottom: 10rem;
+            }
+        }
+
+        /* Small devices (portrait tablets and large phones, 600px and up) */
+        @media only screen and (min-width: 600px) {
+
+            /* ... */
+            .item3-i {
+                max-height: 9rem;
+            }
+        }
+
+        /* Medium devices (landscape tablets, 768px and up) */
+        @media only screen and (min-width: 768px) {
+            /* ... */
+
+        }
+
+        /* Large devices (laptops/desktops, 992px and up) */
+        @media only screen and (min-width: 992px) {
+            /* ... */
+
+        }
+
+        /* Extra large devices (large laptops and desktops, 1200px and up) */
+        @media only screen and (min-width: 1200px) {
+
+            /* ... */
+            .item3-i {
+                max-height: 9rem;
+            }
+        }
+
+        /* /.  */
+
+        .flex-body {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: space-around;
+            justify-content: space-around;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .one-row,
+        .two-row,
+        .three-row,
+        .four-row,
+        .fifth-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-content: space-around;
+            justify-content: space-evenly;
+            align-items: baseline;
+            padding: 1rem;
+        }
+
+        .one-row>div,
+        .two-row>div,
+        .three-row>div,
+        .four-row>div,
+        .fifth-row>div {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            padding: .9rem;
+            text-align: center;
+            border-radius: .8rem;
+        }
+
+        .item1,
+        .item2,
+        .item3 {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .item1:hover,
+        .item2:hover,
+        .item3:hover {
+            opacity: .3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-container">
+        <!-- Flex-box-header  -->
+        <div class="flex-head">
+            <p>
+                Multiple iOS and Android wallets support the WallletConnect
+                protocol. <br> Interaction between mobile apps and mobile browser are supported via mobile deep linking.
+            </p>
+        </div>
+        <!-- /. -->
+
+        <!-- flex-box Container  -->
+        <div class="flex-body">
+            <!-- 1st row  -->
+            <div class="one-row">
+                <div class="item1 item1-i">
+                    <p>
+                        <img src="https://pages.consensys.net/hubfs/metamask-fox.png" alt="meta-mask" width="60px"
+                            height="auto" />
+                    </p>
+                    <p>
+                        MetaMask
+                    </p>
+                </div>
+                <div class="item2">
+                    <p>
+                        <img src="https://th.bing.com/th/id/OIP.ws3RwsRx0jSkLRK0-ovabQAAAA?pid=ImgDet&rs=1" width="60px"
+                            height="auto" alt="Mew wallet" />
+                    </p>
+
+                    <p>
+                        MEW Wallet
+                    </p>
+                </div>
+                <div class="item3">
+                    <p>
+                        <img src="https://th.bing.com/th/id/OIP.2NNw8hRa4hICjgb9cS6cXQAAAA?pid=ImgDet&rs=1" width="60px"
+                            height="auto" alt="Trust wallet" />
+                    </p>
+                    <p>
+                        Trust Wallet
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2nd row  -->
+            <div class="two-row">
+                <div class="item1">
+                    <p>
+                        <img src="https://th.bing.com/th/id/OIF.eQsi86xkxXPlncdBBPVyrQ?pid=ImgDet&rs=1" width="60px" height="auto"
+                            alt="wallect connect">
+                    </p>
+                    <label>Wallect Connect</label>
+                </div>
+                <div class="item2">
+                    <p>
+                        <img src="https://th.bing.com/th/id/R.a8fb89d3da688e9d0c8cdc56f3200a62?rik=dXVvyid25Q4Xlg&pid=ImgRaw&r=0&sres=1&sresct=1"
+                            width="60px" height="auto" alt="Coinbase">
+                    </p>
+                    <label>COinbase Wallet</label>
+                </div>
+                <div class="item3 item3-i">
+                    <p>
+                        <img src="https://atomicwallet.io/images/press-kit/atomic_wallet_logo_dark_rounded_2.png" width="60px"
+                            height="auto" alt="Atomic wallet" />
+                    </p>
+                    <p>
+                        Atomic WallletConnect
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3rd Row  -->
+            <div class="three-row">
+                <div class="item1">
+                    <p>
+                        <img src="https://media-exp1.licdn.com/dms/image/C4D0BAQHj-2GUEIUtdw/company-logo_200_200/0?e=2159024400&v=beta&t=L3P_4Ua3P2EQY7Jgcjxry5qaRAT4G28-CW_JEzNiwmU"
+                            width="60px" height="auto" alt="Blockchain Wallet " />
+                    </p>
+                    <p>
+                        BlockChain
+                    </p>
+                </div>
+                <div class="item2">
+                    <p>
+                        <img src="https://th.bing.com/th/id/R.8e82111466ee2b702c147f294d252766?rik=5MOF7FY9M3D6SA&pid=ImgRaw&r=0"
+                            width="60px" height="auto" alt="BNB">
+                    </p>
+                    <p>
+                        BNB
+                    </p>
+                </div>
+                <div class="item3">
+                    <p>
+                        <img src="https://th.bing.com/th/id/R.dccfbd2abb1e6574a20526b6228e72c8?rik=mt4A31mfKLp0FA&pid=ImgRaw&r=0"
+                            width="60px" height="auto" alt="polkadot" />
+                    </p>
+                    <p>
+                        Polkadot
+                    </p>
+                </div>
+            </div>
+            <!-- 4th Row  -->
+            <div class="four-row">
+                <div class="item1">
+                    <p>
+                        <img src="https://th.bing.com/th/id/R.f7ca854467151384746708a5cbcc3ada?rik=Kd9MpLzX3GJr4w&pid=ImgRaw&r=0"
+                            width="60px" height="auto" alt="XRP">
+                    </p>
+                    <p>
+                        XRP
+                    </p>
+                </div>
+                <div class="item2">
+                    <p>
+                        <img src="https://th.bing.com/th/id/R.df3150b021ee544702e736ccbe289936?rik=E1xeZc9FHDGEAg&riu=http%3a%2f%2ffindthatlogo.com%2fwp-content%2fgallery%2fcrypto-currency-logo-collection%2fstellar-logo.gif&ehk=jaz9zt3UMQpvHyUatsChsgMZeR%2fRGWh5r5xuAZJQ2n4%3d&risl=&pid=ImgRaw&r=0"
+                            width="60px" height="auto" alt="Stellar">
+                    </p>
+                    <p>
+                        Stellar
+                    </p>
+                </div>
+                <div class="item3">
+                    <p>
+                        <img src="https://th.bing.com/th/id/OIP.bxT9pgvg3i48VyKhGJoUoQHaHa?pid=ImgDet&rs=1" width="60px"
+                            height="auto" alt="Tezos" />
+                    </p>
+                    <p>
+                        Tezos
+                    </p>
+                </div>
+            </div>
+            <!-- 5th Row  -->
+            <div class="fifth-row">
+                <div class="item1">
+                    <p>
+                        <img src="https://th.bing.com/th/id/OIP.JOuRvq3hbGtkWS-Ti06NkgHaHa?pid=ImgDet&rs=1" alt="THATA"
+                            width="60px" height="auto" style="border-radius: 50%;">
+                    </p>
+                    <p>
+                        Thata
+                    </p>
+                </div>
+                <div class="item2">
+                    <p>
+                        <img src="https://kryptocal.com/images/logos/TRX.png" width="60px" height="auto" alt="Tron"
+                            style="border-radius: 50%;">
+                    </p>
+                    <p>
+                        Tron
+                    </p>
+                </div>
+                <div class="item3">
+                    <p>
+                        <img src="https://th.bing.com/th/id/R.f82e282b6dbbb547724fbd69344f5584?rik=QfkvVCYpzhRGAQ&pid=ImgRaw&r=0"
+                            width="60px" height="auto" alt="Cosmos">
+                    </p>
+
+                    <p>
+                        Cosmos
+                    </p>
+                </div>
+            </div>
+
+            <!-- /.  -->
+        </div>
+    </div>
+</body>
+
+</html>
