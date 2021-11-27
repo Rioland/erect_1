@@ -10,11 +10,7 @@
 </head>
 
 <body>
-    <!-- nav bar  -->
-    <?php
-    require "./dashnav.php"
-    ?>
-    <!-- /. end of nav bar  -->
+  
     <div class="container">
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -223,11 +219,6 @@
         </div>
     </div>
     <!-- /.content-wrapper -->
-
-    <!-- footers add more if available  -->
-    <?php
-    require "./dashfooter.php"
-    ?>
 
 </body>
 

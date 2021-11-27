@@ -333,7 +333,7 @@ $eth = DataBase::getETHPrice();
                                                 <thead>
                                                     <tr>
                                                         <th>ID</th>
-                                                        <th>Crypto.</th>
+                                                        <th>Address.</th>
                                                         <th>Date</th>
                                                         <th>Amount($)</th>
                                                         <th>Status</th>
@@ -341,87 +341,41 @@ $eth = DataBase::getETHPrice();
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <?php 
+                                                    $user=$_SESSION['USER']; 
+                                                    // print_r($user);
+                                                 $conn=DataBase::getConn();
+                                                 $q="SELECT * FROM `invoices` WHERE `uid`=?";
+                                                 $pstm=$conn->prepare($q);
+                                                 $pstm->bindValue(1,$user->id);
+                                                 $pstm->execute();
+                                                 for ($i=0; $i <$pstm->rowCount() ; $i++) { 
+                                                   $data=$pstm->fetch();
+                                                
+                                                    ?>
                                                     <tr>
-                                                        <td>183</td>
-                                                        <td>BTC</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>474</td>
-                                                        <td><span class="tag tag-success">Approved</span></td>
+                                                        <td><?php echo $data->id ?></td>
+                                                        <td><?php echo $data->address ?></td>
+                                                        <td><?php echo $data->date ?></td>
+                                                        <td><?php echo $data->value ?></td>
+                                                        <td><span class="tag tag-success"><?php 
+                                                        if($data->status==0){
+                                                            echo "Unconfirmed";
+                                                        }else if($data->status==1){
+                                                            echo "Partially Confirmed";
+                                                        }else if($data->status==2){
+                                                            echo "Confirmed";
+                                                        }else if($data->status==-1){
+                                                            echo "Unpaid";
+                                                        }
+                                                        
+                                                        ?></span></td>
                                                         <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
                                                     </tr>
-                                                    <tr>
-                                                        <td>219</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>89</td>
-                                                        <td><span class="tag tag-warning">Pending</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>657</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>561</td>
-                                                        <td><span class="tag tag-primary">Approved</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>175</td>
-                                                        <td>BTC</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>869</td>
-                                                        <td><span class="tag tag-danger">Denied</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>134</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>14</td>
-                                                        <td><span class="tag tag-success">Approved</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>494</td>
-                                                        <td>BTC</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>209</td>
-                                                        <td><span class="tag tag-warning">Pending</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>832</td>
-                                                        <td>BTC</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>789</td>
-                                                        <td><span class="tag tag-primary">Approved</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>982</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>95</td>
-                                                        <td><span class="tag tag-danger">Denied</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
+                                                    <?php
+                                                     }
 
-                                                    <tr>
-                                                        <td>982</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>95</td>
-                                                        <td><span class="tag tag-danger">Denied</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>982</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>95</td>
-                                                        <td><span class="tag tag-danger">Denied</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>

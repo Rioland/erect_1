@@ -251,7 +251,7 @@
                                 <!-- Message End -->
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="./dashboard/messagepage.php" class="dropdown-item dropdown-footer">See All Messages</a>
+                            <a id="message" href="./dashboard/messagepage.php" class="dropdown-item dropdown-footer">See All Messages</a>
                         </div>
                     </li>
                     <!-- /. end of message dropdown -->
@@ -284,7 +284,7 @@
                                 <span class="float-right text-muted text-sm">2 days</span>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="./dashboard/notificationcenter.php" class="dropdown-item dropdown-footer">See All Notifications</a>
+                            <a id="allnoty" href="" class="dropdown-item dropdown-footer">See All Notifications</a>
                         </div>
                     </li>
                     <!-- /. end of notification  -->
@@ -470,7 +470,41 @@
     $(document).ready(function () {
         
        
+        $("#allnoty").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./dashboard/notificationcenter.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
 
+        $("#message").click(function (e) { 
+       e.preventDefault();
+       $.ajax({
+           type: "post",
+           url: "auth",
+           data: {
+               router:"./dashboard/messagepage.php",
+               action:"router"
+           },
+           dataType: "text",
+           success: function (response) {
+               console.log(response)
+               window.location.reload();
+           }
+       });
+       
+   });
 
 
         $("#dp a").click(function (e) { 

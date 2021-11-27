@@ -14,9 +14,6 @@
     <!-- tab icon  -->
     <link rel="shortcut icon" href="./img/erect-1-bg.png" type="image/x-icon">
 </head>
-<?php
-require "./dash2nav.php";
-?>
 
 <body>
 
@@ -887,10 +884,7 @@ require "./dash2nav.php";
 
     <!-- /.  -->
     <!-- footer/s  -->
-    <?php
-    require "./dashfooter.php";
-    ?>
-
+  
     <!-- SweetAlert2 FOr testing and I couldn't figure it out-->
     <!-- <script>
         Swal.fire({
