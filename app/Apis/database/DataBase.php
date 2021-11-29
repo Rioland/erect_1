@@ -119,15 +119,15 @@ return($data[$crptotype][$currency]);
 
     public static function getConn()
     {
-        // $url = "https://www.blockonomics.co/api/";
-        //    $servername = "ftp.avp.vgy.mybluehost.me";
-        // $username = "avpvgymy_erect1";
-        // $password = "erect1office";
+        $url = "https://www.blockonomics.co/api/";
+           $servername = "ftp.avp.vgy.mybluehost.me";
+        $username = "avpvgymy_erect1";
+        $password = "erect1office";
 
 // 
-$servername = "localhost"; 
- $password = "";
- $username="root";
+// $servername = "localhost"; 
+//  $password = "";
+//  $username="root";
         try {
             $conn = new PDO("mysql:host=$servername;dbname=avpvgymy_erect1", $username, $password);
             // set the PDO error mode to exception

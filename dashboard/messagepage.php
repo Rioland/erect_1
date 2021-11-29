@@ -599,15 +599,29 @@
                         <nav aria-label="Contacts Page Navigation">
                             <ul class="pagination justify-content-center m-0">
                                 <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <?php 
+                            $conn =DataBase::getConn();
+                            $q="SELECT * FROM `users`";
+                            $stm=$conn->query($q);
+                            $count=1;
+                            for ($i=0; $i <$stm->rowCount() ; $i++) { 
+                            //    $data=$stm->fetch();
+
+                            ?>
+                                <li class="page-item active"><a class="page-link" href="#"><?php echo $count  ?></a></li>
+                                <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
                                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                                 <li class="page-item"><a class="page-link" href="#">4</a></li>
                                 <li class="page-item"><a class="page-link" href="#">5</a></li>
                                 <li class="page-item"><a class="page-link" href="#">6</a></li>
                                 <li class="page-item"><a class="page-link" href="#">7</a></li>
                                 <li class="page-item"><a class="page-link" href="#">8</a></li>
-                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                <li class="page-item"><a class="page-link" href="#">...</a></li> -->
+
+                                <?php 
+$count++;
+                            }
+                                ?>
                                 <li class="page-item"><a class="page-link" href="#">»</a></li>
                             </ul>
                         </nav>
