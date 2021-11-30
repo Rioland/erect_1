@@ -10,34 +10,137 @@ use PHPMailer\PHPMailer\PHPMailer;
 class DataBase
 {
 
+    public static function getMessage($myid){
+       try {
+        $rid=$_SESSION['CHATID'];
+        $_SESSION['RIMG'];
+        $q="SELECT *,".$rid."_messages.MID,".$rid."_messages.FID,".$rid."_messages.message FROM ".$myid."_messages JOIN ".$rid."_messages where ".$myid."_messages.FID=".$rid."_messages.FID";
+        $conn = DataBase::getConn();
+        $stm = $conn->query($q);
+        return $stm->fetchAll();
+       } catch (\Throwable $th) {
+           echo $th;
+       } 
+    }
 
-    public static function coinGateCheckout($data=array()){
+
+    public static function sendMessage($RID,$Mess,$SID){
+        try {
+            $conn = DataBase::getConn();
+           $q="CREATE TABLE  IF NOT EXISTS ".$RID."_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB"; 
+           $stm=$conn->exec($q);
+
+           $q = "INSERT INTO `messages`( `FID`,`message`) VALUES (?,?)";
+           $stm = $conn->prepare($q);
+           $stm->bindValue(1, $SID);
+           $stm->bindValue(2, $Mess);
+               echo "send";
+        
+        } catch (\Throwable $th) {
+            echo  $th;
+        }
+    }
+
+
+    public static function acceptRequest($RID,$SID){
+        try {
+            $conn=DataBase::getConn();
+        $q="CREATE TABLE IF NOT EXISTS ".$SID."_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT FALSE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
+        $stm=$conn->exec($q);
+        $q="insert into ".$RID."_request (FID) values(?) ";
+        $stm=$conn->prepare($q);
+        $stm->bindValue(1,$SID);
+        if($stm->execute()){
+            echo "send";
+        }
+
+        } catch (\Throwable $th) {
+            echo "not sent";
+        }
+    }
+
+    public static function sendRequest($RID,$SID){
+        try {
+            $conn=DataBase::getConn();
+        $q="CREATE TABLE IF NOT EXISTS ".$RID."_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT FALSE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
+        $stm=$conn->exec($q);
+        $q="insert into ".$RID."_request (FID) values(?) ";
+        $stm=$conn->prepare($q);
+        $stm->bindValue(1,$SID);
+        $stm->execute();
+
+        $q="CREATE TABLE IF NOT EXISTS ".$SID."_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT TRUE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
+        $stm=$conn->exec($q);
+        
+        $q="insert into ".$SID."_request (FID) values(?) ";
+        $stm=$conn->prepare($q);
+        $stm->bindValue(1,$RID);
+        $stm->execute();
+       echo "Request send";
+        } catch (\Throwable $th) {
+            echo "not sent maybe you are friends";
+        }
+    }
+
+    public static function Chat($rid)
+    {
+        $user = $_SESSION['USER'];
+        $conn = self::getConn();
+        $q="SELECT * FROM messages WHERE reciver=? and sender_id=? or sender_id=? and reciver=?";
+        $stm = $conn->prepare($q);
+        $stm->bindValue(1, $user->id);
+        $stm->bindValue(2, $rid);
+        $stm->bindValue(3, $user->id);
+        $stm->bindValue(1, $rid);
+        $stm->execute();
+        return $stm->fetchAll();
+    }
+
+    public static function getAllFriends()
+    {
+        try {
+            $user = $_SESSION['USER'];
+            $conn = self::getConn();
+            $q = 'SELECT '.$user->id.'_request.accept,'.$user->id.'_request.FID,users.name,users.picture,users.country,users.id  FROM '.$user->id.'_request INNER JOIN users on '.$user->id.'_request.FID=users.id  ';
+            $stm = $conn->query($q);
+            // $stm->bindValue(1, $user->id);
+            // $stm->bindValue(2, $user->id);
+            $stm->execute();
+            return $stm->fetchAll();
+        } catch (\Throwable $th) {
+             return $th;
+        }
+        
+
+    }
+
+    public static function coinGateCheckout($data = array())
+    {
         // _xPuRzXpsxQ41pWfMz8tfpjQZ5Camgy7Q5zTzLNc
     }
 
-
-    public static function getBTCPrice(){
-      return self::getCryptoPrice("bitcoin","usd");
-    }
-    public static function getETHPrice(){
-        return self::getCryptoPrice("ethereum","usd");
-      }
-
-      public static function getBTHPrice(){
-        return self::getCryptoPrice("bitcoin-cash","usd");
-      }
-  
-    public static function getCryptoPrice($crptotype,$currency)
+    public static function getBTCPrice()
     {
-        
-
-$client = new CoinGeckoClient();
-// $data = $client->ping();
-$data = $client->simple()->getPrice($crptotype, $currency);
-return($data[$crptotype][$currency]);
+        return self::getCryptoPrice("bitcoin", "usd");
     }
-    
+    public static function getETHPrice()
+    {
+        return self::getCryptoPrice("ethereum", "usd");
+    }
 
+    public static function getBTHPrice()
+    {
+        return self::getCryptoPrice("bitcoin-cash", "usd");
+    }
+
+    public static function getCryptoPrice($crptotype, $currency)
+    {
+
+        $client = new CoinGeckoClient();
+// $data = $client->ping();
+        $data = $client->simple()->getPrice($crptotype, $currency);
+        return ($data[$crptotype][$currency]);
+    }
 
     public static function GetCode($address)
     {
@@ -87,7 +190,7 @@ return($data[$crptotype][$currency]);
         return $country;
 
     }
-    public static function createInvoice($data=array())
+    public static function createInvoice($data = array())
     {
         try {
             $myconn = self::getConn();
@@ -109,7 +212,6 @@ return($data[$crptotype][$currency]);
             $stm->bindValue(5, $ip);
             $stm->bindValue(6, $data['txt']);
             $stm->execute();
-           
 
         } catch (\Throwable $th) {
             $th;
@@ -119,15 +221,15 @@ return($data[$crptotype][$currency]);
 
     public static function getConn()
     {
-        $url = "https://www.blockonomics.co/api/";
+        // $url = "https://www.blockonomics.co/api/";
            $servername = "ftp.avp.vgy.mybluehost.me";
         $username = "avpvgymy_erect1";
         $password = "erect1office";
 
-// 
-// $servername = "localhost"; 
-//  $password = "";
-//  $username="root";
+//
+        // $servername = "localhost";
+        // $password = "";
+        // $username = "root";
         try {
             $conn = new PDO("mysql:host=$servername;dbname=avpvgymy_erect1", $username, $password);
             // set the PDO error mode to exception
@@ -560,8 +662,8 @@ return($data[$crptotype][$currency]);
         if ($stm->rowCount() >= 1) {
             $res = $stm->fetch();
             $_SESSION['userid'] = $res->id;
-            $_SESSION['USER'] =$res;
-            $_SESSION['router']="./pages/buy_sell.php";
+            $_SESSION['USER'] = $res;
+            $_SESSION['router'] = "./pages/buy_sell.php";
             return true;
         }
         return false;

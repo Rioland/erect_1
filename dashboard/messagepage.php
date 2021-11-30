@@ -1,3 +1,5 @@
+ 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -79,37 +81,7 @@
                                         </div>
                                         <!-- /.direct-chat-msg -->
 
-                                        <!-- Message. Default to the left -->
-                                        <div class="direct-chat-msg">
-                                            <div class="direct-chat-infos clearfix">
-                                                <span class="direct-chat-name float-left">Alexander Pierce</span>
-                                                <span class="direct-chat-timestamp float-right">23 Jan 5:37 pm</span>
-                                            </div>
-                                            <!-- /.direct-chat-infos -->
-                                            <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">
-                                            <!-- /.direct-chat-img -->
-                                            <div class="direct-chat-text">
-                                                Working with ErectOne on a great new app! Wanna join?
-                                            </div>
-                                            <!-- /.direct-chat-text -->
-                                        </div>
-                                        <!-- /.direct-chat-msg -->
-
-                                        <!-- Message to the right -->
-                                        <div class="direct-chat-msg right">
-                                            <div class="direct-chat-infos clearfix">
-                                                <span class="direct-chat-name float-right">Sarah Bullock</span>
-                                                <span class="direct-chat-timestamp float-left">23 Jan 6:10 pm</span>
-                                            </div>
-                                            <!-- /.direct-chat-infos -->
-                                            <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image">
-                                            <!-- /.direct-chat-img -->
-                                            <div class="direct-chat-text">
-                                                I would love to.
-                                            </div>
-                                            <!-- /.direct-chat-text -->
-                                        </div>
-                                        <!-- /.direct-chat-msg -->
+                                       
 
                                     </div>
                                     <!--/.direct-chat-messages-->
@@ -214,11 +186,11 @@
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
-                                    <form action="#" method="post">
+                                    <form id="messid">
                                         <div class="input-group">
-                                            <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                                            <input type="text" required name="message" placeholder="Type Message ..." class="form-control">
                                             <span class="input-group-append">
-                                                <button type="button" class="btn btn-warning">Send</button>
+                                                <button type="submit" class="btn btn-warning">Send</button>
                                             </span>
                                         </div>
                                     </form>
@@ -228,16 +200,43 @@
                             <!--/.direct-chat -->
                         </div>
                     </div>
+<script>
+    $(document).ready(function () {
+        
+         $("#messid").submit(function(e){
+         e.preventDefault();
+         let rid="<?php echo $_SESSION['RID']?>";
+         let message=$(this).serialize();
+          $.ajax({
+              type: "post",
+              url: "auth",
+              data: {
+                  message:message
+              },
+              dataType: "text",
+              success: function (response) {
+                  alert(response);
+              }
+          });
+
+
+
+         });
+
+
+
+    });
+</script>
 
                     <div class="card card-primary card-outline">
                         <div class="card-body">
                             <!-- USERS LIST -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Latest Members</h3>
+                                    <h3 class="card-title">Friends</h3>
 
                                     <div class="card-tools">
-                                        <span class="badge badge-danger">8 New Members</span>
+                                        <span class="badge badge-danger"> <?php echo count(DataBase::getAllFriends()) ?> Friends</span>
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                             <i class="fas fa-minus"></i>
                                         </button>
@@ -249,17 +248,64 @@
                                 <!-- /.card-header -->
                                 <div class="card-body p-0">
                                     <ul class="users-list clearfix">
-                                        <li>
-                                            <img src="dist/img/user1-128x128.jpg" alt="User Image">
-                                            <a class="users-list-name" href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@NAlex-pierce">Alex Pierce</a>
-                                            <span class="users-list-date">Today</span>
+                                        <?php
+                                        $user=$_SESSION['USER'];
+                                        for ($i=0 ; $i <=count(DataBase::getAllFriends())-1; $i++ ) { 
+                                            $d=DataBase::getAllFriends();
+                                            // if($d[0]->accept==true){
+                                        
+                                        ?>
+                                        <li  >
+                                            <img src="<?php echo $d[$i]->picture??'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg' ?>" alt="User Image">
+                                            <a class="users-list-name" href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@NAlex-pierce"><?php echo $d[$i]->name??"No Name" ?></a>
+                                            <span class="users-list-date"><?php echo $d[$i]->country??"no country" ?></span>
+                                            <div class="text-right">
+                                                <?php
+                                                if($d[$i]->accept==true){
+                                                ?>
+                                            <a class="starch" id="<?php echo $d[$i]->FID   ?>" href="<?php echo $d[$i]->picture   ?>" class="btn btn-sm bg-teal">
+                                                <i class="fas fa-comments"></i>
+                                            </a>
+                                                <?php }else{ ?>
+                                            <a id="<?php echo $d[$i]->FID   ?>"  href="" class="btn btn-sm btn-primary accpt">
+                                                <i class="fas fa-user"></i> Add Friend
+                                            </a>
+                                                <?php }?> 
+                                        </div>
                                         </li>
-                                        <li>
+                                        <?php 
+                                        // }
+                                    } ?>
+
+                                        <script>
+                                            $(document).ready(function () {
+                                                $(".starch").click(function (e) { 
+                                                    e.preventDefault();
+                                                    let rid=$(this).attr("id");
+                                                    let img=$(this).attr("href");
+                                                    // alert(img);
+                                                    $.ajax({
+                                                        type: "post",
+                                                        url: "auth",
+                                                        data: {
+                                                            messageRID:rid,
+                                                            RIMG:img
+                                                        },
+                                                        dataType: "text",
+                                                        success: function (response) {
+                                                            alert(response);
+                                                        }
+                                                    });
+                                                    
+                                                });
+                                            });
+                                        </script>
+                                        <!-- <li>
                                             <img src="dist/img/user8-128x128.jpg" alt="User Image">
                                             <a class="users-list-name" href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@Nick-ricky">Nicky Rick</a>
                                             <span class="users-list-date">Yesterday</span>
-                                        </li>
-                                        <li>
+                                        </li> -->
+                                        <!-- <li>
                                             <img src="dist/img/user7-128x128.jpg" alt="User Image">
                                             <a class="users-list-name" href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@Jane">Jane</a>
                                             <span class="users-list-date">12 Jan</span>
@@ -288,7 +334,7 @@
                                             <img src="dist/img/user3-128x128.jpg" alt="User Image">
                                             <a class="users-list-name btn" href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@Nadia">Nadia</a>
                                             <span class="users-list-date">15 Jan</span>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                     <!-- /.users-list -->
                                     <!-- modal trigger  -->
@@ -552,7 +598,7 @@
                         <div class="row">
                             <?php 
                             $conn =DataBase::getConn();
-                            $q="SELECT * FROM `users`";
+                            $q="SELECT * FROM `users` ";
                             $stm=$conn->query($q);
                             for ($i=0; $i <$stm->rowCount() ; $i++) { 
                                $data=$stm->fetch();
@@ -560,13 +606,13 @@
                             <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
                                 <div class="card bg-light d-flex flex-fill">
                                     <div class="card-header text-muted border-bottom-0">
-                                        Digital Strategist
+                                    <?php echo $data->country??"no country"  ?>
                                     </div>
                                     <div class="card-body pt-0">
                                         <div class="row">
                                             <div class="col-7">
                                                 <h2 class="lead"><b><?php echo $data->name??"no name"  ?></b></h2>
-                                                <p class="text-muted text-sm"><b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                                                <p class="text-muted text-sm"><b>location: </b> <?php echo $data->country??"no Location"  ?> </p>
                                                 <ul class="ml-4 mb-0 fa-ul text-muted">
                                                     <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: <?php echo $data->email??"no email"  ?></li>
                                                 </ul>
@@ -581,8 +627,8 @@
                                             <a href="#" class="btn btn-sm bg-teal">
                                                 <i class="fas fa-comments"></i>
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-primary">
-                                                <i class="fas fa-user"></i> View Profile
+                                            <a id="<?php echo $data->id ?>"  href="" class="btn btn-sm btn-primary addf">
+                                                <i class="fas fa-user"></i> Add Friend
                                             </a>
                                         </div>
                                     </div>
@@ -592,6 +638,26 @@
   
 }
                             ?>
+                            <script>
+                                $(document).ready(function () {
+                                    $(".addf").click(function (e) { 
+                                        e.preventDefault();
+                                      let rid=$(this).attr("id");
+                                      $.ajax({
+                                          type: "post",
+                                          url: "auth",
+                                          data: {
+                                              rrid:rid
+                                          },
+                                          dataType: "text",
+                                          success: function (response) {
+                                              alert(response)
+                                          }
+                                      });
+                                        
+                                    });
+                                });
+                            </script>
                         </div>
                     </div>
                     <!-- /.card-body -->
@@ -619,7 +685,7 @@
                                 <li class="page-item"><a class="page-link" href="#">...</a></li> -->
 
                                 <?php 
-$count++;
+                              $count++;
                             }
                                 ?>
                                 <li class="page-item"><a class="page-link" href="#">»</a></li>

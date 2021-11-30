@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = htmlentities($data["email"]);
         $pass = htmlentities($data['password']);
 
-
         $response = DataBase::signin_user($email, $pass);
 
         if ($response == true) {
@@ -37,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //  verification
     if (!empty($_REQUEST['action']) and $_REQUEST['action'] == "sendverify") {
-
 
         $response = DataBase::updateVerifyToken();
         echo $response;
@@ -138,7 +136,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // echo $response;
         if ($response == true) {
 
-
             //  echo("<script>alert('Card Added');</script>");
             header("location:card");
         } else {
@@ -197,19 +194,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-
     // router
-    if (isset($_REQUEST['action']) and $_REQUEST['action']=="router" ) {
-      $route=  $_REQUEST['router'];
-      $_SESSION['router']=$route;
-      echo $route;
+    if (isset($_REQUEST['action']) and $_REQUEST['action'] == "router") {
+        $route = $_REQUEST['router'];
+        $_SESSION['router'] = $route;
+        echo $route;
     }
     // make payment makedeposit
-    if(isset($_REQUEST['action'])and $_REQUEST['action']=="makedeposit" ){
-        $addr=DataBase::generateAddress();
-        $qr=DataBase::generateQR($addr);
-        $qrcode=" <img src='$qr' width='250px' height='250px' />";
-        echo json_encode(array("address"=>$addr,"qr"=>$qrcode));
+    if (isset($_REQUEST['action']) and $_REQUEST['action'] == "makedeposit") {
+        $addr = DataBase::generateAddress();
+        $qr = DataBase::generateQR($addr);
+        $qrcode = " <img src='$qr' width='250px' height='250px' />";
+        echo json_encode(array("address" => $addr, "qr" => $qrcode));
     }
-    
+    // send chat
+    if (isset($_REQUEST['message'])) {
+        parse_str($_REQUEST['message'], $message);
+        $rid = $_SESSION['RID'];
+        $user = $_SESSION['USER'];
+        $chat = $message['message'];
+        echo DataBase::sendMessage($rid, $chat, $user->id);
+
+    }
+
+    // send request
+
+    if (isset($_REQUEST["rrid"])) {
+        $user = $_SESSION['USER'];
+
+        $rid = $_REQUEST["rrid"];
+        echo DataBase::sendRequest($rid, $user->id);
+
+    }
+
+    // start message
+
+    if (!empty($_REQUEST['messageRID']) and !empty($_REQUEST['RIMG'])) {
+        try {
+            $user = $_SESSION['USER'];
+            $rid = $_REQUEST['messageRID'];
+            $_SESSION['CHATID'] = $rid;
+            $_SESSION['RIMG'] = $_REQUEST['RIMG'];
+            $conn = DataBase::getConn();
+            $q = "CREATE TABLE  IF NOT EXISTS " . $rid . "_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB";
+            $stm = $conn->exec($q);
+            $q = "CREATE TABLE  IF NOT EXISTS " . $user->id . "_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB";
+            $stm = $conn->exec($q);
+            echo $rid;
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+    }
+    //  print_r("hhh".$_REQUEST['messageRID']);
 }

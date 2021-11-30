@@ -1,7 +1,9 @@
 <?php
 require "./DataBase.php";
-if(0>0.001){
-    echo "0 is big";
-}
+$user=$_SESSION['USER'];
+print_r(DataBase::getMessage($user->id)) ;
+
+
+
 
 ?>
