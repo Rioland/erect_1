@@ -11,9 +11,7 @@
 
 <body>
 
-    <?php
-    require "./dash2nav.php";
-    ?>
+   
 
     <div class="wrapper">
         <div class="container">
@@ -266,9 +264,7 @@
     </div>
 
 
-    <?php
-    require "./dashfooter.php";
-    ?>
+   
 </body>
 
 </html>

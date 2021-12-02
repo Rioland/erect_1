@@ -1,5 +1,3 @@
- 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,39 +47,63 @@
                                 <div class="card-body">
                                     <!-- Conversations are loaded here -->
                                     <div class="direct-chat-messages">
-                                        <!-- Message. Default to the left -->
-                                        <div class="direct-chat-msg">
-                                            <div class="direct-chat-infos clearfix">
-                                                <span class="direct-chat-name float-left">Alexander Pierce</span>
-                                                <span class="direct-chat-timestamp float-right">23 Jan 2:00 pm</span>
-                                            </div>
-                                            <!-- /.direct-chat-infos -->
-                                            <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image">
-                                            <!-- /.direct-chat-img -->
-                                            <div class="direct-chat-text">
-                                                Is this template really awesome? That's unbelievable!
-                                            </div>
-                                            <!-- /.direct-chat-text -->
-                                        </div>
-                                        <!-- /.direct-chat-msg -->
+                                        <?php
+                                        // $USER
+                                        for ($i = 0; $i < count(DataBase::getMessage($USER->id)); $i++) {
+                                            $data = DataBase::getMessage($USER->id);
+                                            $vm = explode("_", DataBase::getMessage($USER->id)[$i]->FID);
+                                            
+                                            if ($vm[0] === $USER->id) {
 
-                                        <!-- Message to the right -->
-                                        <div class="direct-chat-msg right">
-                                            <div class="direct-chat-infos clearfix">
-                                                <span class="direct-chat-name float-right">Sarah Bullock</span>
-                                                <span class="direct-chat-timestamp float-left">23 Jan 2:05 pm</span>
-                                            </div>
-                                            <!-- /.direct-chat-infos -->
-                                            <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image">
-                                            <!-- /.direct-chat-img -->
-                                            <div class="direct-chat-text">
-                                                You better believe it!
-                                            </div>
-                                            <!-- /.direct-chat-text -->
-                                        </div>
-                                        <!-- /.direct-chat-msg -->
+                                        ?>
 
-                                       
+                                                <!-- Message to the right -->
+                                                <div class="direct-chat-msg right">
+                                                    <div class="direct-chat-infos clearfix">
+                                                        <span class="direct-chat-name float-right"><?php echo $USER->name ?></span>
+                                                        <span class="direct-chat-timestamp float-left"><?php echo $data[$i]->date ?></span>
+                                                    </div>
+                                                    <!-- /.direct-chat-infos -->
+                                                    <img class="direct-chat-img" src="<?php echo  $USER->picture?? 'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg' ?>" alt="message user image">
+                                                    <!-- /.direct-chat-img -->
+                                                    <div class="direct-chat-text">
+                                                         <?php echo $data[$i]->message ?>
+                                                    </div>
+                                                    <!-- /.direct-chat-text -->
+                                                </div>
+                                                <!-- /.direct-chat-msg -->
+
+                                            <?php
+
+                                            } else {
+
+                                            ?>
+
+                                                <!-- Message. Default to the left -->
+                                                <div class="direct-chat-msg">
+                                                    <div class="direct-chat-infos clearfix">
+                                                        <span class="direct-chat-name float-left"><?php echo  $_SESSION['RName'] ?></span>
+                                                        <span class="direct-chat-timestamp float-right"><?php echo $data[$i]->date ?></span>
+                                                    </div>
+                                                    <!-- /.direct-chat-infos -->
+                                                    <img class="direct-chat-img" src="<?php echo  $_SESSION['RIMG'] ?>" alt="message user image">
+                                                    <!-- /.direct-chat-img -->
+                                                    <div class="direct-chat-text">
+                                                    <?php echo $data[$i]->message ?>
+                                                    </div>
+                                                    <!-- /.direct-chat-text -->
+                                                </div>
+                                                <!-- /.direct-chat-msg -->
+
+                                            <?php
+
+                                            }
+
+                                            ?>
+
+
+                                        <?php } ?>
+
 
                                     </div>
                                     <!--/.direct-chat-messages-->
@@ -200,33 +222,34 @@
                             <!--/.direct-chat -->
                         </div>
                     </div>
-<script>
-    $(document).ready(function () {
-        
-         $("#messid").submit(function(e){
-         e.preventDefault();
-         let rid="<?php echo $_SESSION['RID']?>";
-         let message=$(this).serialize();
-          $.ajax({
-              type: "post",
-              url: "auth",
-              data: {
-                  message:message
-              },
-              dataType: "text",
-              success: function (response) {
-                  alert(response);
-              }
-          });
+                    <script>
+                        $(document).ready(function() {
+
+                            $("#messid").submit(function(e) {
+                                e.preventDefault();
+                                let rid = "<?php echo $_SESSION['RID'] ?>";
+                                let message = $(this).serialize();
+                                $.ajax({
+                                    type: "post",
+                                    url: "auth",
+                                    data: {
+                                        message: message
+                                    },
+                                    dataType: "text",
+                                    success: function(response) {
+                                        console.log(response);
+                                          window.location.reload();
+                                    }
+                                });
 
 
 
-         });
+                            });
 
 
 
-    });
-</script>
+                        });
+                    </script>
 
                     <div class="card card-primary card-outline">
                         <div class="card-body">
@@ -249,54 +272,57 @@
                                 <div class="card-body p-0">
                                     <ul class="users-list clearfix">
                                         <?php
-                                        $user=$_SESSION['USER'];
-                                        for ($i=0 ; $i <=count(DataBase::getAllFriends())-1; $i++ ) { 
-                                            $d=DataBase::getAllFriends();
+                                        $user = $_SESSION['USER'];
+                                        for ($i = 0; $i <= count(DataBase::getAllFriends()) - 1; $i++) {
+                                            $d = DataBase::getAllFriends();
                                             // if($d[0]->accept==true){
-                                        
+
                                         ?>
-                                        <li  >
-                                            <img src="<?php echo $d[$i]->picture??'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg' ?>" alt="User Image">
-                                            <a class="users-list-name" href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@NAlex-pierce"><?php echo $d[$i]->name??"No Name" ?></a>
-                                            <span class="users-list-date"><?php echo $d[$i]->country??"no country" ?></span>
-                                            <div class="text-right">
-                                                <?php
-                                                if($d[$i]->accept==true){
-                                                ?>
-                                            <a class="starch" id="<?php echo $d[$i]->FID   ?>" href="<?php echo $d[$i]->picture   ?>" class="btn btn-sm bg-teal">
-                                                <i class="fas fa-comments"></i>
-                                            </a>
-                                                <?php }else{ ?>
-                                            <a id="<?php echo $d[$i]->FID   ?>"  href="" class="btn btn-sm btn-primary accpt">
-                                                <i class="fas fa-user"></i> Add Friend
-                                            </a>
-                                                <?php }?> 
-                                        </div>
-                                        </li>
-                                        <?php 
-                                        // }
-                                    } ?>
+                                            <li>
+                                                <img src="<?php echo $d[$i]->picture ?? 'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg' ?>" alt="User Image">
+                                                <a class="users-list-name" href="#" data-toggle="modal" data-target="#exampleModal" data-whatever="@NAlex-pierce"><?php echo $d[$i]->name ?? "No Name" ?></a>
+                                                <span class="users-list-date"><?php echo $d[$i]->country ?? "no country" ?></span>
+                                                <div class="text-right">
+                                                    <?php
+                                                    if ($d[$i]->accept == true) {
+                                                    ?>
+                                                        <a class="starch" id="<?php echo $d[$i]->FID ?>" href="<?php echo $d[$i]->picture?? 'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg' ?>" data="<?php echo $d[$i]->name ?>" class="btn btn-sm bg-teal">
+                                                            <i class="fas fa-comments"></i>
+                                                        </a>
+                                                    <?php } else { ?>
+                                                        <a id="<?php echo $d[$i]->FID ?>" href="" class="btn btn-sm btn-primary accpt">
+                                                            <i class="fas fa-user"></i> Add Friend
+                                                        </a>
+                                                    <?php } ?>
+                                                </div>
+                                            </li>
+                                        <?php
+                                            // }
+                                        } ?>
 
                                         <script>
-                                            $(document).ready(function () {
-                                                $(".starch").click(function (e) { 
+                                            $(document).ready(function() {
+                                                $(".starch").click(function(e) {
                                                     e.preventDefault();
-                                                    let rid=$(this).attr("id");
-                                                    let img=$(this).attr("href");
+                                                    let rid = $(this).attr("id");
+                                                    let img = $(this).attr("href");
+                                                    let name = $(this).attr("data");
                                                     // alert(img);
                                                     $.ajax({
                                                         type: "post",
                                                         url: "auth",
                                                         data: {
-                                                            messageRID:rid,
-                                                            RIMG:img
+                                                            messageRID: rid,
+                                                            RIMG: img,
+                                                            RName:name
                                                         },
                                                         dataType: "text",
-                                                        success: function (response) {
-                                                            alert(response);
+                                                        success: function(response) {
+                                                            console.log(response);
+                                                            window.location.reload();
                                                         }
                                                     });
-                                                    
+
                                                 });
                                             });
                                         </script>
@@ -596,65 +622,65 @@
                     </div>
                     <div class="card-body pb-0">
                         <div class="row">
-                            <?php 
-                            $conn =DataBase::getConn();
-                            $q="SELECT * FROM `users` ";
-                            $stm=$conn->query($q);
-                            for ($i=0; $i <$stm->rowCount() ; $i++) { 
-                               $data=$stm->fetch();
+                            <?php
+                            $conn = DataBase::getConn();
+                            $q = "SELECT * FROM `users` ";
+                            $stm = $conn->query($q);
+                            for ($i = 0; $i < $stm->rowCount(); $i++) {
+                                $data = $stm->fetch();
                             ?>
-                            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-                                <div class="card bg-light d-flex flex-fill">
-                                    <div class="card-header text-muted border-bottom-0">
-                                    <?php echo $data->country??"no country"  ?>
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        <div class="row">
-                                            <div class="col-7">
-                                                <h2 class="lead"><b><?php echo $data->name??"no name"  ?></b></h2>
-                                                <p class="text-muted text-sm"><b>location: </b> <?php echo $data->country??"no Location"  ?> </p>
-                                                <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: <?php echo $data->email??"no email"  ?></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-5 text-center">
-                                                <img src="<?php echo $data->picture??'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg'  ?>" alt="user-avatar" class="img-circle img-fluid">
+                                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                    <div class="card bg-light d-flex flex-fill">
+                                        <div class="card-header text-muted border-bottom-0">
+                                            <?php echo $data->country ?? "no country" ?>
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <h2 class="lead"><b><?php echo $data->name ?? "no name" ?></b></h2>
+                                                    <p class="text-muted text-sm"><b>location: </b> <?php echo $data->country ?? "no Location" ?> </p>
+                                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: <?php echo $data->email ?? "no email" ?></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-5 text-center">
+                                                    <img src="<?php echo $data->picture ?? 'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg' ?>" alt="user-avatar" class="img-circle img-fluid">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="text-right">
-                                            <a href="#" class="btn btn-sm bg-teal">
-                                                <i class="fas fa-comments"></i>
-                                            </a>
-                                            <a id="<?php echo $data->id ?>"  href="" class="btn btn-sm btn-primary addf">
-                                                <i class="fas fa-user"></i> Add Friend
-                                            </a>
+                                        <div class="card-footer">
+                                            <div class="text-right">
+                                                <a href="#" class="btn btn-sm bg-teal">
+                                                    <i class="fas fa-comments"></i>
+                                                </a>
+                                                <a id="<?php echo $data->id ?>" href="" class="btn btn-sm btn-primary addf">
+                                                    <i class="fas fa-user"></i> Add Friend
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             <?php
-  
-}
+
+                            }
                             ?>
                             <script>
-                                $(document).ready(function () {
-                                    $(".addf").click(function (e) { 
+                                $(document).ready(function() {
+                                    $(".addf").click(function(e) {
                                         e.preventDefault();
-                                      let rid=$(this).attr("id");
-                                      $.ajax({
-                                          type: "post",
-                                          url: "auth",
-                                          data: {
-                                              rrid:rid
-                                          },
-                                          dataType: "text",
-                                          success: function (response) {
-                                              alert(response)
-                                          }
-                                      });
-                                        
+                                        let rid = $(this).attr("id");
+                                        $.ajax({
+                                            type: "post",
+                                            url: "auth",
+                                            data: {
+                                                rrid: rid
+                                            },
+                                            dataType: "text",
+                                            success: function(response) {
+                                                alert(response)
+                                            }
+                                        });
+
                                     });
                                 });
                             </script>
@@ -665,17 +691,17 @@
                         <nav aria-label="Contacts Page Navigation">
                             <ul class="pagination justify-content-center m-0">
                                 <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                <?php 
-                            $conn =DataBase::getConn();
-                            $q="SELECT * FROM `users`";
-                            $stm=$conn->query($q);
-                            $count=1;
-                            for ($i=0; $i <$stm->rowCount() ; $i++) { 
-                            //    $data=$stm->fetch();
+                                <?php
+                                $conn = DataBase::getConn();
+                                $q = "SELECT * FROM `users`";
+                                $stm = $conn->query($q);
+                                $count = 1;
+                                for ($i = 0; $i < $stm->rowCount(); $i++) {
+                                    //    $data=$stm->fetch();
 
-                            ?>
-                                <li class="page-item active"><a class="page-link" href="#"><?php echo $count  ?></a></li>
-                                <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                ?>
+                                    <li class="page-item active"><a class="page-link" href="#"><?php echo $count ?></a></li>
+                                    <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
                                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                                 <li class="page-item"><a class="page-link" href="#">4</a></li>
                                 <li class="page-item"><a class="page-link" href="#">5</a></li>
@@ -684,9 +710,9 @@
                                 <li class="page-item"><a class="page-link" href="#">8</a></li>
                                 <li class="page-item"><a class="page-link" href="#">...</a></li> -->
 
-                                <?php 
-                              $count++;
-                            }
+                                <?php
+                                    $count++;
+                                }
                                 ?>
                                 <li class="page-item"><a class="page-link" href="#">»</a></li>
                             </ul>
@@ -706,7 +732,7 @@
 
     <!-- /.  -->
     <!-- footer/s  -->
-  
+
     <!-- SweetAlert2 FOr testing and I couldn't figure it out-->
     <!-- <script>
         Swal.fire({

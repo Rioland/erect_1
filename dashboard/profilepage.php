@@ -8,8 +8,8 @@
     <title>Profile</title>
     <link rel="shortcut icon" href="./img/erect-1-bg.png" type="image/x-icon">
     <!-- my style  -->
-    <!-- 
-        Read documentation here 
+    <!--
+        Read documentation here
              https://select2.org/getting-started/basic-usage
      - -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -20,9 +20,7 @@
 
 <body>
     <!-- Always use dashfooter at the end of everyscript with this dashnav  -->
-    <?php
-    require "./dashnav.php";
-    ?>
+
     <!-- =/.==== ===  -->
     <div class="container">
         <div class="wrapper">
@@ -54,19 +52,24 @@
                                 <!-- Profile Image -->
                                 <div class="card card-primary card-outline">
                                     <div class="card-body box-profile">
-                                        <!-- img -->
+                                        <!-- img value="<?php echo $USER->referer ?? time() ?>"-->
                                         <div class="text-center">
-                                            <img class="profile-user-img img-fluid img-circle" src="./img/avatar6.png" alt="User profile picture">
+                                            <img class="profile-user-img img-fluid img-circle" src="<?php echo $USER->picture ?? 'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg' ?>" alt="User profile picture">
                                         </div>
 
-                                        <h3 class="profile-username text-center">Nina Mcintire</h3>
+                                        <h3 class="profile-username text-center"><?php echo $USER->name ?></h3>
                                         <!-- if verified use this  -->
-                                        <p class="text-muted text-center"><i class="fas fa-user-check"></i> verified</p>
-                                        <!-- ================================  -->
-                                        <!-- If NOT verified use this below  -->
-                                        <p class="text-muted text-center"><i class="fas fa-ban"></i> UNverified</p>
-                                        <!-- You should use one at a time  -->
-                                        <!-- ./ ============= =============  -->
+                                        <?php
+
+                                        if ($USER->verify) {
+                                            echo '<p class="text-muted text-center"><i class="fas fa-user-check"></i> verified</p>';
+                                        } else {
+                                            echo '<p class="text-muted text-center"><i class="fas fa-ban"></i> Unverified</p>';
+                                        }
+
+                                        ?>
+
+
                                         <ul class="list-group list-group-unbordered mb-3">
                                             <li class="list-group-item">
                                                 <b>Followers</b> <a class="float-right">1,322</a>
@@ -92,35 +95,34 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body">
-                                        <!-- Username  -->
-                                        <strong><i class="fas fa-user-tag"></i> Username</strong>
+                                        <!-- Gender  -->
+                                        <strong><i class="fas fa-user-tag"></i> GENDER</strong>
 
                                         <p class="text-muted">
-                                            My username should display here..
+                                            <?php echo $USER->gender ?? "not set" ?>
                                         </p>
                                         <hr>
                                         <!-- ==== ./ ===  -->
                                         <!-- --- Email Address ----  -->
                                         <strong><i class="fas fa-at"></i> Email</strong>
-                                        <p class="text-muted">myemailaddress@email.com</p>
+                                        <p class="text-muted"><?php echo $USER->email ?? "not set" ?></p>
                                         <hr>
                                         <!-- ====================  -->
                                         <!-- address  -->
                                         <strong><i class="far fa-address-book"></i> Address</strong>
                                         <p class="text-muted">
-                                            5842 La Mirada Ave.
-                                            Los Angeles, CA 90038.
+                                            <?php echo $USER->address ?? "not set" ?>
                                         </p>
                                         <hr>
                                         <!-- . /address  -->
                                         <!-- State and COuntry  -->
-                                        <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
-                                        <p class="text-muted">Malibu, California</p>
+                                        <strong><i class="fas fa-map-marker-alt mr-1"></i> Country</strong>
+                                        <p class="text-muted"> <?php echo $USER->country ?? "not set" ?></p>
                                         <hr>
                                         <!-- . /=== ==== -->
                                         <!-- Referral link  -->
-                                        <strong><i class="fas fa-link"></i> Referral Link</strong>
-                                        <p class="text-muted"> make the link copy-able</p>
+                                        <strong><i class="fas fa-link"></i> Referral code</strong>
+                                        <p class="text-muted"><?php echo $USER->referer ?? "not set" ?></p>
                                         <hr>
                                         <!--  /. === ==== -->
 
@@ -136,12 +138,12 @@
 
                                         <hr> -->
                                         <!-- Bio also known as self description/summary   -->
-                                        <strong><i class="far fa-file-alt mr-1"></i> Bio</strong>
-                                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                                        <!-- <strong><i class="far fa-file-alt mr-1"></i> Bio</strong>
+                                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p> -->
                                         <!--  /. === ==== -->
                                         <!-- Tel Number -->
                                         <strong><i class="fas fa-phone-square-alt"></i> Tel. &#8470;</strong>
-                                        <p class="text-muted"> +1 (233) 676 0232</p>
+                                        <p class="text-muted"> <?php echo $USER->phone ?? "not set" ?></p>
                                         <hr>
                                         <!--  /. === ==== -->
                                     </div>
@@ -224,6 +226,7 @@
                                                         </div>
                                                     </form>
                                                 </div>
+
                                                 <!-- /.post -->
 
                                                 <!-- Post -->
@@ -281,63 +284,6 @@
                                                 </div>
                                                 <!-- /.post -->
 
-                                                <div class="post">
-                                                    <div class="col-lg-12">
-
-                                                        <div class="card">
-                                                            <div class="card-header border-0">
-                                                                <h3 class="card-title">Online Store Overview</h3>
-                                                                <div class="card-tools">
-                                                                    <a href="#" class="btn btn-sm btn-tool">
-                                                                        <i class="fas fa-download"></i>
-                                                                    </a>
-                                                                    <a href="#" class="btn btn-sm btn-tool">
-                                                                        <i class="fas fa-bars"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                                                                    <p class="text-success text-xl">
-                                                                        <i class="ion ion-ios-refresh-empty"></i>
-                                                                    </p>
-                                                                    <p class="d-flex flex-column text-right">
-                                                                        <span class="font-weight-bold">
-                                                                            <i class="ion ion-android-arrow-up text-success"></i> 12%
-                                                                        </span>
-                                                                        <span class="text-muted">CONVERSION RATE</span>
-                                                                    </p>
-                                                                </div>
-                                                                <!-- /.d-flex -->
-                                                                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-                                                                    <p class="text-warning text-xl">
-                                                                        <i class="ion ion-ios-cart-outline"></i>
-                                                                    </p>
-                                                                    <p class="d-flex flex-column text-right">
-                                                                        <span class="font-weight-bold">
-                                                                            <i class="ion ion-android-arrow-up text-warning"></i> 0.8%
-                                                                        </span>
-                                                                        <span class="text-muted">SALES RATE</span>
-                                                                    </p>
-                                                                </div>
-                                                                <!-- /.d-flex -->
-                                                                <div class="d-flex justify-content-between align-items-center mb-0">
-                                                                    <p class="text-danger text-xl">
-                                                                        <i class="ion ion-ios-people-outline"></i>
-                                                                    </p>
-                                                                    <p class="d-flex flex-column text-right">
-                                                                        <span class="font-weight-bold">
-                                                                            <i class="ion ion-android-arrow-down text-danger"></i> 1%
-                                                                        </span>
-                                                                        <span class="text-muted">REFERRALS RATE</span>
-                                                                    </p>
-                                                                </div>
-                                                                <!-- /.d-flex -->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.col-md-6 -->
-                                                </div>
                                             </div>
                                             <!-- /.tab-pane -->
                                             <div class="tab-pane" id="timeline">
@@ -437,37 +383,24 @@
                                             <!-- /.tab-pane -->
                                             <!-- this is form for settings edit  -->
                                             <div class="tab-pane" id="settings">
-                                                <form class="form-horizontal">
-                                                    <!-- last name  -->
+                                                <form id="settingf" class="form-horizontal">
+                                                    <!--  name  -->
                                                     <div class="form-group row">
-                                                        <label for="inputName" class="col-sm-2 col-form-label">Last Name</label>
+                                                        <label for="inputName" class="col-sm-2 col-form-label">Fullname</label>
                                                         <div class="col-sm-10">
-                                                            <input type="email" class="form-control" id="inputName" placeholder="surname">
+                                                            <input type="text" class="form-control" required id="inputName" value="<?php echo $USER->name ?? "N/A" ?>" name="name" placeholder="Fullname">
+                                                            <input type="hidden" class="form-control" required id="inputName" value="profile" name="profile" placeholder="Fullname">
                                                         </div>
                                                     </div>
-                                                    <!-- first name  -->
+
                                                     <div class="form-group row">
-                                                        <label for="inputName" class="col-sm-2 col-form-label">First Name</label>
-                                                        <div class="col-sm-10">
-                                                            <input type="email" class="form-control" id="inputName" placeholder="first name">
-                                                        </div>
-                                                    </div>
-                                                    <!-- address  -->
-                                                    <div class="form-group row">
-                                                        <label for="inputName" class="col-sm-2 col-form-label">Address</label>
-                                                        <div class="col-sm-10">
-                                                            <input type="email" class="form-control" id="inputName" placeholder="home address">
-                                                        </div>
-                                                    </div>
-                                                    <!-- username :note that it can only be changed once after that the input will be disabled -->
-                                                    <div class="form-group row">
-                                                        <label for="inputEmail" class="col-sm-2 col-form-label">Username</label>
+                                                        <label for="inputEmail" class="col-sm-2 col-form-label">Country</label>
                                                         <div class="col-sm-10">
                                                             <div class="input-group mb-3">
-                                                                <div class="input-group-prepend">
+                                                                <!-- <div class="input-group-prepend">
                                                                     <span class="input-group-text"><i class="fas fa-at"></i></span>
-                                                                </div>
-                                                                <input type="text" class="form-control" placeholder="username">
+                                                                </div> -->
+                                                                <input type="text" name="country" value="<?php echo $USER->country ?>" required class="form-control" placeholder="Country">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -479,7 +412,7 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                                                 </div>
-                                                                <input type="email" class="form-control" placeholder="Email">
+                                                                <input type="email" value="<?php echo $USER->email ?>" readonly required name="email" class="form-control" placeholder="Email">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -491,44 +424,26 @@
                                                                 <div class="input-group-prepend">
                                                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                                                 </div>
-                                                                <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                                                                <input type="text" required value="<?php echo $USER->phone ?>" name="phone" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="inputExperience" class="col-sm-2 col-form-label">Bio</label>
+                                                        <label for="inputExperience" class="col-sm-2 col-form-label">Address</label>
                                                         <div class="col-sm-10">
-                                                            <textarea class="form-control" id="inputExperience" placeholder="Write a brief description of yourself"></textarea>
+                                                            <textarea name="address" value="<?php echo $USER->address ?>" required class="form-control" id="inputExperience" placeholder="Address"> <?php echo $USER->address ?></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
+                                                        <label for="inputSkills" class="col-sm-2 col-form-label">Gender</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
+                                                            <input type="text" required name="gender" value="<?php echo $USER->gender ?>" class="form-control" id="inputSkills" placeholder="Gender">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="inputName" class="col-sm-2 col-form-label">Update Profile Photo</label>
+                                                        <label for="inputSkills" class="col-sm-2 col-form-label">Referer Code</label>
                                                         <div class="col-sm-10">
-                                                            <div class="input-group">
-                                                                <div class="custom-file">
-                                                                    <input type="file" class="custom-file-input" id="exampleInputFile">
-                                                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                                                </div>
-                                                                <div class="input-group-append">
-                                                                    <span class="input-group-text">Upload</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group row">
-                                                        <div class="offset-sm-2 col-sm-10">
-                                                            <div class="checkbox">
-                                                                <label>
-                                                                    <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                                                                </label>
-                                                            </div>
+                                                            <input type="text" readonly required name="referer" value="<?php echo $USER->referer ?? time() ?>" class="form-control" id="inputSkills" placeholder="Referer">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -537,7 +452,58 @@
                                                         </div>
                                                     </div>
                                                 </form>
+                                                <form id="picupload" enctype="multipart/form-data">
+                                                    <div class="form-group row">
+                                                        <label for="inputName" class="col-sm-2 col-form-label">Update Profile Photo</label>
+                                                        <div class="col-sm-10">
+                                                            <div class="input-group">
+                                                                <div class="custom-file">
+                                                                    <input type="file" readonly required required class="custom-file-input pic" name="picture" id="exampleInputFile">
+                                                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                                </div>
+                                                                <div class="input-group-append">
+                                                                    <button type="submit" class="input-group-text">Upload</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                                <!-- <div class="form-group row">
+                                                        <div class="offset-sm-2 col-sm-10">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+
                                             </div>
+
+                                            <script>
+                                                $(document).ready(function() {
+                                                    $("#settingf").submit(function(e) {
+                                                        e.preventDefault();
+                                                        let data = $(this).serialize();
+                                                        // alert(data);
+                                                        $.ajax({
+                                                            type: "post",
+                                                            url: "auth",
+                                                            data: {
+
+                                                                profileUpdate: data
+                                                            },
+                                                            dataType: "text",
+                                                            success: function(response) {
+                                                                alert(response);
+                                                            }
+                                                        });
+
+
+                                                    });
+                                                });
+                                            </script>
                                             <!-- /.tab-pane -->
                                         </div>
                                         <!-- /.tab-content -->
@@ -560,10 +526,7 @@
         </div>
     </div>
 
-    <!-- Always use dashnav at top of everyscript with this dashfooter  -->
-    <?php
-    require "./dashfooter.php";
-    ?>
+
 
     <!-- /. -->
     <!-- for stepper  -->

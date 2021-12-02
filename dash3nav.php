@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -122,48 +121,48 @@
                 <!-- ---- Left navbar links ---- -->
                 <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                     <ul class="navbar-nav">
-                        <li id="bs"  class="nav-item">
-                            <a  href="#" class="nav-link">BUY/SELL</a>
+                        <li id="bs" class="nav-item">
+                            <a href="#" class="nav-link">BUY/SELL</a>
                         </li>
                         <li id="tr" class="nav-item">
-                            <a  href="#" class="nav-link">TRADE</a>
+                            <a href="#" class="nav-link">TRADE</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Settings</a>
                             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
                                 <!-- <li><a href="#" class="dropdown-item">CARDS </a></li> -->
-                                <li id="fin" ><a href="" class="dropdown-item">FINANCE </a></li>
-                                <li id="ver" ><a href="" class="dropdown-item"> VERIFICATION </a></li>
+                                <li id="fin"><a href="" class="dropdown-item">FINANCE </a></li>
+                                <li id="ver"><a href="" class="dropdown-item"> VERIFICATION </a></li>
                                 <li class="dropdown-divider"></li>
 
                                 <!-- Level two dropdown-->
                                 <li class="dropdown-submenu dropdown-hover">
                                     <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">My Services...</a>
                                     <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-                                        
-                                        <li id="af"><a href="" class="dropdown-item">AFFILIATES</a></li>
-                                
 
-                                <!-- Level three dropdown-->
-                                <li class="dropdown-submenu">
-                                    <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">more >> </a>
-                                    <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-                                        <li id="lo"><a href="#" class="dropdown-item">LOANS</a></li>
-                                        <li id="inv" ><a href="#" class="dropdown-item">INVESTMENT</a></li>
+                                        <li id="af"><a href="" class="dropdown-item">AFFILIATES</a></li>
+
+
+                                        <!-- Level three dropdown-->
+                                        <li class="dropdown-submenu">
+                                            <a id="dropdownSubMenu3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">more >> </a>
+                                            <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+                                                <li id="lo"><a href="#" class="dropdown-item">LOANS</a></li>
+                                                <li id="inv"><a href="#" class="dropdown-item">INVESTMENT</a></li>
+                                            </ul>
+                                        </li>
+                                        <!-- End Level three -->
+
+                                        <li><a href="#" class="dropdown-item">MARGIN TRADING</a></li>
+                                        <li><a href="#" class="dropdown-item">STAKES</a></li>
                                     </ul>
                                 </li>
-                                <!-- End Level three -->
-
-                                <li><a href="#" class="dropdown-item">MARGIN TRADING</a></li>
-                                <li><a href="#" class="dropdown-item">STAKES</a></li>
+                                <!-- End Level two -->
                             </ul>
                         </li>
-                        <!-- End Level two -->
-                    </ul>
-                    </li>
-                    <li id="ca" class="nav-item">
-                        <a href="" class="nav-link">CARDS</a>
-                    </li>
+                        <li id="ca" class="nav-item">
+                            <a href="" class="nav-link">CARDS</a>
+                        </li>
                     </ul>
 
                     <!-- <div class="btn-group">
@@ -385,14 +384,96 @@
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" href="./dashboard/profilepage.php" style="color: black;"><i class="fas fa-user-circle"></i> &nbsp; My Profile</a>
-                        <a class="dropdown-item" href="./dashboard/notificationcenter.php" style="color: black;"><i class="far fa-address-card"></i> Account Activities </a>
-                        <a class="dropdown-item" href="./dashboard/securitysettings.php" style="color: black;"><i class="fas fa-user-shield"></i>&nbsp; Security Settings</a>
-                        <a class="dropdown-item" href="./dashboard/transactionpage.php" style="color: black;"><i class="fas fa-file-invoice-dollar"></i>&nbsp; Transaction Statement</a>
+                        <a id="my_prof" class="dropdown-item" href="" style="color: black;"><i class="fas fa-user-circle"></i> &nbsp; My Profile</a>
+                        <a id="my_activ" class="dropdown-item" href="./dashboard/notificationcenter.php" style="color: black;"><i class="far fa-address-card"></i> Account Activities </a>
+                        <a id="my_sec" class="dropdown-item" href="./dashboard/securitysettings.php" style="color: black;"><i class="fas fa-user-shield"></i>&nbsp; Security Settings</a>
+                        <a id="my_tracs" class="dropdown-item" href="./dashboard/transactionpage.php" style="color: black;"><i class="fas fa-file-invoice-dollar"></i>&nbsp; Transaction Statement</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="./logout.php" style="color: black;"><i class="fas fa-sign-out-alt"></i>&nbsp; LOG OUT</a>
                     </div>
                 </div>
+                <script>
+                    $(document).ready(function() {
+
+
+                        $("#my_tracs").click(function(e) {
+                            e.preventDefault();
+                          
+                                $.ajax({
+                                    type: "post",
+                                    url: "auth",
+                                    data: {
+                                        router: "./dashboard/transactionpage.php",
+                                        action: "router"
+                                    },
+                                    dataType: "text",
+                                    success: function(response) {
+                                        console.log(response)
+                                        window.location.reload();
+                                    }
+                                });
+
+                        });
+
+                        $("#my_sec").click(function(e) {
+                            e.preventDefault();
+                          
+                                $.ajax({
+                                    type: "post",
+                                    url: "auth",
+                                    data: {
+                                        router: "./dashboard/securitysettings.php",
+                                        action: "router"
+                                    },
+                                    dataType: "text",
+                                    success: function(response) {
+                                        console.log(response)
+                                        window.location.reload();
+                                    }
+                                });
+
+                        });
+
+
+                        $("#my_activ").click(function(e) {
+                            e.preventDefault();
+                          
+                                $.ajax({
+                                    type: "post",
+                                    url: "auth",
+                                    data: {
+                                        router: "./dashboard/notificationcenter.php",
+                                        action: "router"
+                                    },
+                                    dataType: "text",
+                                    success: function(response) {
+                                        console.log(response)
+                                        window.location.reload();
+                                    }
+                                });
+
+                        });
+
+                        $("#my_prof").click(function(e) {
+                            e.preventDefault();
+                          
+                                $.ajax({
+                                    type: "post",
+                                    url: "auth",
+                                    data: {
+                                        router: "./dashboard/profilepage.php",
+                                        action: "router"
+                                    },
+                                    dataType: "text",
+                                    success: function(response) {
+                                        console.log(response)
+                                        window.location.reload();
+                                    }
+                                });
+
+                        });
+                    });
+                </script>
                 <!-- === / == -->
                 <hr class="mb-2">
 
@@ -410,16 +491,16 @@
                 $pstm = $connection->prepare($q);
                 $pstm->bindValue(1, $USER->id);
                 $pstm->execute();
-                for ( $i=0; $i< $pstm->rowCount();$i++) {
+                for ($i = 0; $i < $pstm->rowCount(); $i++) {
                     $data = $pstm->fetch();
-                    
+
                 ?>
                     <?php
                     if ($data->type == "danger") {
 
                     ?>
                         <div class="alert alert-danger alert-dismissible">
-                            <button type="button" class="close" id="<?php echo $data->id;   ?>" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <button type="button" class="close" id="<?php echo $data->id; ?>" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h5><i class="icon fas fa-ban"></i> Alert!</h5>
                             <?php echo $data->broadcast ?>
                         </div>
@@ -438,7 +519,7 @@
                         <!-- ============  -->
                         <!-- YELLOW ALERT  -->
                         <div class="alert alert-warning alert-dismissible">
-                            <button type="button" class="close" id="<?php echo $data->id;   ?>" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <button type="button" class="close" id="<?php echo $data->id; ?>" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h5><i class="icon fas fa-exclamation-triangle"></i> Alert!</h5>
                             <?php echo $data->broadcast ?>
                         </div>
@@ -449,7 +530,7 @@
                         <!-- ===========  -->
                         <!-- GREEN ALERT  -->
                         <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" id="<?php echo $data->id;   ?>" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <button type="button" class="close" id="<?php echo $data->id; ?>" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h5><i class="icon fas fa-check"></i> Alert!</h5>
                             <?php echo $data->broadcast ?>
                         </div>
@@ -467,219 +548,218 @@
         <!-- =========./ End of Dasboard navigations ======= -->
 
         <script>
-    $(document).ready(function () {
-        
-       
-        $("#allnoty").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./dashboard/notificationcenter.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
-
-        $("#message").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./dashboard/messagepage.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
+            $(document).ready(function() {
 
 
-        $("#dp a").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./dashboard/deposit.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
+                $("#allnoty").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./dashboard/notificationcenter.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
 
-   $("#wd a").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./dashboard/deposit.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
+                });
+
+                $("#message").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./dashboard/messagepage.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
+
+                });
 
 
+                $("#dp a").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./dashboard/deposit.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
+
+                });
+
+                $("#wd a").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./dashboard/deposit.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
+
+                });
 
 
 
 
-        $("#ca a").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./card.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
-
-   $("#bs a").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./pages/buy_sell.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
 
 
-   $("#tr a").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./pages/trade.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
+                $("#ca a").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./card.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
 
-   $("#fin a").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./dashboard/finance.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
+                });
 
-   $("#af a").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./dashboard/affiliation.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
+                $("#bs a").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./pages/buy_sell.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
+
+                });
 
 
-   
-   $("#ver a").click(function (e) { 
-       e.preventDefault();
-       $.ajax({
-           type: "post",
-           url: "auth",
-           data: {
-               router:"./dashboard/verificationpage.php",
-               action:"router"
-           },
-           dataType: "text",
-           success: function (response) {
-               console.log(response)
-               window.location.reload();
-           }
-       });
-       
-   });
+                $("#tr a").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./pages/trade.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
 
-   
+                });
 
-        // close tnotification
-        $(".close").click(function (e) { 
-            e.preventDefault();
-            let id=$(this).attr("id");
-            $.ajax({
-                type: "post",
-                url: "auth",
-                data: {
-                    id:id,
-                    action:"detetenotif"
-                },
-                dataType: "text",
-                success: function (response) {
-                    console.log(response);
-                    alert(response)
-                }
+                $("#fin a").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./dashboard/finance.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
+
+                });
+
+                $("#af a").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./dashboard/affiliation.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
+
+                });
+
+
+
+                $("#ver a").click(function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            router: "./dashboard/verificationpage.php",
+                            action: "router"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response)
+                            window.location.reload();
+                        }
+                    });
+
+                });
+
+
+
+                // close tnotification
+                $(".close").click(function(e) {
+                    e.preventDefault();
+                    let id = $(this).attr("id");
+                    $.ajax({
+                        type: "post",
+                        url: "auth",
+                        data: {
+                            id: id,
+                            action: "detetenotif"
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            console.log(response);
+                            alert(response)
+                        }
+                    });
+
+                });
             });
-            
-        });
-    });
-
         </script>

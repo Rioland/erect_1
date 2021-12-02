@@ -10,11 +10,7 @@
 </head>
 
 <body>
-    <!-- navbar  -->
-    <?php
-    require "./dashnav.php";
-    ?>
-    <!-- end of navbar  -->
+
 
     <!-- main content  -->
     <div class="container">
@@ -292,11 +288,6 @@
     </div>
     <!-- END OF main-content  -->
 
-    <!-- footer/s  -->
-    <?php
-    require "./dashfooter.php";
-    ?>
-    <!-- end of footer/s  -->
     <!-- /. -->
     <!-- SCRIPTS FOR THIS PAGE  -->
     <!-- for cb custom input  -->

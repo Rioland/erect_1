@@ -210,7 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // send chat
     if (isset($_REQUEST['message'])) {
         parse_str($_REQUEST['message'], $message);
-        $rid = $_SESSION['RID'];
+        $rid = $_SESSION['CHATID'];
         $user = $_SESSION['USER'];
         $chat = $message['message'];
         echo DataBase::sendMessage($rid, $chat, $user->id);
@@ -235,15 +235,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $rid = $_REQUEST['messageRID'];
             $_SESSION['CHATID'] = $rid;
             $_SESSION['RIMG'] = $_REQUEST['RIMG'];
+            $_SESSION['RName']=$_REQUEST['RName'];
             $conn = DataBase::getConn();
             $q = "CREATE TABLE  IF NOT EXISTS " . $rid . "_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB";
             $stm = $conn->exec($q);
             $q = "CREATE TABLE  IF NOT EXISTS " . $user->id . "_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB";
             $stm = $conn->exec($q);
-            echo $rid;
+            echo true;
         } catch (\Throwable $th) {
             echo $th;
         }
     }
-    //  print_r("hhh".$_REQUEST['messageRID']);
+   
+    if(isset($_REQUEST['profileUpdate'])){
+        parse_str($_REQUEST['profileUpdate'],$data);
+        // print_r($data);
+        $user = $_SESSION['USER'];
+        $val=array($data['email'],$data['country'],$data['name'],
+        $data['gender'],$data['address'],$data['referer'],$data['phone'],$user->id);
+        echo DataBase::updateProfile($user->id,$val);
+        
+    }
+   
+
+     
 }

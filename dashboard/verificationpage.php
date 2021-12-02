@@ -10,9 +10,7 @@
 </head>
 
 <body>
-    <?php
-    // require "./dash3nav.php";
-    ?>
+    
     <div class="wrapper">
         <div class="content-wrapper">
             <div class="container">
@@ -510,9 +508,7 @@
             </div>
         </div>
     </div>
-    <?php
-    // require "./dashfooter.php";
-    ?>
+    
     <!-- /. end body> -->
     <!-- this is for modal/pop-up  -->
     <!-- <script>

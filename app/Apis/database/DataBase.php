@@ -10,13 +10,35 @@ use PHPMailer\PHPMailer\PHPMailer;
 class DataBase
 {
 
+
+    public static function updateProfile($myid,$data=array()){
+    try {
+        $conn = DataBase::getConn();
+        $q="UPDATE `users` SET `email`=?,`country`=?,`name`=?,`gender`=?,`address`=?,`referer`=?,`phone`=? WHERE id=?";
+        $stm=$conn->prepare($q);
+        $stm->execute($data);
+        if($stm->rowCount()>0){
+            echo "update successful";
+        }else{
+            echo "Record is up to date";
+        }
+    } catch (\Throwable $th) {
+        echo $th;
+    }
+    }
+
     public static function getMessage($myid){
        try {
         $rid=$_SESSION['CHATID'];
         $_SESSION['RIMG'];
-        $q="SELECT *,".$rid."_messages.MID,".$rid."_messages.FID,".$rid."_messages.message FROM ".$myid."_messages JOIN ".$rid."_messages where ".$myid."_messages.FID=".$rid."_messages.FID";
+        $q="SELECT * FROM ".$myid."_messages WHERE `FID`=? or `FID`=?";
         $conn = DataBase::getConn();
-        $stm = $conn->query($q);
+        $stm = $conn->prepare($q);
+        $ftp=$myid."_".$rid;
+        $ftp1=$rid."_".$myid;
+        $stm->bindValue(1,$ftp);
+        $stm->bindValue(2,$ftp1);
+        $stm->execute();
         return $stm->fetchAll();
        } catch (\Throwable $th) {
            echo $th;
@@ -29,11 +51,23 @@ class DataBase
             $conn = DataBase::getConn();
            $q="CREATE TABLE  IF NOT EXISTS ".$RID."_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB"; 
            $stm=$conn->exec($q);
+           $q="CREATE TABLE  IF NOT EXISTS ".$SID."_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB"; 
+           $stm=$conn->exec($q);
 
-           $q = "INSERT INTO `messages`( `FID`,`message`) VALUES (?,?)";
+
+           $q = "INSERT INTO ".$SID."_messages( `FID`,`message`) VALUES (?,?)";
            $stm = $conn->prepare($q);
-           $stm->bindValue(1, $SID);
+           $stm->bindValue(1, $SID."_".$RID);
            $stm->bindValue(2, $Mess);
+           $stm->execute();
+
+
+           $q = "INSERT INTO ".$RID."_messages( `FID`,`message`) VALUES (?,?)";
+           $stm = $conn->prepare($q);
+           $stm->bindValue(1, $RID."_".$SID);
+           $stm->bindValue(2, $Mess);
+           $stm->execute();
+
                echo "send";
         
         } catch (\Throwable $th) {
@@ -670,6 +704,27 @@ class DataBase
 
     }
 
+    public static function autoReload($uid)
+    {
+        try {
+           
+        $myconn = self::getConn();
+        $qury = "SELECT * FROM `users` WHERE `id`=:id ";
+        $stm = $myconn->prepare($qury);
+        $stm->execute(array(":id" => $uid));
+        if ($stm->rowCount() >= 1) {
+            $res = $stm->fetch();
+            $_SESSION['userid'] = $res->id;
+            $_SESSION['USER'] = $res;
+          
+        }
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+
+
+    }
+
     public static function generate_token()
     {
         return str_shuffle("1234678905abcdefghijklmnopqrstuvwzyx@#");
@@ -710,13 +765,14 @@ class DataBase
 
     public static function google_register($name, $email, $pass, $country, $pic, $gender, $id): bool
     {
+        $pic2="https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg";
         $pass = md5($pass);
         $country = self::ip_visitor_country();
         $token = self::generate_token();
         $myconn = self::getConn();
-        $qury = "INSERT INTO `users`(`email`, `password`, `country`,`auth_token`,`id`,`name`,`gender`,`picture`) VALUES (:email,:password,:country,:token,:id,:name,:gend,:pic)";
+        $qury = "INSERT INTO `users`(`email`, `password`, `country`,`auth_token`,`id`,`name`,`gender`,`picture`,referer) VALUES (:email,:password,:country,:token,:id,:name,:gend,:pic,:referer)";
         $stm = $myconn->prepare($qury);
-        $feildback = $stm->execute(array(":email" => $email, ":password" => $pass, ":country" => $country, ":token" => $token, ":id" => $id, ":name" => $name, ":gend" => $gender, ":pic" => $pic));
+        $feildback = $stm->execute(array(":email" => $email, ":password" => $pass, ":country" => $country, ":token" => $token, ":id" => $id, ":name" => $name, ":gend" => $gender, ":pic" => $pic??$pic2,':referer'=>time()));
         $qury1 = "INSERT INTO `account`(`id`, `dollar`, `euro`, `bit`, `eth`) VALUES (:uid,:dol,:euro,:btc,:eth)";
 
         $stm1 = $myconn->prepare($qury1);
@@ -753,12 +809,12 @@ class DataBase
 
             return "User already exist please login";
         } else {
-
+            $pic='https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg';
             $id = str_shuffle(time());
             $token = self::generate_token();
-            $qury = "INSERT INTO `users`(`email`, `password`, `country`,`auth_token`,`id`) VALUES (:email,:password,:country,:token,:id)";
+            $qury = "INSERT INTO `users`(`email`, `password`, `country`,`auth_token`,`id`,referer,`picture`) VALUES (:email,:password,:country,:token,:id,:referer,:pic)";
             $stm = $myconn->prepare($qury);
-            $feildback = $stm->execute(array(":email" => $email, ":password" => md5($pass), ":country" => $country, ":token" => $token, ":id" => $id));
+            $feildback = $stm->execute(array(":email" => $email, ":password" => md5($pass), ":country" => $country, ":token" => $token, ":id" => $id,':referer'=>time(),":pic"=>$pic));
 
             $qury1 = "INSERT INTO `account`(`id`, `dollar`, `euro`, `bit`, `eth`) VALUES (:uid,:dol,:euro,:btc,:eth)";
 

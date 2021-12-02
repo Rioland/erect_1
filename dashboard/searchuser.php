@@ -10,11 +10,8 @@
 </head>
 
 <body>
-    <!-- nav bar  -->
-    <?php
-    require "./dash2nav.php";
-    ?>
-    <!-- /.  -->
+   
+
     <!-- content  -->
     <div class="card card-primary card-outline">
         <div class="card-header">
@@ -332,9 +329,7 @@
     </div>
     <!-- /.  -->
     <!-- Footer  -->
-    <?php
-    require "./dashfooter.php";
-    ?>
+  
     <!-- /.  -->
 </body>
 

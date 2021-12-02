@@ -7,11 +7,13 @@ if (DataBase::is_login()==false) {
     header('location:/');
 }
 $USER=$_SESSION["USER"];
+DataBase::autoReload($USER->id);
 $connection=DataBase::getConn();
 $dollar=DataBase::getdollaBalance();
 $eth=DataBase::getethBalance();
 $euro=DataBase::geteroBalance();
 $btc=DataBase::getbtcBalance();
+
 ?>
 
 <!doctype html>
@@ -81,6 +83,7 @@ require "./dash3nav.php";
 
 <!-- ----- --- - The Body - ---- -----  -->
 <?php
+
 if(isset($_SESSION['router']) and !empty($_SESSION['router'])){
     require $_SESSION['router'];
 }else{
