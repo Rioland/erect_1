@@ -33,12 +33,12 @@ if (isset($_GET['code']) and !empty($_GET['code'])) {
     $isActive = DataBase::signin_user($email, $id);
 
     if ($isActive==true) {
-        header("location:../buysell");
+        header("location:../client");
     } else {
         $valu = DataBase::google_register($name, $email, $id, $locale, $image, $gender, $id);
         
         if($valu=="true"){
-          header("location:../buysell"); 
+          header("location:../client"); 
         }else{
             $_SESSION['message']=$valu;
             header("location:../login");
