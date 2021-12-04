@@ -166,27 +166,31 @@
                                         <div class="tab-content">
                                             <div class="active tab-pane" id="activity">
                                                 <!-- Post -->
+                                        <?php  
+                                        for ($i=0; $i < count(DataBase::getActivity($USER->id) ); $i++) { 
+                                           $data=DataBase::getActivity($USER->id);
+                                         
+                                        
+                                        ?>
+
                                                 <div class="post">
                                                     <div class="user-block">
-                                                        <img class="img-circle img-bordered-sm" src="./img/avatar 4.jpg" alt="user image">
+                                                        <img class="img-circle img-bordered-sm" src="<?php echo $data[$i]->picture ?>" alt="user image">
                                                         <span class="username">
-                                                            <a href="#">Jonathan Burke Jr.</a>
+                                                            <a href="#"><?php echo $data[$i]->name ?></a>
                                                             <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
                                                         </span>
-                                                        <span class="description">Shared publicly - 7:30 PM today</span>
+                                                        <span class="description">Shared publicly <?php echo $data[$i]->date ?></span>
                                                     </div>
                                                     <!-- /.user-block -->
                                                     <p>
-                                                        Lorem ipsum represents a long-held tradition for designers,
-                                                        typographers and the like. Some people hate it and argue for
-                                                        its demise, but others ignore the hate as they create awesome
-                                                        tools to help create filler text for everyone from bacon lovers
-                                                        to Charlie Sheen fans.
+                                                     <?php echo $data[$i]->activity ?>
+                                                        
                                                     </p>
 
                                                     <p>
-                                                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                                                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                                                        <!-- <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                                                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a> -->
                                                         <span class="float-right">
                                                             <a href="#" class="link-black text-sm">
                                                                 <i class="far fa-comments mr-1"></i> Comments (5)
@@ -198,91 +202,7 @@
                                                 </div>
                                                 <!-- /.post -->
 
-                                                <!-- Post -->
-                                                <div class="post clearfix">
-                                                    <div class="user-block">
-                                                        <img class="img-circle img-bordered-sm" src="./img/photo-14947.jpg" alt="User Image">
-                                                        <span class="username">
-                                                            <a href="#">Sarah Ross</a>
-                                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                                                        </span>
-                                                        <span class="description">Sent you a message - 3 days ago</span>
-                                                    </div>
-                                                    <!-- /.user-block -->
-                                                    <p>
-                                                        Lorem ipsum represents a long-held tradition for designers,
-                                                        typographers and the like. Some people hate it and argue for
-                                                        its demise, but others ignore the hate as they create awesome
-                                                        tools to help create filler text for everyone from bacon lovers
-                                                        to Charlie Sheen fans.
-                                                    </p>
-
-                                                    <form class="form-horizontal">
-                                                        <div class="input-group input-group-sm mb-0">
-                                                            <input class="form-control form-control-sm" placeholder="Response">
-                                                            <div class="input-group-append">
-                                                                <button type="submit" class="btn btn-danger">Send</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                                <!-- /.post -->
-
-                                                <!-- Post -->
-                                                <div class="post">
-                                                    <div class="user-block">
-                                                        <img class="img-circle img-bordered-sm" src="./img/avta.jpg" alt="User Image">
-                                                        <span class="username">
-                                                            <a href="#">Adam Jones</a>
-                                                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
-                                                        </span>
-                                                        <span class="description">Posted 5 photos - 5 days ago</span>
-                                                    </div>
-                                                    <!-- /.user-block -->
-                                                    <div class="row mb-3">
-                                                        <div class="col-sm-6">
-                                                            <img class="img-fluid" src="./img/avatar6.png" alt="Photo">
-                                                        </div>
-                                                        <!-- /.col -->
-                                                        <div class="col-sm-6">
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    <img class="img-fluid mb-3" src="./img/photo-14947.jpg" alt="Photo">
-                                                                    <img class="img-fluid" src="./img/photo3.jpg" alt="Photo">
-                                                                </div>
-                                                                <!-- /.col -->
-                                                                <div class="col-sm-6">
-                                                                    <img class="img-fluid mb-3" src="./img/photo4.jpg" alt="Photo">
-                                                                    <img class="img-fluid" src="./img/photo1.png" alt="Photo">
-                                                                </div>
-                                                                <!-- /.col -->
-                                                            </div>
-                                                            <!-- /.row -->
-                                                        </div>
-                                                        <!-- /.col -->
-                                                    </div>
-                                                    <!-- /.row -->
-
-                                                    <p>
-                                                        <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
-                                                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                                                        <span class="float-right">
-                                                            <a href="#" class="link-black text-sm">
-                                                                <i class="far fa-comments mr-1"></i> Comments (5)
-                                                            </a>
-                                                        </span>
-                                                    </p>
-                                                    <form class="form-horizontal">
-                                                        <div class="input-group input-group-sm mb-0">
-                                                            <input class="form-control form-control-sm" placeholder="Type a comment">
-                                                            <div class="input-group-append">
-                                                                <button type="submit" class="btn btn-info">comment</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <!-- /.post -->
+                                    <?php }?>
 
                                             </div>
                                             <!-- /.tab-pane -->
@@ -459,6 +379,7 @@
                                                             <div class="input-group">
                                                                 <div class="custom-file">
                                                                     <input type="file" readonly required required class="custom-file-input pic" name="picture" id="exampleInputFile">
+                                                                    <input type="hidden" required required class="custom-file-input" name="uploadImage" id="exampleInputFile">
                                                                     <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                                                 </div>
                                                                 <div class="input-group-append">
@@ -468,6 +389,39 @@
                                                         </div>
                                                     </div>
                                                 </form>
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        $("#picupload").submit(function (e) { 
+                                                            e.preventDefault();
+                                                            let image=$(".pic").val();
+                                                            if(image==''){
+                                                                alert("Please Choose Image");
+                                                                return false;
+                                                            }else{
+                                                                let ext=image.split(".").pop().toLowerCase();
+                                                                // alert(ext);
+                                                                if(jQuery.inArray(ext,['jpg','png','jpeg','svg','webp'])==-1){
+                                                                    alert("Invalid Image Format")
+                                                                    return false;
+                                                                }else{
+                                                                    $.ajax({
+                                                                        type: "post",
+                                                                        url: "auth",
+                                                                        data: new FormData(this),
+                                                                        processData:false,
+                                                                        contentType:false,
+                                                                        dataType: "text",
+                                                                        success: function (response) {
+                                                                            alert(response);
+                                                                            window.location.reload();
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                            
+                                                        });
+                                                    });
+                                                </script>
 
                                                 <!-- <div class="form-group row">
                                                         <div class="offset-sm-2 col-sm-10">

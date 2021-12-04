@@ -11,106 +11,155 @@ class DataBase
 {
 
 
-    public static function updateProfile($myid,$data=array()){
-    try {
-        $conn = DataBase::getConn();
-        $q="UPDATE `users` SET `email`=?,`country`=?,`name`=?,`gender`=?,`address`=?,`referer`=?,`phone`=? WHERE id=?";
-        $stm=$conn->prepare($q);
-        $stm->execute($data);
-        if($stm->rowCount()>0){
-            echo "update successful";
-        }else{
-            echo "Record is up to date";
-        }
-    } catch (\Throwable $th) {
-        echo $th;
-    }
-    }
-
-    public static function getMessage($myid){
+    public static function saveActivity($data = array())
+    {
        try {
-        $rid=$_SESSION['CHATID'];
-        $_SESSION['RIMG'];
-        $q="SELECT * FROM ".$myid."_messages WHERE `FID`=? or `FID`=?";
         $conn = DataBase::getConn();
+        $q = "CREATE TABLE if not exists  `avpvgymy_erect1`.`activity` ( `acno` INT NOT NULL AUTO_INCREMENT , `uid` VARCHAR(255) NOT NULL , `activity` TEXT NOT NULL , `date` INT NOT NULL , `share` INT NOT NULL , `likes` INT NOT NULL,`public` BOOLEAN NOT NULL DEFAULT TRUE , PRIMARY KEY (`acno`)) ENGINE = InnoDB;";
+        $conn->query($q);
+        $q = "INSERT INTO `activity`( `uid`, `activity`, `date`, `share`, `likes`) VALUES (?,?,?,?,?)";
         $stm = $conn->prepare($q);
-        $ftp=$myid."_".$rid;
-        $ftp1=$rid."_".$myid;
-        $stm->bindValue(1,$ftp);
-        $stm->bindValue(2,$ftp1);
         $stm->execute();
-        return $stm->fetchAll();
+        return "uploaded";
        } catch (\Throwable $th) {
-           echo $th;
-       } 
+           return $th;
+       }
     }
-
-
-    public static function sendMessage($RID,$Mess,$SID){
+    public static function getActivity($myid)
+    {
         try {
             $conn = DataBase::getConn();
-           $q="CREATE TABLE  IF NOT EXISTS ".$RID."_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB"; 
-           $stm=$conn->exec($q);
-           $q="CREATE TABLE  IF NOT EXISTS ".$SID."_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB"; 
-           $stm=$conn->exec($q);
-
-
-           $q = "INSERT INTO ".$SID."_messages( `FID`,`message`) VALUES (?,?)";
-           $stm = $conn->prepare($q);
-           $stm->bindValue(1, $SID."_".$RID);
-           $stm->bindValue(2, $Mess);
-           $stm->execute();
-
-
-           $q = "INSERT INTO ".$RID."_messages( `FID`,`message`) VALUES (?,?)";
-           $stm = $conn->prepare($q);
-           $stm->bindValue(1, $RID."_".$SID);
-           $stm->bindValue(2, $Mess);
-           $stm->execute();
-
-               echo "send";
-        
+            $q = "CREATE TABLE if not exists  `avpvgymy_erect1`.`activity` ( `acno` INT NOT NULL AUTO_INCREMENT , `uid` VARCHAR(255) NOT NULL , `activity` TEXT NOT NULL , `date` INT NOT NULL , `share` INT NOT NULL , `likes` INT NOT NULL,`public` BOOLEAN NOT NULL DEFAULT TRUE , PRIMARY KEY (`acno`)) ENGINE = InnoDB;";
+            $conn->query($q);
+            $q = "SELECT *,users.name,users.picture FROM `activity` INNER JOIN users ON uid=users.id ";
+            $stm = $conn->prepare($q);
+            $stm->execute([$myid]);
+            return $stm->fetchAll();
         } catch (\Throwable $th) {
-            echo  $th;
+            return $th;
+        }
+    }
+
+    public static function updatePasport($data = array())
+    {
+        try {
+            $conn = DataBase::getConn();
+            $q = "UPDATE `users` SET `picture`=? WHERE id=?";
+            $stm = $conn->prepare($q);
+            $stm->execute($data);
+            if ($stm->rowCount() > 0) {
+                return "Image Updated Successfull";
+            } else {
+                return "Up to date";
+            }
+        } catch (\Throwable $th) {
+            return $th;
+        }
+    }
+
+    public static function updateProfile($data = array())
+    {
+        try {
+            $conn = DataBase::getConn();
+            $q = "UPDATE `users` SET `email`=?,`country`=?,`name`=?,`gender`=?,`address`=?,`referer`=?,`phone`=? WHERE id=?";
+            $stm = $conn->prepare($q);
+            $stm->execute($data);
+            if ($stm->rowCount() > 0) {
+                return "update successful";
+            } else {
+                return "Record is up to date";
+            }
+        } catch (\Throwable $th) {
+            return $th;
+        }
+    }
+
+    public static function getMessage($myid)
+    {
+        try {
+            $rid = $_SESSION['CHATID'];
+            $_SESSION['RIMG'];
+            $q = "SELECT * FROM " . $myid . "_messages WHERE `FID`=? or `FID`=?";
+            $conn = DataBase::getConn();
+            $stm = $conn->prepare($q);
+            $ftp = $myid . "_" . $rid;
+            $ftp1 = $rid . "_" . $myid;
+            $stm->bindValue(1, $ftp);
+            $stm->bindValue(2, $ftp1);
+            $stm->execute();
+            return $stm->fetchAll();
+        } catch (\Throwable $th) {
+            return $th;
         }
     }
 
 
-    public static function acceptRequest($RID,$SID){
+    public static function sendMessage($RID, $Mess, $SID)
+    {
         try {
-            $conn=DataBase::getConn();
-        $q="CREATE TABLE IF NOT EXISTS ".$SID."_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT FALSE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
-        $stm=$conn->exec($q);
-        $q="insert into ".$RID."_request (FID) values(?) ";
-        $stm=$conn->prepare($q);
-        $stm->bindValue(1,$SID);
-        if($stm->execute()){
-            echo "send";
-        }
+            $conn = DataBase::getConn();
+            $q = "CREATE TABLE  IF NOT EXISTS " . $RID . "_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB";
+            $stm = $conn->exec($q);
+            $q = "CREATE TABLE  IF NOT EXISTS " . $SID . "_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB";
+            $stm = $conn->exec($q);
 
+
+            $q = "INSERT INTO " . $SID . "_messages( `FID`,`message`) VALUES (?,?)";
+            $stm = $conn->prepare($q);
+            $stm->bindValue(1, $SID . "_" . $RID);
+            $stm->bindValue(2, $Mess);
+            $stm->execute();
+
+
+            $q = "INSERT INTO " . $RID . "_messages( `FID`,`message`) VALUES (?,?)";
+            $stm = $conn->prepare($q);
+            $stm->bindValue(1, $RID . "_" . $SID);
+            $stm->bindValue(2, $Mess);
+            $stm->execute();
+
+            return "send";
         } catch (\Throwable $th) {
-            echo "not sent";
+            return  $th;
         }
     }
 
-    public static function sendRequest($RID,$SID){
-        try {
-            $conn=DataBase::getConn();
-        $q="CREATE TABLE IF NOT EXISTS ".$RID."_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT FALSE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
-        $stm=$conn->exec($q);
-        $q="insert into ".$RID."_request (FID) values(?) ";
-        $stm=$conn->prepare($q);
-        $stm->bindValue(1,$SID);
-        $stm->execute();
 
-        $q="CREATE TABLE IF NOT EXISTS ".$SID."_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT TRUE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
-        $stm=$conn->exec($q);
-        
-        $q="insert into ".$SID."_request (FID) values(?) ";
-        $stm=$conn->prepare($q);
-        $stm->bindValue(1,$RID);
-        $stm->execute();
-       echo "Request send";
+    public static function acceptRequest($RID, $SID)
+    {
+        try {
+            $conn = DataBase::getConn();
+            $q = "CREATE TABLE IF NOT EXISTS " . $SID . "_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT FALSE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
+            $stm = $conn->exec($q);
+            $q = "insert into " . $RID . "_request (FID) values(?) ";
+            $stm = $conn->prepare($q);
+            $stm->bindValue(1, $SID);
+            if ($stm->execute()) {
+                return "send";
+            }
+        } catch (\Throwable $th) {
+            return "not sent";
+        }
+    }
+
+    public static function sendRequest($RID, $SID)
+    {
+        try {
+            $conn = DataBase::getConn();
+            $q = "CREATE TABLE IF NOT EXISTS " . $RID . "_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT FALSE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
+            $stm = $conn->exec($q);
+            $q = "insert into " . $RID . "_request (FID) values(?) ";
+            $stm = $conn->prepare($q);
+            $stm->bindValue(1, $SID);
+            $stm->execute();
+
+            $q = "CREATE TABLE IF NOT EXISTS " . $SID . "_request ( `sn` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,`accept` BOOLEAN NOT NULL DEFAULT TRUE  ,UNIQUE (`FID`), PRIMARY KEY (`sn`)) ENGINE = InnoDB;";
+            $stm = $conn->exec($q);
+
+            $q = "insert into " . $SID . "_request (FID) values(?) ";
+            $stm = $conn->prepare($q);
+            $stm->bindValue(1, $RID);
+            $stm->execute();
+            echo "Request send";
         } catch (\Throwable $th) {
             echo "not sent maybe you are friends";
         }
@@ -120,7 +169,7 @@ class DataBase
     {
         $user = $_SESSION['USER'];
         $conn = self::getConn();
-        $q="SELECT * FROM messages WHERE reciver=? and sender_id=? or sender_id=? and reciver=?";
+        $q = "SELECT * FROM messages WHERE reciver=? and sender_id=? or sender_id=? and reciver=?";
         $stm = $conn->prepare($q);
         $stm->bindValue(1, $user->id);
         $stm->bindValue(2, $rid);
@@ -135,17 +184,15 @@ class DataBase
         try {
             $user = $_SESSION['USER'];
             $conn = self::getConn();
-            $q = 'SELECT '.$user->id.'_request.accept,'.$user->id.'_request.FID,users.name,users.picture,users.country,users.id  FROM '.$user->id.'_request INNER JOIN users on '.$user->id.'_request.FID=users.id  ';
+            $q = 'SELECT ' . $user->id . '_request.accept,' . $user->id . '_request.FID,users.name,users.picture,users.country,users.id  FROM ' . $user->id . '_request INNER JOIN users on ' . $user->id . '_request.FID=users.id  ';
             $stm = $conn->query($q);
             // $stm->bindValue(1, $user->id);
             // $stm->bindValue(2, $user->id);
             $stm->execute();
             return $stm->fetchAll();
         } catch (\Throwable $th) {
-             return $th;
+            return $th;
         }
-        
-
     }
 
     public static function coinGateCheckout($data = array())
@@ -171,7 +218,7 @@ class DataBase
     {
 
         $client = new CoinGeckoClient();
-// $data = $client->ping();
+        // $data = $client->ping();
         $data = $client->simple()->getPrice($crptotype, $currency);
         return ($data[$crptotype][$currency]);
     }
@@ -186,7 +233,6 @@ class DataBase
         while ($feedback = $result->fetch()) {
             $code = $feedback->code;
             $_SESSION['code'] = $code;
-
         }
         return $code;
     }
@@ -212,7 +258,6 @@ class DataBase
         $sql = "UPDATE `invoices` SET `status`='$status' WHERE `code`='$code'";
         $stm = $myconn->prepare($sql);
         $stm->execute();
-
     }
 
     public static function get_contry()
@@ -222,7 +267,6 @@ class DataBase
         $country = $geo["geoplugin_countryName"];
         $city = $geo["geoplugin_city"];
         return $country;
-
     }
     public static function createInvoice($data = array())
     {
@@ -246,11 +290,9 @@ class DataBase
             $stm->bindValue(5, $ip);
             $stm->bindValue(6, $data['txt']);
             $stm->execute();
-
         } catch (\Throwable $th) {
             $th;
         }
-
     }
 
     public static function getConn()
@@ -260,7 +302,7 @@ class DataBase
         $username = "avpvgymy_erect1";
         $password = "erect1office";
 
-//
+        //
         // $servername = "localhost";
         // $password = "";
         // $username = "root";
@@ -274,7 +316,6 @@ class DataBase
         } catch (PDOException $e) {
             echo json_encode(array("message" => $e->getMessage(), "code" => "404"));
         }
-
     }
 
     public static function is_login()
@@ -320,11 +361,9 @@ class DataBase
                 return "success";
             }
             return "Transaction in processing";
-
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     public static function getEmail()
@@ -366,11 +405,9 @@ class DataBase
                 return "success";
             }
             return "Transaction in processing";
-
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     public static function getValue($col, $table)
@@ -383,7 +420,6 @@ class DataBase
         $stm->execute(array(":id" => $id));
         $feedback = $stm->fetch();
         return $feedback->$col;
-
     }
 
     public static function getApi($col, $table, $val)
@@ -391,17 +427,15 @@ class DataBase
         try {
 
             $myconn = self::getConn();
-//            $id = $_SESSION["userid"];
+            //            $id = $_SESSION["userid"];
             $qury = "SELECT `$col` FROM `$table` WHERE `name`=:val";
             $stm = $myconn->prepare($qury);
             $stm->execute(array(":val" => $val));
             $feedback = $stm->fetch();
             return $feedback->$col;
         } catch (\Throwable $th) {
-
         }
         return "";
-
     }
 
     public static function getApiPrivate($name)
@@ -416,10 +450,8 @@ class DataBase
             $feedback = $stm->fetch();
             return $feedback->private;
         } catch (\Throwable $th) {
-
         }
         return "";
-
     }
 
     public static function getApiPublic($name)
@@ -434,10 +466,8 @@ class DataBase
             $feedback = $stm->fetch();
             return $feedback->public;
         } catch (\Throwable $th) {
-
         }
         return "";
-
     }
     public static function getdollaBalance()
     {
@@ -451,11 +481,9 @@ class DataBase
             $stm->execute();
             $res = $stm->fetch(PDO::FETCH_OBJ);
             return $res->dollar;
-
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     public static function getApiredirect($name)
@@ -463,17 +491,15 @@ class DataBase
         try {
 
             $myconn = self::getConn();
-//            $id = $_SESSION["userid"];
+            //            $id = $_SESSION["userid"];
             $qury = "SELECT * FROM `apis` WHERE `name`=:name";
             $stm = $myconn->prepare($qury);
             $stm->execute(array(":name" => $name));
             $feedback = $stm->fetch();
             return $feedback->redirect;
         } catch (\Throwable $th) {
-
         }
         return "";
-
     }
 
     public static function getbtcBalance()
@@ -488,11 +514,9 @@ class DataBase
             $stm->execute();
             $res = $stm->fetch(PDO::FETCH_OBJ);
             return $res->bit;
-
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     public static function getethBalance()
@@ -507,11 +531,9 @@ class DataBase
             $stm->execute();
             $res = $stm->fetch(PDO::FETCH_OBJ);
             return $res->eth;
-
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     public static function geteroBalance()
@@ -526,11 +548,9 @@ class DataBase
             $stm->execute();
             $res = $stm->fetch(PDO::FETCH_OBJ);
             return $res->euro;
-
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     public static function get_token($table, $auth_token)
@@ -545,7 +565,6 @@ class DataBase
         } else {
             return "invalid login details";
         }
-
     }
 
     public static function get_time($auth_token)
@@ -558,10 +577,8 @@ class DataBase
         if ($stm->rowCount() >= 1) {
             $res = $stm->fetch();
             return $res->token_date;
-
         }
         return "";
-
     }
 
     public static function get_email($auth_email): bool
@@ -578,7 +595,6 @@ class DataBase
         } else {
             return false;
         }
-
     }
 
     public static function isVetify()
@@ -593,7 +609,6 @@ class DataBase
             return $result->is_verify;
         }
         return false;
-
     }
     public static function getCampain($mode)
     {
@@ -606,9 +621,8 @@ class DataBase
             return $result->amount;
         }
         return 200;
-
     }
-// jkkjjbnbmnbmnbmbmnmnbm
+    // jkkjjbnbmnbmnbmbmnmnbm
     public static function updateToken($auth_token): bool
     {
 
@@ -644,11 +658,9 @@ class DataBase
                 $_SESSION['VMODE'] = "v";
                 return true;
             }
-
         }
 
         return false;
-
     }
 
     public static function updateresetToken($auth_token, $email)
@@ -682,7 +694,6 @@ class DataBase
         } catch (\Throwable $th) {
             throw $th;
         }
-
     }
 
     public static function signin_user($email, $pass): bool
@@ -701,28 +712,24 @@ class DataBase
             return true;
         }
         return false;
-
     }
 
     public static function autoReload($uid)
     {
         try {
-           
-        $myconn = self::getConn();
-        $qury = "SELECT * FROM `users` WHERE `id`=:id ";
-        $stm = $myconn->prepare($qury);
-        $stm->execute(array(":id" => $uid));
-        if ($stm->rowCount() >= 1) {
-            $res = $stm->fetch();
-            $_SESSION['userid'] = $res->id;
-            $_SESSION['USER'] = $res;
-          
-        }
+
+            $myconn = self::getConn();
+            $qury = "SELECT * FROM `users` WHERE `id`=:id ";
+            $stm = $myconn->prepare($qury);
+            $stm->execute(array(":id" => $uid));
+            if ($stm->rowCount() >= 1) {
+                $res = $stm->fetch();
+                $_SESSION['userid'] = $res->id;
+                $_SESSION['USER'] = $res;
+            }
         } catch (\Throwable $th) {
             echo $th;
         }
-
-
     }
 
     public static function generate_token()
@@ -765,14 +772,14 @@ class DataBase
 
     public static function google_register($name, $email, $pass, $country, $pic, $gender, $id): bool
     {
-        $pic2="https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg";
+        $pic2 = "https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg";
         $pass = md5($pass);
         $country = self::ip_visitor_country();
         $token = self::generate_token();
         $myconn = self::getConn();
         $qury = "INSERT INTO `users`(`email`, `password`, `country`,`auth_token`,`id`,`name`,`gender`,`picture`,referer) VALUES (:email,:password,:country,:token,:id,:name,:gend,:pic,:referer)";
         $stm = $myconn->prepare($qury);
-        $feildback = $stm->execute(array(":email" => $email, ":password" => $pass, ":country" => $country, ":token" => $token, ":id" => $id, ":name" => $name, ":gend" => $gender, ":pic" => $pic??$pic2,':referer'=>time()));
+        $feildback = $stm->execute(array(":email" => $email, ":password" => $pass, ":country" => $country, ":token" => $token, ":id" => $id, ":name" => $name, ":gend" => $gender, ":pic" => $pic ?? $pic2, ':referer' => time()));
         $qury1 = "INSERT INTO `account`(`id`, `dollar`, `euro`, `bit`, `eth`) VALUES (:uid,:dol,:euro,:btc,:eth)";
 
         $stm1 = $myconn->prepare($qury1);
@@ -791,9 +798,7 @@ class DataBase
             return true;
         } else {
             return false;
-
         }
-
     }
 
     public static function register($email, $pass, $country): string
@@ -809,12 +814,12 @@ class DataBase
 
             return "User already exist please login";
         } else {
-            $pic='https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg';
+            $pic = 'https://d29fhpw069ctt2.cloudfront.net/icon/image/49067/preview.svg';
             $id = str_shuffle(time());
             $token = self::generate_token();
             $qury = "INSERT INTO `users`(`email`, `password`, `country`,`auth_token`,`id`,referer,`picture`) VALUES (:email,:password,:country,:token,:id,:referer,:pic)";
             $stm = $myconn->prepare($qury);
-            $feildback = $stm->execute(array(":email" => $email, ":password" => md5($pass), ":country" => $country, ":token" => $token, ":id" => $id,':referer'=>time(),":pic"=>$pic));
+            $feildback = $stm->execute(array(":email" => $email, ":password" => md5($pass), ":country" => $country, ":token" => $token, ":id" => $id, ':referer' => time(), ":pic" => $pic));
 
             $qury1 = "INSERT INTO `account`(`id`, `dollar`, `euro`, `bit`, `eth`) VALUES (:uid,:dol,:euro,:btc,:eth)";
 
@@ -835,18 +840,15 @@ class DataBase
                 return "true";
             } else {
                 return "Error in registeration contact the admin";
-
             }
-
         }
-
     }
     public static function send_mail($email, $mess, $sub)
     {
 
         require 'vendor/autoload.php';
 
-//Create an instance; passing `true` enables exceptions
+        //Create an instance; passing `true` enables exceptions
         $mail = new PHPMailer(true);
 
         try {
@@ -885,12 +887,16 @@ class DataBase
             // return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             return false;
         }
-
     }
 
     public static function insert_merket(
         $description,
-        $circulating_supply, $cmc_rank, $date_added, $last_updated, $max_supply, $num_market_pairs,
+        $circulating_supply,
+        $cmc_rank,
+        $date_added,
+        $last_updated,
+        $max_supply,
+        $num_market_pairs,
         $platform,
         $market_cap,
         $percent_change_1h,
@@ -905,9 +911,11 @@ class DataBase
         $symbol,
         $id,
         $name,
-        $total_supply, $logo) {
+        $total_supply,
+        $logo
+    ) {
 
-// $circulating_supplytotal_supply=$_POST['circulating_supply'];
+        // $circulating_supplytotal_supply=$_POST['circulating_supply'];
         $myconn = self::getConn();
         $query = "INSERT INTO `market`(`id`, `name`, `last_updated`, `market_cap`, `percent_change_1h`, `percent_change_7d`, `percent_change_24h`,
         `percent_change_30d`, `percent_change_60d`, `percent_change_90d`, `volume_24h`, `slug`, `symbol`,
@@ -915,7 +923,8 @@ class DataBase
         `platform`, `total_supply`,`price`,`logo`)
         VALUES (:id,:name,:lasup,:macap,:per1h,:per7d,:per24h,:per30d,:per60d,:per90d,:vol24,:slu,:simb,:calcu,:cmc,:ddad,:curre,:maxsup,:num_mak,:plat,:totsup,:price,:logo)";
         $req = $stm = $myconn->prepare($query);
-        $stm->execute([':id' => $id, ':name' => $name, ':lasup' => $last_updated, ':macap' => $market_cap, ':per1h' => $percent_change_1h, ':per7d' => $percent_change_7d, ':per24h' => $percent_change_24h,
+        $stm->execute([
+            ':id' => $id, ':name' => $name, ':lasup' => $last_updated, ':macap' => $market_cap, ':per1h' => $percent_change_1h, ':per7d' => $percent_change_7d, ':per24h' => $percent_change_24h,
             ':per30d' => $percent_change_30d, ':per60d' => $percent_change_60d,
             ':per90d' => $percent_change_90d, ':vol24' => $volume_24h, ':slu' => $slug, ':simb' => $symbol,
             ':calcu' => $circulating_supply,
@@ -923,7 +932,8 @@ class DataBase
             ':plat' => $platform,
             ':totsup' => $total_supply,
             ':price' => $price,
-            ':logo' => $logo]);
+            ':logo' => $logo
+        ]);
 
         // $stm->bind_param("ssssssssssssssssssssssss",
         //     $id, $name, $last_updated, $market_cap, $percent_change_1h, $percent_change_7d, $percent_change_24h, $percent_change_30d, $percent_change_60d, $percent_change_90d, $volume_24h, $slug, $symbol, $circulating_supply, $cmc_rank, $date_added, "USD", $max_supply, $num_market_pairs, $platform, $total_supply, $price,$logo,$description
@@ -933,13 +943,12 @@ class DataBase
             return true;
         }
         return false;
-
     }
 
     public static function get_coin_icon($id)
     {
         header('Content-type: application/json');
-// $url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
+        // $url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest';
         $url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/info";
         $parameters = [
             // 'start' => '1',
@@ -968,7 +977,7 @@ class DataBase
         $json = $response . PHP_EOL; // print json decoded response
 
         return $json;
-//
+        //
         curl_close($curl); // Close request
 
     }
@@ -1019,7 +1028,6 @@ class DataBase
             return true;
         }
         return false;
-
     }
 
     public static function updatetrans($col, $response, $amount)
@@ -1039,7 +1047,7 @@ class DataBase
         $stm1->bindParam(":trxref", $response["trxref"]);
         $stm1->bindParam(":uid", $id);
         $stm1->execute();
-//         if()
+        //         if()
         $qury = "UPDATE account SET $col=`$col`+$amount  WHERE `id`=:id";
         $stm = $myconn->prepare($qury);
         $report = $stm->execute(array(":id" => $id));
@@ -1047,7 +1055,6 @@ class DataBase
             return "Transaction successful";
         }
         return "Record can not be updated";
-
     }
 
     public static function generateRandomString($length = 10)
@@ -1110,7 +1117,6 @@ class DataBase
             $address = "ERROR: " . $status . ' ' . $responseObj->message;
         }
         return $address;
-
     }
 
     public static function BTCtoUSD($amount)
@@ -1165,7 +1171,6 @@ class DataBase
         }
 
         return $ip;
-
     }
 
     public static function getBitcoinResponsDetail($apikey, $address)
@@ -1182,14 +1187,13 @@ class DataBase
             "Content-Type: application/json",
         );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-//for debug only!
+        //for debug only!
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
         $resp = curl_exec($curl);
         return $resp;
         curl_close($curl);
-
     }
 
     public static function get_coin_Payment_detail($apikey, $address)
@@ -1206,14 +1210,13 @@ class DataBase
             "Content-Type: application/json",
         );
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-//for debug only!
+        //for debug only!
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
         $resp = curl_exec($curl);
         return $resp;
         curl_close($curl);
-
     }
 
     public static function generateQR($address)
@@ -1225,8 +1228,6 @@ class DataBase
 
         $qrcode = 'https://chart.googleapis.com/chart?cht=' . $cht . '&chs=' . $chs . '&chl=' . $chl . '&choe=' . $choe;
         return $qrcode;
-
     }
-
 }
 // echo Database::send_mail("nsnsns","hshshshs","hdhdhdhd");

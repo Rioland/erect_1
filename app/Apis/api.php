@@ -253,10 +253,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $_SESSION['USER'];
         $val=array($data['email'],$data['country'],$data['name'],
         $data['gender'],$data['address'],$data['referer'],$data['phone'],$user->id);
-        echo DataBase::updateProfile($user->id,$val);
+        echo DataBase::updateProfile($val);
         
     }
-   
+
+    if(isset($_REQUEST['uploadImage'])){
+     $file=$_FILES['picture'];
+     $image_name=$file['name'];
+     $target="userPhoto/".basename($image_name);
+      $path="http://".$_SERVER['HTTP_HOST']."/erect1/app/Apis/".$target;
+
+     if(move_uploaded_file($file['tmp_name'],$target)){
+        $user = $_SESSION['USER'];
+        // echo $user->id;
+         $data=array($path,$user->id);
+       print_r(DataBase::updatePasport($data));
+     }else{
+         echo "Error In Uploading image";
+     }
+    
+    }
+//    print_r($_REQUEST);
 
      
 }
