@@ -25,15 +25,15 @@ class DataBase
            return $th;
        }
     }
-    public static function getActivity($myid)
+    public static function getActivity()
     {
         try {
             $conn = DataBase::getConn();
-            $q = "CREATE TABLE if not exists  `avpvgymy_erect1`.`activity` ( `acno` INT NOT NULL AUTO_INCREMENT , `uid` VARCHAR(255) NOT NULL , `activity` TEXT NOT NULL , `date` INT NOT NULL , `share` INT NOT NULL , `likes` INT NOT NULL,`public` BOOLEAN NOT NULL DEFAULT TRUE , PRIMARY KEY (`acno`)) ENGINE = InnoDB;";
+            $q = "CREATE TABLE if NOT exists  `avpvgymy_erect1`.`activity` (`acno` INT NOT NULL AUTO_INCREMENT , `uid` VARCHAR(255) NOT NULL , `activity` TEXT NOT NULL , `date` INT NOT NULL , `share` INT NOT NULL , `likes` INT NOT NULL,`public` BOOLEAN NOT NULL DEFAULT TRUE , PRIMARY KEY (`acno`)) ENGINE = InnoDB;";
             $conn->query($q);
             $q = "SELECT *,users.name,users.picture FROM `activity` INNER JOIN users ON uid=users.id ";
-            $stm = $conn->prepare($q);
-            $stm->execute([$myid]);
+            $stm = $conn->query($q);
+            $stm->execute();
             return $stm->fetchAll();
         } catch (\Throwable $th) {
             return $th;
@@ -61,8 +61,9 @@ class DataBase
     {
         try {
             $conn = DataBase::getConn();
-            $q = "UPDATE `users` SET `email`=?,`country`=?,`name`=?,`gender`=?,`address`=?,`referer`=?,`phone`=? WHERE id=?";
+            $q = "UPDATE `users` SET `email`=?,`country`=?,`name`=?,`gender`=?,`address`=?,`referer`=?,`phone`=? WHERE id=? ";
             $stm = $conn->prepare($q);
+            // print_r($data);
             $stm->execute($data);
             if ($stm->rowCount() > 0) {
                 return "update successful";

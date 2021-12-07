@@ -1,8 +1,4 @@
-<?php
-$bth = DataBase::getBTHPrice();
-$bitcoin = Database::getBTCPrice();
-$eth = DataBase::getETHPrice();
-?>
+
 
 
 
@@ -252,7 +248,7 @@ $eth = DataBase::getETHPrice();
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control rounded-0 addr " value="" readonly>
                                                     <span class="input-group-append">
-                                                        <button type="button" class="btn btn-info btn-flat">copy</button>
+                                                        <button type="button" class="btn btn-info btn-flat ctoclip">copy</button>
                                                     </span>
                                                 </div>
                                                 <!-- <p> Recent Transactions </p> -->
@@ -267,14 +263,17 @@ $eth = DataBase::getETHPrice();
                                                     <!-- Select your Currency and Amount -->
                                                     <div class="input-group-prepend">
                                                         <select class="custom-select">
-                                                            <option value="ethereum">(ETH)<i class="fab fa-ethereum"></i></option>
-                                                            <option value="bitcoincash">(BTH)<i class="fas fa-dollar-sign"></i></option>
+                                                            <!-- <option value="dollar">(USD)<i class="fab fa-ethereum"></i></option> -->
+                                                            <!-- <option value="bitcoincash">(BCH)<i class="fas fa-dollar-sign"></i></option> -->
                                                             <option value="bitcoin">(BTC)<i class="fab fa-btc"></i></option>
-                                                            <option value="euro">(EUR)<i class="fas fa-euro-sign"></i></option>
+                                                            <!-- <option value="euro">(EUR)<i class="fas fa-euro-sign"></i></option> -->
                                                             <!-- <option>option 5</option> -->
                                                         </select>
                                                     </div>
-                                                    <input type="number" class="form-control amtt" min="0" placeholder="enter amount...">
+                                                    <input type="number" class="form-control amtt" value="<?php
+echo $_SESSION['amount'] ?? 0
+
+?>" min="0" placeholder="enter amount...">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">.00</span>
                                                     </div>
@@ -341,41 +340,41 @@ $eth = DataBase::getETHPrice();
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php 
-                                                    $user=$_SESSION['USER']; 
-                                                    // print_r($user);
-                                                 $conn=DataBase::getConn();
-                                                 $q="SELECT * FROM `invoices` WHERE `uid`=?";
-                                                 $pstm=$conn->prepare($q);
-                                                 $pstm->bindValue(1,$user->id);
-                                                 $pstm->execute();
-                                                 for ($i=0; $i <$pstm->rowCount() ; $i++) { 
-                                                   $data=$pstm->fetch();
-                                                
-                                                    ?>
-                                                    <tr>
-                                                        <td><?php echo $data->id ?></td>
-                                                        <td><?php echo $data->address ?></td>
-                                                        <td><?php echo $data->date ?></td>
-                                                        <td><?php echo $data->value ?></td>
-                                                        <td><span class="tag tag-success"><?php 
-                                                        if($data->status==0){
-                                                            echo "Unconfirmed";
-                                                        }else if($data->status==1){
-                                                            echo "Partially Confirmed";
-                                                        }else if($data->status==2){
-                                                            echo "Confirmed";
-                                                        }else if($data->status==-1){
-                                                            echo "Unpaid";
-                                                        }
-                                                        
-                                                        ?></span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
                                                     <?php
-                                                     }
+$user = $_SESSION['USER'];
+// print_r($user);
+$conn = DataBase::getConn();
+$q = "SELECT * FROM `invoices` WHERE `uid`=?";
+$pstm = $conn->prepare($q);
+$pstm->bindValue(1, $user->id);
+$pstm->execute();
+for ($i = 0; $i < $pstm->rowCount(); $i++) {
+    $data = $pstm->fetch();
 
-                                                    ?>
+    ?>
+                                                        <tr>
+                                                            <td><?php echo $data->id ?></td>
+                                                            <td><?php echo $data->address ?></td>
+                                                            <td><?php echo $data->date ?></td>
+                                                            <td><?php echo $data->value ?></td>
+                                                            <td><span class="tag tag-success"><?php
+if ($data->status == 0) {
+        echo "Unconfirmed";
+    } else if ($data->status == 1) {
+        echo "Partially Confirmed";
+    } else if ($data->status == 2) {
+        echo "Confirmed";
+    } else if ($data->status == -1) {
+        echo "Unpaid";
+    }
+
+    ?></span></td>
+                                                            <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
+                                                        </tr>
+                                                    <?php
+}
+
+?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -405,15 +404,15 @@ $eth = DataBase::getETHPrice();
                                                 <div class="input-group">
                                                     <!-- Select your Currency and Amount -->
                                                     <div class="input-group-prepend">
-                                                        <select class="custom-select">
-                                                            <option>(USDT)<i class="fas fa-dollar-sign"></i></option>
-                                                            <option>(BTC)<i class="fab fa-btc"></i></option>
-                                                            <option>(ETH)<i class="fab fa-ethereum"></i></option>
-                                                            <option>(EUR)<i class="fas fa-euro-sign"></i></option>
+                                                        <select  class="custom-select w">
+                                                            <!-- <option>(USDT)<i class="fas fa-dollar-sign"></i></option> -->
+                                                            <option value="bitcoin" >(BTC)<i class="fab fa-btc"></i></option>
+                                                            <!-- <option >(ETH)<i class="fab fa-ethereum"></i></option>
+                                                            <option>(EUR)<i class="fas fa-euro-sign"></i></option> -->
                                                             <!-- <option>option 5</option> -->
                                                         </select>
                                                     </div>
-                                                    <input type="text" class="form-control" placeholder="enter amount...">
+                                                    <input type="number" class="form-control widthtxt" placeholder="enter amount...">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">.00</span>
                                                     </div>
@@ -422,16 +421,16 @@ $eth = DataBase::getETHPrice();
                                                 <br />
                                                 <hr />
                                                 <dl class="row">
-                                                    <dt class="col-sm-4">Recommitment (1.2% + $ 2.50) :</dt>
+                                                    <!-- <dt class="col-sm-4">Recommitment (1.2% + $ 2.50) :</dt>
                                                     <dd class="col-sm-8"><b>-$</b> 0.00000</dd>
                                                     <dt class="col-sm-4 suu">Summary:</dt>
                                                     <dd class="col-sm-8 suu"><b>-$</b> 0.00000</dd>
-                                                    <br />
+                                                    <br /> -->
                                                     <hr />
                                                     <dt class="col-sm-4">Total Amount:</dt>
-                                                    <dd class="col-sm-8"><b>$</b> 0.00000</dd>
-                                                    <dt class="col-sm-4">Available:</dt>
-                                                    <dd class="col-sm-8"><b>$</b> 0.00000</dd>
+                                                    <dd class="col-sm-8 widthtotal"><b>$</b> 0.00000</dd>
+                                                    <dt class="col-sm-4  ">Available:</dt>
+                                                    <dd class="col-sm-8 widthava" ><b>$</b> 0.00000</dd>
                                                     <!-- na here transaction notification and warning go dey  -->
                                                     <dd class="col-sm-8 offset-sm-4">
                                                         <a class="su1">
@@ -441,7 +440,7 @@ $eth = DataBase::getETHPrice();
                                                     </dd>
                                                     <!-- /.  -->
                                                     <dt class="col-sm-4">In orders</dt>
-                                                    <dd class="col-sm-8"><b>BTC</b> 0.0000000</dd>
+                                                    <dd class="col-sm-8 widthbtc" ><b>BTC</b> 0.0000000</dd>
                                                     <!-- <dt class="col-sm-4">Felis euismod semper eget lacinia</dt>
                                                     <dd class="col-sm-8">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
                                                         fermentum massa justo
@@ -453,6 +452,44 @@ $eth = DataBase::getETHPrice();
 
                                             </div>
                                         </div>
+                                        <script>
+  $(".widthtxt").change(function (e) {
+      e.preventDefault();
+      let type = $(".w").val();
+                let amt = $(this).val();
+                if (amt !== "") {
+                    // alert(type);
+                    if (type === "dollar") {
+                        let rate = "<?php echo $eth ?>";
+                        let c = $(this).val();
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".widthtotal").html($(this).val());
+                        $(".widthava").html($(this).val());
+                        $(".widthbtc").html($(this).val() / btcrate);
+                        // alert(price);
+                    } else if (type === "bitcoincash") {
+                        let rate = "<?php echo $bth ?>";
+                        let c = $(this).val();
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".widthtotal").html(c);
+                        $(".widthava").html(c);
+                        $(".widthbtc").html(c / btcrate);
+                    } else if (type === "bitcoin") {
+                        let rate = "<?php echo $bitcoin ?>";
+                        let c = $(this).val() ;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".widthtotal").html(c);
+                        $(".widthava").html(c);
+                        $(".widthbtc").html(c/btcrate);
+                    }
+                } else {
+                    $(".widthtotal").html(parseFloat(0));
+                    $(".widthava").html(parseFloat(0));
+                    $(".widthbtc").html(parseFloat(0));
+                }
+
+  });
+                                        </script>
                                         <!-- 1 recent transaction for withdrawal  -->
                                         <div class="card-header">
                                             <h3 class="card-title">Recent Withdrawal Transactions</h3>
@@ -613,10 +650,10 @@ $eth = DataBase::getETHPrice();
                                                     <!-- Select your Currency and Amount -->
                                                     <div class="input-group-prepend">
                                                         <select class="custom-select">
-                                                            <option>(USDT)<i class="fas fa-dollar-sign"></i></option>
+                                                            <!-- <option>(USDT)<i class="fas fa-dollar-sign"></i></option> -->
                                                             <option>(BTC)<i class="fab fa-btc"></i></option>
-                                                            <option>(ETH)<i class="fab fa-ethereum"></i></option>
-                                                            <option>(EUR)<i class="fas fa-euro-sign"></i></option>
+                                                            <!-- <option>(ETH)<i class="fab fa-ethereum"></i></option> -->
+                                                            <!-- <option>(EUR)<i class="fas fa-euro-sign"></i></option> -->
                                                             <!-- <option>option 5</option> -->
                                                         </select>
                                                     </div>
@@ -873,6 +910,7 @@ $eth = DataBase::getETHPrice();
             });
         html5QrcodeScanner.render(onScanSuccess);
     </script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
     <!-- You can handle scan failure or video failure using failure callback. Here's an example: -->
     <!-- But me i no get this one ooohhh and it does not seem to work -->
     <script>
@@ -892,6 +930,71 @@ $eth = DataBase::getETHPrice();
             });
     </script>
     <script>
+        function payWithPaystack(amt) {
+            //   e.preventDefault();
+            let handler = PaystackPop.setup({
+                key: 'pk_test_99d69caec3f4f9bcf55f1f96a7c89a5653e2d80c', // Replace with your public key
+                email: "<?php echo $USER->email ?>",
+                amount: amt * 100,
+                ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+                // label: "Optional string that replaces customer email"
+                onClose: function() {
+                    alert('Window closed.');
+                    $("#loading").hide();
+                    $(".gene").show();
+                },
+                callback: function(response) {
+                    console.log(response);
+                    // let message = 'Payment complete! Reference: ' + response.reference;
+                    // alert(message);
+                }
+            });
+            handler.openIframe();
+        }
+
+$(".ctoclip").click(function (e) {
+   let add= $(".addr").val();
+    cupytoclip(add);
+
+});
+
+function cupytoclip(text){
+    // var text = "Example text to appear on clipboard";
+navigator.clipboard.writeText(text).then(function() {
+  alert('Copying to clipboard was successful!');
+}, function(err) {
+  alert('Could not copy text: ', err);
+});
+}
+
+
+        // function payWithPaystack(){
+        //     var handler = PaystackPop.setup({
+        //       key: 'pk_test_99d69caec3f4f9bcf55f1f96a7c89a5653e2d80c',
+        //       email: 'customer@email.com',
+        //       amount: 10000,
+        //       ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+        //       metadata: {
+        //          custom_fields: [
+        //             {
+        //                 display_name: "Mobile Number",
+        //                 variable_name: "Erect1",
+        //                 value: "+2348012345678"
+        //             }
+        //          ]
+        //       },
+        //       callback: function(response){
+        //           alert('success. transaction ref is ' + response.reference);
+        //       },
+        //       onClose: function(){
+        //           alert('window closed');
+        //           $("#loading").hide();
+        //         $(".gene").show();
+        //       }
+        //     });
+        //     handler.openIframe();
+        //   }
+
         $(document).ready(function() {
 
 
@@ -901,11 +1004,11 @@ $eth = DataBase::getETHPrice();
                 let amt = $(".amtt").val();
                 let type = $(".custom-select").val();
 
-                if (amt !== "" && amt !=0) {
+                if (amt !== "" && amt != 0) {
                     $("#loading").show();
                     $(this).hide();
                     if (type === "bitcoin") {
-                        let rate = "<?php echo  $eth ?>";
+                        let rate = "<?php echo $eth ?>";
                         let todoller = amt * rate;
 
                         $.ajax({
@@ -925,10 +1028,10 @@ $eth = DataBase::getETHPrice();
                             }
                         });
 
-                    }else
+                    } else
 
                     if (type === "bitcoincash") {
-                        let rate = "<?php echo  $bth ?>";
+                        let rate = "<?php echo $bth ?>";
                         let todoller = amt * rate;
 
                         $.ajax({
@@ -948,12 +1051,13 @@ $eth = DataBase::getETHPrice();
                             }
                         });
 
-                    }else  if (type === "ethereum") {
-                      alert("Coming soon");
-                      $("#loading").hide();
-                                $(".gene").show();
+                    } else if (type === "dollar") {
+                        //   alert("Coming soon");
+                        $("#loading").show();
+                        $(".gene").hide();
+                        payWithPaystack();
                     }
-                }else{
+                } else {
                     alert("enter a valid amount ")
                 }
             });
@@ -975,30 +1079,30 @@ $eth = DataBase::getETHPrice();
                 e.preventDefault();
                 let type = $(".custom-select").val();
                 let amt = $(this).val();
-                if (amt !== "" ) {
+                if (amt !== "") {
                     // alert(type);
                     if (type === "ethereum") {
-                        let rate = "<?php echo  $eth ?>";
-                        let c = $(this).val() * rate;
+                        let rate = "<?php echo $eth ?>";
+                        let c = $(this).val();
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(c * btcrate);
+                        $(".btc").html(c /btcrate);
                         // alert(price);
                     } else if (type === "bitcoincash") {
-                        let rate = "<?php echo  $bth ?>";
-                        let c = $(this).val() * rate;
+                        let rate = "<?php echo $bth ?>";
+                        let c = $(this).val();
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(c * btcrate);
+                        $(".btc").html(c /btcrate);
                     } else if (type === "bitcoin") {
-                        let rate = "<?php echo  $bitcoin ?>";
-                        let c = $(this).val() * rate;
+                        let rate = "<?php echo $bitcoin ?>";
+                        let c = $(this).val();
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(btcrate);
+                        $(".btc").html(c /btcrate);
                     }
                 } else {
                     $(".total").html(parseFloat(0));
@@ -1009,35 +1113,43 @@ $eth = DataBase::getETHPrice();
             });
 
 
-
+            let amt="<?php echo $_SESSION['amount'] ?>";
+            if(amt!=''){
+                let rate = "<?php echo $bth ?>";
+                        let c = amt ;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".total").html(c);
+                        $(".ava").html(c);
+                        $(".btc").html(c / btcrate);
+            }
 
             $(".amtt").keyup(function(e) {
                 let type = $(".custom-select").val();
                 let amt = $(this).val();
                 if (amt !== "") {
                     // alert(type);
-                    if (type === "ethereum") {
-                        let rate = "<?php echo  $eth ?>";
-                        let c = $(this).val() * rate;
+                    if (type === "dollar") {
+                        let rate = "<?php echo $eth ?>";
+                        let c = $(this).val() ;
                         let btcrate = "<?php echo $bitcoin ?>";
-                        $(".total").html(c);
-                        $(".ava").html(c);
-                        $(".btc").html(c * btcrate);
+                        $(".total").html($(this).val());
+                        $(".ava").html($(this).val());
+                        $(".btc").html($(this).val() / btcrate);
                         // alert(price);
                     } else if (type === "bitcoincash") {
-                        let rate = "<?php echo  $bth ?>";
-                        let c = $(this).val() * rate;
+                        let rate = "<?php echo $bth ?>";
+                        let c = $(this).val() ;
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(c * btcrate);
+                        $(".btc").html(c/btcrate);
                     } else if (type === "bitcoin") {
-                        let rate = "<?php echo  $bitcoin ?>";
-                        let c = $(this).val() * rate;
+                        let rate = "<?php echo $bitcoin ?>";
+                        let c = $(this).val();
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(btcrate);
+                        $(".btc").html(c/btcrate);
                     }
                 } else {
                     $(".total").html(parseFloat(0));
@@ -1059,7 +1171,7 @@ $eth = DataBase::getETHPrice();
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
 
-        // When the user clicks the button, open the modal 
+        // When the user clicks the button, open the modal
         btn.onclick = function() {
             modal.style.display = "block";
         }

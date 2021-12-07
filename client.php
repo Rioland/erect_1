@@ -4,7 +4,7 @@ include "app/vendor/autoload.php";
 // require '../app/Apis/database/DataBase.php';i
 if (DataBase::is_login()==false) {
 
-    header('location:/');
+    header('location:login');
 }
 $USER=$_SESSION["USER"];
 DataBase::autoReload($USER->id);
@@ -14,6 +14,11 @@ $eth=DataBase::getethBalance();
 $euro=DataBase::geteroBalance();
 $btc=DataBase::getbtcBalance();
 
+?>
+<?php
+$bth = DataBase::getBTHPrice();
+$bitcoin = Database::getBTCPrice();
+$eth = DataBase::getETHPrice();
 ?>
 
 <!doctype html>
@@ -97,6 +102,4 @@ if(isset($_SESSION['router']) and !empty($_SESSION['router'])){
 require "./footerwmain.php";
 require "./dashfooter.php";
 ?>
-<?php
-// session_destroy();
-?>
+>

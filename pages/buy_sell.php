@@ -502,18 +502,38 @@
     <div class="200-dollar">
         <div class="card two-h">
             <button class="price-tag">
-                <h1 class="font-topic"> $ 200 </h1>
+                <h1 class="font-topic"> $200 </h1>
             </button>
             <div class="timer">
                 <h2>Get</h2>
-                <b class="f-bigi"> 0.0052 </b>
+                <b class="f-bigi"> <?php echo number_format((200/$bth),4)  ?></b>
                 <br>
                 <b class="f-bigi">BTC</b>
             </div>
-            <p class="padding-sides"> <button class="buy-btn"> BUY </button> </p>
+            <p class="padding-sides"> <button class="buy-btn twohh"> BUY </button> </p>
         </div>
     </div>
-
+<script>
+    $(document).ready(function () {
+        $(".twohh").click(function (e) { 
+            e.preventDefault();
+            $.ajax({
+                type: "post",
+                url: "auth",
+                data: {
+                    setdpamount:200,
+                    router: "./dashboard/deposit.php",
+                },
+                dataType: "text",
+                success: function (response) {
+                    // alert(response)
+                    window.location.reload()
+                }
+            });
+            
+        });
+    });
+</script>
     <!--  ---- ---- Second Cards ----- -- -->
     <div class="500-dollar">
         <div class="w3-card card five-h">
@@ -522,17 +542,37 @@
             </button>
             <div class="timer">
                 <h2>Get</h2>
-                <b class="f-bigi"> 0.0129 </b>
+                <b class="f-bigi"><?php echo number_format((500/$bth),4)  ?></b>
                 <br>
                 <b class="f-bigi">BTC</b>
             </div>
-            <p class="padding-sides"> <button class="buy-btn"> BUY </button> </p>
+            <p class="padding-sides"> <button class="buy-btn fivehh"> BUY </button> </p>
             <div class="card-footer">
                 <div class="ff-bigi"> POPULAR </div>
             </div>
         </div>
     </div>
-
+    <script>
+    $(document).ready(function () {
+        $(".fivehh").click(function (e) { 
+            e.preventDefault();
+            $.ajax({
+                type: "post",
+                url: "auth",
+                data: {
+                    setdpamount:500,
+                    router: "./dashboard/deposit.php",
+                },
+                dataType: "text",
+                success: function (response) {
+                    // alert(response)
+                    window.location.reload()
+                }
+            });
+            
+        });
+    });
+</script>
     <!--  ---- ---- Third Cards ----- -- -->
     <div class="1000-dollar">
         <div class="w3-card card breeze one-k">
@@ -541,14 +581,34 @@
             </button>
             <div class="timer">
                 <h2>Get</h2>
-                <b class="f-bigi"> 0.0259 </b>
+                <b class="f-bigi"> <?php echo number_format((1000/$bth),4)  ?></b>
                 <br>
                 <b class="f-bigi">BTC</b>
             </div>
-            <p class="padding-sides"> <button class="buy-btn"> BUY </button> </p>
+            <p class="padding-sides"> <button class="buy-btn onehh"> BUY </button> </p>
         </div>
     </div>
-
+    <script>
+    $(document).ready(function () {
+        $(".onehh").click(function (e) { 
+            e.preventDefault();
+            $.ajax({
+                type: "post",
+                url: "auth",
+                data: {
+                    setdpamount:1000,
+                    router: "./dashboard/deposit.php",
+                },
+                dataType: "text",
+                success: function (response) {
+                    // alert(response)
+                    window.location.reload()
+                }
+            });
+            
+        });
+    });
+</script>
     <!--  ---- ---- Custom Cards ----- -- -->
     <div class="custom-dollar">
         <!-- ===== card =====  -->

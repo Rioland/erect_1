@@ -235,7 +235,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $rid = $_REQUEST['messageRID'];
             $_SESSION['CHATID'] = $rid;
             $_SESSION['RIMG'] = $_REQUEST['RIMG'];
-            $_SESSION['RName']=$_REQUEST['RName'];
+            $_SESSION['RName'] = $_REQUEST['RName'];
             $conn = DataBase::getConn();
             $q = "CREATE TABLE  IF NOT EXISTS " . $rid . "_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB";
             $stm = $conn->exec($q);
@@ -246,34 +246,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo $th;
         }
     }
-   
-    if(isset($_REQUEST['profileUpdate'])){
-        parse_str($_REQUEST['profileUpdate'],$data);
+
+    if (isset($_REQUEST['profileUpdate'])) {
+        parse_str($_REQUEST['profileUpdate'], $data);
         // print_r($data);
         $user = $_SESSION['USER'];
-        $val=array($data['email'],$data['country'],$data['name'],
-        $data['gender'],$data['address'],$data['referer'],$data['phone'],$user->id);
+        $val = array($data['email'], $data['country'], $data['name'],
+            $data['gender'], $data['address'], $data['referer'], $data['phone'], $user->id);
+        // print_r($user);
         echo DataBase::updateProfile($val);
-        
+
     }
 
-    if(isset($_REQUEST['uploadImage'])){
-     $file=$_FILES['picture'];
-     $image_name=$file['name'];
-     $target="userPhoto/".basename($image_name);
-      $path="http://".$_SERVER['HTTP_HOST']."/erect1/app/Apis/".$target;
+    if (isset($_REQUEST['uploadImage'])) {
+        $file = $_FILES['picture'];
+        $image_name = $file['name'];
+        $target = "userPhoto/" . basename($image_name);
+        $path = "https://" . $_SERVER['HTTP_HOST'] . "/app/Apis/" . $target;
 
-     if(move_uploaded_file($file['tmp_name'],$target)){
-        $user = $_SESSION['USER'];
-        // echo $user->id;
-         $data=array($path,$user->id);
-       print_r(DataBase::updatePasport($data));
-     }else{
-         echo "Error In Uploading image";
-     }
-    
+        if (move_uploaded_file($file['tmp_name'], $target)) {
+            $user = $_SESSION['USER'];
+            // echo $user->id;
+            $data = array($path, $user->id);
+            print_r(DataBase::updatePasport($data));
+        } else {
+            echo "Error In Uploading image";
+        }
+
     }
 //    print_r($_REQUEST);
+    if (isset($_REQUEST["setdpamount"])) {
+       $_SESSION['amount']= $_REQUEST["setdpamount"];
+       $route = $_REQUEST['router'];
+        $_SESSION['router'] = $route;
+    }
 
-     
+
+    // CREATE TABLE `avpvgymy_erect1`.`withdraw` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `amount_btc` VARCHAR(255) NOT NULL , `amount_usd` VARCHAR(255) NOT NULL , PRIMARY KEY (`sn`)) ENGINE = InnoDB;
+
 }

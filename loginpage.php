@@ -1,9 +1,9 @@
 <?php
 include 'app/Apis/database/DataBase.php';
-if (DataBase::is_login()) {
+// if (DataBase::is_login()) {
 
-    header('location:client');
-}
+//     header('location:client');
+// }
 // UPDATE `apis` SET `redirect`='https://erect1.org/app/google' WHERE `name`='google'
 
 require 'app/vendor/autoload.php';

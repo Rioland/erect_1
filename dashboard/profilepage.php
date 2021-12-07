@@ -1,3 +1,7 @@
+<?php
+$USER=$_SESSION['USER'];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
