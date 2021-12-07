@@ -9,21 +9,35 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class DataBase
 {
-
+    public static function getMyWallel()
+    {
+        $user = $_SESSION['USER'];
+        $conn = DataBase::getConn();
+        $q = "SELECT * FROM `Wallets` WHERE `id`=?";
+        $stm = $conn->prepare($q);
+        $stm->bindValue(1, $user->id);
+        $stm->execute();
+        if ($stm->rowCount() > 0) {
+            $data = $stm->fetch();
+            return $data->address;
+        } else {
+            return null;
+        }
+    }
 
     public static function saveActivity($data = array())
     {
-       try {
-        $conn = DataBase::getConn();
-        $q = "CREATE TABLE if not exists  `avpvgymy_erect1`.`activity` ( `acno` INT NOT NULL AUTO_INCREMENT , `uid` VARCHAR(255) NOT NULL , `activity` TEXT NOT NULL , `date` INT NOT NULL , `share` INT NOT NULL , `likes` INT NOT NULL,`public` BOOLEAN NOT NULL DEFAULT TRUE , PRIMARY KEY (`acno`)) ENGINE = InnoDB;";
-        $conn->query($q);
-        $q = "INSERT INTO `activity`( `uid`, `activity`, `date`, `share`, `likes`) VALUES (?,?,?,?,?)";
-        $stm = $conn->prepare($q);
-        $stm->execute();
-        return "uploaded";
-       } catch (\Throwable $th) {
-           return $th;
-       }
+        try {
+            $conn = DataBase::getConn();
+            $q = "CREATE TABLE if not exists  `avpvgymy_erect1`.`activity` ( `acno` INT NOT NULL AUTO_INCREMENT , `uid` VARCHAR(255) NOT NULL , `activity` TEXT NOT NULL , `date` INT NOT NULL , `share` INT NOT NULL , `likes` INT NOT NULL,`public` BOOLEAN NOT NULL DEFAULT TRUE , PRIMARY KEY (`acno`)) ENGINE = InnoDB;";
+            $conn->query($q);
+            $q = "INSERT INTO `activity`( `uid`, `activity`, `date`, `share`, `likes`) VALUES (?,?,?,?,?)";
+            $stm = $conn->prepare($q);
+            $stm->execute();
+            return "uploaded";
+        } catch (\Throwable $th) {
+            return $th;
+        }
     }
     public static function getActivity()
     {
@@ -94,7 +108,6 @@ class DataBase
         }
     }
 
-
     public static function sendMessage($RID, $Mess, $SID)
     {
         try {
@@ -104,13 +117,11 @@ class DataBase
             $q = "CREATE TABLE  IF NOT EXISTS " . $SID . "_messages ( `MID` INT NOT NULL AUTO_INCREMENT , `FID` VARCHAR(255) NOT NULL , `message` TEXT NOT NULL , `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`MID`)) ENGINE = InnoDB";
             $stm = $conn->exec($q);
 
-
             $q = "INSERT INTO " . $SID . "_messages( `FID`,`message`) VALUES (?,?)";
             $stm = $conn->prepare($q);
             $stm->bindValue(1, $SID . "_" . $RID);
             $stm->bindValue(2, $Mess);
             $stm->execute();
-
 
             $q = "INSERT INTO " . $RID . "_messages( `FID`,`message`) VALUES (?,?)";
             $stm = $conn->prepare($q);
@@ -120,10 +131,9 @@ class DataBase
 
             return "send";
         } catch (\Throwable $th) {
-            return  $th;
+            return $th;
         }
     }
-
 
     public static function acceptRequest($RID, $SID)
     {
@@ -299,7 +309,7 @@ class DataBase
     public static function getConn()
     {
         // $url = "https://www.blockonomics.co/api/";
-           $servername = "ftp.avp.vgy.mybluehost.me";
+        $servername = "ftp.avp.vgy.mybluehost.me";
         $username = "avpvgymy_erect1";
         $password = "erect1office";
 
@@ -933,7 +943,7 @@ class DataBase
             ':plat' => $platform,
             ':totsup' => $total_supply,
             ':price' => $price,
-            ':logo' => $logo
+            ':logo' => $logo,
         ]);
 
         // $stm->bind_param("ssssssssssssssssssssssss",

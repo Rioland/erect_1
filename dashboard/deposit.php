@@ -448,11 +448,59 @@ if ($data->status == 0) {
                                                     </dd> -->
                                                 </dl>
                                                 <hr>
-                                                <button type="button" class="btn btn-default btn-block">withdraw</button>
+                                                <button type="button" class="btn btn-default btn-block wdthbtn">withdraw</button>
 
                                             </div>
                                         </div>
                                         <script>
+
+$(".wdthbtn").click(function (e) { 
+    e.preventDefault();
+    let amt_dolla=$(".widthtxt").val();
+    let btcrate = "<?php echo $bitcoin ?>";
+    let amt_btc=amt_dolla/btcrate
+    alert(amt_btc)
+    
+});
+
+
+$(".widthtxt").keyup(function (e) { 
+    e.preventDefault();
+      let type = $(".w").val();
+                let amt = $(this).val();
+                if (amt !== "") {
+                    // alert(type);
+                    if (type === "dollar") {
+                        let rate = "<?php echo $eth ?>";
+                        let c = $(this).val();
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".widthtotal").html($(this).val());
+                        $(".widthava").html($(this).val());
+                        $(".widthbtc").html($(this).val() / btcrate);
+                        // alert(price);
+                    } else if (type === "bitcoincash") {
+                        let rate = "<?php echo $bth ?>";
+                        let c = $(this).val();
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".widthtotal").html(c);
+                        $(".widthava").html(c);
+                        $(".widthbtc").html(c / btcrate);
+                    } else if (type === "bitcoin") {
+                        let rate = "<?php echo $bitcoin ?>";
+                        let c = $(this).val() ;
+                        let btcrate = "<?php echo $bitcoin ?>";
+                        $(".widthtotal").html(c);
+                        $(".widthava").html(c);
+                        $(".widthbtc").html(c/btcrate);
+                    }
+                } else {
+                    $(".widthtotal").html(parseFloat(0));
+                    $(".widthava").html(parseFloat(0));
+                    $(".widthbtc").html(parseFloat(0));
+                }
+  
+});
+
   $(".widthtxt").change(function (e) {
       e.preventDefault();
       let type = $(".w").val();

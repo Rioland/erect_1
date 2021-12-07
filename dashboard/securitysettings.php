@@ -31,7 +31,7 @@
                                 <!-- withdrawal address  -->
                                 <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home" aria-selected="true">Withdrawal address</a>
                                 <!-- verify phone number  -->
-                                <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Verify Tel. &#8470;</a>
+                                <!-- <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Verify Tel. &#8470;</a> -->
                                 <!-- change password  -->
                                 <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages" role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Change password</a>
                                 <!-- upload document -->
@@ -49,10 +49,10 @@
                                         <div class="card-body register-card-body">
                                             <p class="login-box-msg">Add your bitcoin address <i class="fas fa-arrow-circle-down"></i></p>
 
-                                            <form action="#" method="post">
+                                            <form id="addressform" method="post">
                                                 <!-- New wallet address  -->
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="wallet address">
+                                                    <input type="text" name="newaddress" required class="form-control" placeholder="wallet address">
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">
                                                             <i class="fas fa-map-pin"></i>
@@ -61,40 +61,17 @@
                                                 </div>
                                                 <!-- display current wallet address here  -->
                                                 <div class="input-group mb-3">
-                                                    <input type="email" class="form-control" placeholder="current wallet address" disabled>
+                                                    <input type="email" value="<?php echo Database::getMyWallel()??"N/A" ?>" required  name="currentaddress" class="form-control" placeholder="current wallet address" disabled>
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">
                                                             <i class="fas fa-search-location"></i>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- enter password for confirmation  -->
-                                                <div class="input-group mb-3">
-                                                    <input type="password" class="form-control" placeholder="Password">
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text">
-                                                            <span class="fas fa-lock"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- confirm password  -->
-                                                <div class="input-group mb-3">
-                                                    <input type="password" class="form-control" placeholder="Retype password">
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text">
-                                                            <span class="fas fa-lock"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                
+                                                
                                                 <div class="row">
-                                                    <div class="col-8">
-                                                        <div class="icheck-primary">
-                                                            <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-                                                            <label for="agreeTerms">
-                                                                I agree to the <a href="#">terms & conditions.</a>
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                                   
                                                     <!-- /.col -->
                                                     <div class="col-4">
                                                         <button type="submit" class="btn btn-primary btn-block">SAVE</button>
@@ -104,12 +81,31 @@
                                             </form>
                                         </div>
                                     </div>
-
+                   <script >
+                       $(document).ready(function () {
+                           $("#addressform").submit(function (e) { 
+                               e.preventDefault();
+                               let data=$(this).serialize();
+                               $.ajax({
+                                   type: "post",
+                                   url: "auth",
+                                   data: {
+                                       newaddress:data
+                                   },
+                                   dataType: "text",
+                                   success: function (response) {
+                                       alert(response);
+                                   }
+                               });
+                               
+                           });
+                       });
+                   </script>
                                 </div>
                                 <!-- verify Telephone number container  -->
-                                <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
+                                <!-- <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
                                     Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.
-                                </div>
+                                </div> -->
                                 <!-- change password container  -->
                                 <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel" aria-labelledby="vert-tabs-messages-tab">
                                     <div class="text-center">
@@ -119,9 +115,9 @@
                                                 <div class="card-body login-card-body">
                                                     <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
 
-                                                    <form action="login.html" method="post">
+                                                    <form id="passchange">
                                                         <div class="input-group mb-3">
-                                                            <input type="password" class="form-control" placeholder="Password">
+                                                            <input type="password" name="cpass" required class="form-control" placeholder="Current password">
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text">
                                                                     <span class="fas fa-lock"></span>
@@ -129,7 +125,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="input-group mb-3">
-                                                            <input type="password" class="form-control" placeholder="Confirm Password">
+                                                            <input type="password" name="newpassword" required class="form-control" placeholder="New Password">
                                                             <div class="input-group-append">
                                                                 <div class="input-group-text">
                                                                     <span class="fas fa-lock"></span>
@@ -143,7 +139,26 @@
                                                             <!-- /.col -->
                                                         </div>
                                                     </form>
-
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            $("#passchange").submit(function (e) { 
+                                                                e.preventDefault();
+                                                                let data=$(this).serialize();
+                                                                $.ajax({
+                                                                    type: "post",
+                                                                    url: "auth",
+                                                                    data: {
+                                                                        updatePassword:data
+                                                                    },
+                                                                    dataType: "text",
+                                                                    success: function (response) {
+                                                                        alert(response);
+                                                                    }
+                                                                });
+                                                                
+                                                            });
+                                                        });
+                                                    </script>
                                                     <!-- <p class="mt-3 mb-1">
                                                         <a href="login.html">Login</a>
                                                     </p> -->

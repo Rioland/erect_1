@@ -246,7 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo $th;
         }
     }
-
+// update profile
     if (isset($_REQUEST['profileUpdate'])) {
         parse_str($_REQUEST['profileUpdate'], $data);
         // print_r($data);
@@ -257,7 +257,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo DataBase::updateProfile($val);
 
     }
-
+    $user = $_SESSION['USER'];
+    // change profile pic
     if (isset($_REQUEST['uploadImage'])) {
         $file = $_FILES['picture'];
         $image_name = $file['name'];
@@ -274,14 +275,82 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     }
-//    print_r($_REQUEST);
+//    setting amt
     if (isset($_REQUEST["setdpamount"])) {
-       $_SESSION['amount']= $_REQUEST["setdpamount"];
-       $route = $_REQUEST['router'];
+        $_SESSION['amount'] = $_REQUEST["setdpamount"];
+        $route = $_REQUEST['router'];
         $_SESSION['router'] = $route;
     }
+// save new address
+    if (isset($_REQUEST['newaddress'])) {
+        try {
+        $add=$_REQUEST['newaddress'];
+        $user = $_SESSION['USER'];
+        $conn = Database::getConn();
+        $q="CREATE TABLE if not exists `avpvgymy_erect1`.`Wallets` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , PRIMARY KEY (`sn`)) ENGINE = InnoDB";
+        $conn->query($q);
+
+      $q="SELECT * FROM `Wallets` WHERE `id`=?";
+      $stm=$conn->prepare($q);
+      $stm->bindValue(1,$user->id);
+      $stm->execute();
+      if($stm->rowCount()>0){
+        $q="UPDATE `Wallets` SET `address`=? WHERE `id`=?";
+        $stm=$conn->prepare($q);
+        $stm->bindValue(1, $add);
+        $stm->bindValue(2, $user->id );
+        $stm->execute();
+      }else{
+
+        $q="INSERT INTO `Wallets`(`id`, `address`) VALUES (?,?)";
+        $stm=$conn->prepare($q);
+        $stm->bindValue(1, $user->id );
+        $stm->bindValue(2, $add );
+        $stm->execute();
+      }
 
 
-    // CREATE TABLE `avpvgymy_erect1`.`withdraw` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `amount_btc` VARCHAR(255) NOT NULL , `amount_usd` VARCHAR(255) NOT NULL , PRIMARY KEY (`sn`)) ENGINE = InnoDB;
 
+        echo "Saved";
+
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+
+    }
+// change password
+
+    if((isset($_REQUEST['updatePassword']))){
+       try {
+        $conn = Database::getConn();
+        parse_str($_REQUEST['updatePassword'],$data);
+        $oldpass=$data['cpass'];
+        $newpass=$data['newpassword'];
+        $q="SELECT * FROM `users` WHERE id=?";
+        $stm=$conn->prepare($q);
+        $stm->bindValue(1,$user->id);
+        $stm->execute();
+        $data=$stm->fetch();
+       $savep=$data->password;
+        if($savep===md5($oldpass)){
+            $q="UPDATE `users` SET `password`=? WHERE `id`=?";
+            $stm=$conn->prepare($q);
+            $stm->bindValue(1,$newpass);
+            $stm->bindValue(2,$user->id);
+            $stm->execute();
+            if($stm->rowCount()>0){
+           echo "password change successfully";
+            }else{
+           echo "password is up to date";
+            }
+            
+        }else{
+            echo"invalid password";
+        }
+       } catch (\Throwable $th) {
+           echo $th;
+       }
+
+    }
+// $q = "CREATE TABLE IF NOT EXISTS `avpvgymy_erect1`.`withdraw` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `amount_btc` VARCHAR(255) NOT NULL , `amount_usd` VARCHAR(255) NOT NULL , PRIMARY KEY (`sn`)) ENGINE = InnoDB";
 }
