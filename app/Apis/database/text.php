@@ -1,7 +1,8 @@
 <?php
 require "./DataBase.php";
-echo md5(12345);
-print_r($_SESSION["USER"]);
+// echo md5(12345);
+print_r(DataBase::getAllwithdraw());
+
 
 
 ?>

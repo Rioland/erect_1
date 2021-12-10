@@ -627,7 +627,7 @@
 
                             <div class="get-txt">USD</div>
                             <div class="get-input">
-                                <input type="number" name="usd" class="get-inp">
+                                <input type="number" required id="usdcom" name="usd" class="get-inp" >
                             </div>
                         </div>
                     </div>
@@ -643,7 +643,7 @@
                         <div class="get-btc">
                             <div class="get-txt">BTC</div>
                             <div class="get-input">
-                                <input type="number" name="usd" class="get-inp">
+                                <input type="number" id="btc" name="usd" class="get-inp">
                             </div>
                         </div>
 
@@ -655,11 +655,58 @@
             </div>
             <br />
             <div class="card-footer">
-                <div class="padding-sides"> <button class="buy-btn"> BUY </button> </div>
+                <div class="padding-sides"> <button class="buy-btn cum"> BUY </button> </div>
             </div>
         </div>
     </div>
+  <script>
+  $(document).ready(function () {
 
+
+
+
+$("#usdcom").keyup(function(){
+    let usd=$(this).val();
+    let btcrate="<?php echo $bitcoin ?>";
+  
+       $("#btc").val(Number(usd)/Number(btcrate));
+})
+
+
+
+$("#btc").keyup(function(){
+    let btcam=$(this).val();
+    let btcrate="<?php echo $bitcoin ?>";
+  
+       $("#usdcom").val( Number(btcam)  *Number(btcrate));
+})
+
+      $(".cum").click(function (e) { 
+        e.preventDefault();
+          let amt=$("#usdcom").val();
+          if(amt==''){
+         alert("Enter amount")
+          }else{
+            $.ajax({
+                type: "post",
+                url: "auth",
+                data: {
+                    setdpamount: $("#usdcom").val(),
+                    router: "./dashboard/deposit.php",
+                },
+                dataType: "text",
+                success: function (response) {
+                    // alert(response)
+                    window.location.reload()
+                }
+            });
+          }
+          
+         
+          
+      });
+  });
+  </script>
 </div>
 
 <br>

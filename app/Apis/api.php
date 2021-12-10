@@ -120,30 +120,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //card insert
 
-    if (isset($_REQUEST['addcardbtn'])) {
-        $_REQUEST['phone'];
-        $response = DataBase::addcard(
-            htmlentities($_REQUEST['cnumber']),
-            htmlentities($_REQUEST['ccv']),
-            htmlentities($_REQUEST['expdate']),
-            htmlentities($_REQUEST['add1']),
-            htmlentities($_REQUEST['add2']),
-            htmlentities($_REQUEST['phone']),
-            htmlentities($_REQUEST['town']),
-            htmlentities($_REQUEST['country']),
-            htmlentities($_REQUEST['postcode'])
-        );
-        // echo $response;
-        if ($response == true) {
+    if (isset($_REQUEST['cardData'])) {
 
-            //  echo("<script>alert('Card Added');</script>");
-            header("location:card");
-        } else {
+        parse_str($_REQUEST['cardData'], $data);
 
-            // header("location:card");
-            //  echo("<script>alert('Card not save');</script>");
-            header("location:card");
-        }
+        // print_r($data);
+        $arr = array($user->id, $data['card_number'], $data['expire'], $data['ccv'], $data['name']);
+        $response = DataBase::addcard($arr);
+        echo $response;
     }
     //currency
     if (isset($_REQUEST['action']) and $_REQUEST['action'] == "currency") {
@@ -284,34 +268,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // save new address
     if (isset($_REQUEST['newaddress'])) {
         try {
-        $add=$_REQUEST['newaddress'];
-        $user = $_SESSION['USER'];
-        $conn = Database::getConn();
-        $q="CREATE TABLE if not exists `avpvgymy_erect1`.`Wallets` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , PRIMARY KEY (`sn`)) ENGINE = InnoDB";
-        $conn->query($q);
+            $add = $_REQUEST['newaddress'];
+            $user = $_SESSION['USER'];
+            $conn = Database::getConn();
+            $q = "CREATE TABLE if not exists `avpvgymy_erect1`.`Wallets` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `address` VARCHAR(255) NOT NULL , PRIMARY KEY (`sn`)) ENGINE = InnoDB";
+            $conn->query($q);
 
-      $q="SELECT * FROM `Wallets` WHERE `id`=?";
-      $stm=$conn->prepare($q);
-      $stm->bindValue(1,$user->id);
-      $stm->execute();
-      if($stm->rowCount()>0){
-        $q="UPDATE `Wallets` SET `address`=? WHERE `id`=?";
-        $stm=$conn->prepare($q);
-        $stm->bindValue(1, $add);
-        $stm->bindValue(2, $user->id );
-        $stm->execute();
-      }else{
+            $q = "SELECT * FROM `Wallets` WHERE `id`=?";
+            $stm = $conn->prepare($q);
+            $stm->bindValue(1, $user->id);
+            $stm->execute();
+            if ($stm->rowCount() > 0) {
+                $q = "UPDATE `Wallets` SET `address`=? WHERE `id`=?";
+                $stm = $conn->prepare($q);
+                $stm->bindValue(1, $add);
+                $stm->bindValue(2, $user->id);
+                $stm->execute();
+            } else {
 
-        $q="INSERT INTO `Wallets`(`id`, `address`) VALUES (?,?)";
-        $stm=$conn->prepare($q);
-        $stm->bindValue(1, $user->id );
-        $stm->bindValue(2, $add );
-        $stm->execute();
-      }
+                $q = "INSERT INTO `Wallets`(`id`, `address`) VALUES (?,?)";
+                $stm = $conn->prepare($q);
+                $stm->bindValue(1, $user->id);
+                $stm->bindValue(2, $add);
+                $stm->execute();
+            }
 
-
-
-        echo "Saved";
+            echo "Saved";
 
         } catch (\Throwable $th) {
             echo $th;
@@ -320,37 +302,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 // change password
 
-    if((isset($_REQUEST['updatePassword']))){
-       try {
-        $conn = Database::getConn();
-        parse_str($_REQUEST['updatePassword'],$data);
-        $oldpass=$data['cpass'];
-        $newpass=$data['newpassword'];
-        $q="SELECT * FROM `users` WHERE id=?";
-        $stm=$conn->prepare($q);
-        $stm->bindValue(1,$user->id);
-        $stm->execute();
-        $data=$stm->fetch();
-       $savep=$data->password;
-        if($savep===md5($oldpass)){
-            $q="UPDATE `users` SET `password`=? WHERE `id`=?";
-            $stm=$conn->prepare($q);
-            $stm->bindValue(1,$newpass);
-            $stm->bindValue(2,$user->id);
+    if ((isset($_REQUEST['updatePassword']))) {
+        try {
+            $conn = Database::getConn();
+            parse_str($_REQUEST['updatePassword'], $data);
+            $oldpass = $data['cpass'];
+            $newpass = $data['newpassword'];
+            $q = "SELECT * FROM `users` WHERE id=?";
+            $stm = $conn->prepare($q);
+            $stm->bindValue(1, $user->id);
             $stm->execute();
-            if($stm->rowCount()>0){
-           echo "password change successfully";
-            }else{
-           echo "password is up to date";
+            $data = $stm->fetch();
+            $savep = $data->password;
+            if ($savep === md5($oldpass)) {
+                $q = "UPDATE `users` SET `password`=? WHERE `id`=?";
+                $stm = $conn->prepare($q);
+                $stm->bindValue(1, md5($newpass));
+                $stm->bindValue(2, $user->id);
+                $stm->execute();
+                if ($stm->rowCount() > 0) {
+                    echo "password change successfully";
+                } else {
+                    echo "password is up to date";
+                }
+
+            } else {
+                echo "invalid password";
             }
-            
-        }else{
-            echo"invalid password";
+        } catch (\Throwable $th) {
+            echo $th;
         }
-       } catch (\Throwable $th) {
-           echo $th;
-       }
 
     }
-// $q = "CREATE TABLE IF NOT EXISTS `avpvgymy_erect1`.`withdraw` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `amount_btc` VARCHAR(255) NOT NULL , `amount_usd` VARCHAR(255) NOT NULL , PRIMARY KEY (`sn`)) ENGINE = InnoDB";
+// $q = "";
+
+// withdraw
+
+    if (isset($_REQUEST['requestWith'])) {
+// echo("ok");
+        try {
+            $amtdolle = $_REQUEST['amt_dolla'];
+            $amtbtc = $_REQUEST['amt_btc'];
+            $addr = $_REQUEST['addre'];
+            $q = "CREATE TABLE IF NOT EXISTS `avpvgymy_erect1`.`withdraw` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `amount_btc` VARCHAR(255) NOT NULL , `amount_usd` VARCHAR(255) NOT NULL ,`status` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending', PRIMARY KEY (`sn`)) ENGINE = InnoDB";
+            $conn = Database::getConn();
+            $conn->query($q);
+            // $q="ALTER TABLE `withdraw` ADD `status` VARCHAR(255) NULL DEFAULT NULL AFTER `date`";
+            // $conn->query($q);
+            // $q="ALTER TABLE `withdraw` CHANGE `status` `status` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending'";
+            // $conn->query($q);
+            $q = "INSERT INTO `withdraw`(`id`, `amount_btc`, `amount_usd`) VALUES (?,?,?)";
+            $stm = $conn->prepare($q);
+            $stm->execute([$user->id, $amtbtc, $amtdolle]);
+            echo "Request sent";
+
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+    }
+
 }

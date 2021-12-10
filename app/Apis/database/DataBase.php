@@ -9,6 +9,32 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class DataBase
 {
+
+
+    public static function getAllwithdraw()  {
+      try {
+        $user = $_SESSION['USER'];
+        $conn = DataBase::getConn();
+        $q = "CREATE TABLE IF NOT EXISTS `avpvgymy_erect1`.`withdraw` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `amount_btc` VARCHAR(255) NOT NULL , `amount_usd` VARCHAR(255) NOT NULL ,`status` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending', PRIMARY KEY (`sn`)) ENGINE = InnoDB";
+        $conn = Database::getConn();
+        $conn->query($q);
+        // $q="  ALTER TABLE if not exists  `withdraw` ADD `status` VARCHAR(255) NULL DEFAULT NULL AFTER `date`";
+        // $conn->query($q);
+        // $q="ALTER TABLE `withdraw` CHANGE `status` `status` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending'";
+        // $conn->query($q);
+        $q = "SELECT * FROM `withdraw` WHERE `id`=?";
+        $stm = $conn->prepare($q);
+        $stm->bindValue(1, $user->id);
+        $stm->execute();
+        if ($stm->rowCount() > 0) {
+            
+            return $stm->fetchAll();
+        }
+      } catch (\Throwable $th) {
+          return $th;
+      }
+
+    }
     public static function getMyWallel()
     {
         $user = $_SESSION['USER'];
@@ -1026,19 +1052,18 @@ class DataBase
 
     }
 
-    public static function addcard($cardnumber, $ccv, $expdate, $add1, $add2, $phone, $town, $country, $pc): bool
+    public static function addcard($data)
     {
 
-        $myconn = self::getConn();
-
-        $id = $_SESSION["userid"];
-        $query = "INSERT INTO `cards`(`id`, `card_number`, `expedite`, `ccv`, `address1`, `address2`, `town`, `postcode`, `country`,`phone`)  VALUES (:id,:cn,:ex,:ccv,:add1,:add2,:tw,:pc,:ctry,:ph)";
+        try {
+            $myconn = self::getConn();
+        $query = "INSERT INTO `cards`(`id`, `card_number`, `expedite`, `ccv`, `name`) VALUES (?,?,?,?,?)";
         $stm = $myconn->prepare($query);
-        $feedback = $stm->execute(array(":id" => $id, ':cn' => $cardnumber, ':ex' => $expdate, ':ccv' => $ccv, ':add1' => $add1, ':add2' => $add2, ':tw' => $town, 'pc' => $pc, ':ctry' => $country, ':ph' => $phone));
-        if ($feedback) {
-            return true;
+        $feedback = $stm->execute($data);
+        return "Successfull";
+        } catch (\Throwable $th) {
+            return $th;
         }
-        return false;
     }
 
     public static function updatetrans($col, $response, $amount)

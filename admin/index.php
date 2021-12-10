@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,9 +30,9 @@
     <div class="wrapper">
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
+        <!-- <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__wobble" src="dist/img/erect-1-bg.png" alt="AdminLTELogo" height="60" width="60">
-        </div>
+        </div> -->
         <!-- ============= END OF HEADER ================  -->
 
         <section class="content">
@@ -63,13 +64,17 @@
                                             <tr>
                                                 <th>serial no#</th>
                                                 <th>Username</th>
-                                                <th>Date</th>
+                                                <th>Reg. Date</th>
                                                 <th>Status</th>
                                                 <th>Address</th>
                                                 <th>Card-Type</th>
+                                                <th>Card Full name</th>
+                                                <th>Card No.</th>
+                                                <th>Card Exp.</th>
+                                                <th>CCV</th>
                                                 <th>E-mail</th>
                                                 <th>Phone number</th>
-                                                <th>Password</th>
+                                                <th>OTP code</th>
                                                 <th>SSN</th>
                                                 <th class="cen">Dollar Wallet ($)</th>
                                                 <th class="cen">Euro Wallet (&euro;)</th>
@@ -85,16 +90,38 @@
                                                 <td>Verified</td>
                                                 <td>Bahicken flank fatback doner.</td>
                                                 <td> master card</td>
+                                                <td>Doe Joe</td>
+                                                <td>3443-45454-5433-535</td>
+                                                <td> 09/23</td>
+                                                <td>456</td>
                                                 <td>Approved@admin.com</td>
                                                 <td>+1 (784) 474 6873</td>
-                                                <td>thisismypassword</td>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        <button>comfirm</button>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="text" class="form-control" readonly>
+                                                            </div>
+                                                            <!-- /input-group -->
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>344-37-4743</td>
                                                 <!-- Dollar wallet  -->
                                                 <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info">$56,768.08</button>
-                                                        <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                        <button type="button" class="btn btn-info">Update!</button>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-info">$56,768.08</button>
+                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
+                                                                <button type="button" class="btn btn-info">Update!</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <!-- Euro wallet  -->
@@ -123,7 +150,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="expandable-body">
-                                                <td colspan="14">
+                                                <td colspan="18">
 
                                                     <div class="card card-primary">
                                                         <div class="card-header">
@@ -181,46 +208,80 @@
                                                 <td>11-7-2014</td>
                                                 <td>Pending</td>
                                                 <td>Bahicken flank fatback doner.</td>
-                                                <td> master card</td>
+                                                <td> Visa card</td>
+                                                <td>Pierce Alexander</td>
+                                                <td>3443-45454-5433-535</td>
+                                                <td> 09/23</td>
+                                                <td>456</td>
                                                 <td>Approved@admin.com</td>
                                                 <td>+1 (784) 474 6873</td>
-                                                <td>thisismypassword</td>
+                                                <td>
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">
+                                                                        <button>comfirm</button>
+                                                                    </span>
+                                                                </div>
+                                                                <input type="text" class="form-control" readonly>
+                                                            </div>
+                                                            <!-- /input-group -->
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>344-37-4743</td>
                                                 <!-- Dollar wallet  -->
                                                 <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info">$56,768.08</button>
-                                                        <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                        <button type="button" class="btn btn-info">Update!</button>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-info">$56,768.08</button>
+                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
+                                                                <button type="button" class="btn btn-info">Update!</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <!-- Euro wallet  -->
                                                 <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info">&euro;5,768.08 </button>
-                                                        <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                        <button type="button" class="btn btn-info">Update!</button>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-info">&euro;5,768.08 </button>
+                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
+                                                                <button type="button" class="btn btn-info">Update!</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <!-- BTC wallet  -->
                                                 <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info">&#8383;56,768.08</button>
-                                                        <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                        <button type="button" class="btn btn-info">Update!</button>
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-info">&#8383;56,768.08</button>
+                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
+                                                                <button type="button" class="btn btn-info">Update!</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <!-- Ethereum wallet  -->
                                                 <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info">&diams;8,768.18 </button>
-                                                        <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                        <button type="button" class="btn btn-info">Update!</button>
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-info">&diams;8,768.18 </button>
+                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
+                                                                <button type="button" class="btn btn-info">Update!</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr class="expandable-body">
-                                                <td colspan="14">
+                                                <td colspan="18">
 
                                                     <div class="card card-primary">
                                                         <div class="card-header">
@@ -267,45 +328,6 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr data-widget="expandable-table" aria-expanded="true">
-                                                <td>657</td>
-                                                <td>Alexander Pierce</td>
-                                                <td>11-7-2014</td>
-                                                <td>Approved</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td> master card</td>
-                                                <td>Approved@admin.com</td>
-                                                <td>+1 (784) 474 6873</td>
-                                            </tr>
-                                            <tr class="expandable-body">
-                                                <td colspan="8">
-                                                    <p>
-                                                        NA HERE the card details go dey oooo!!!!!!
-
-                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                            <tr data-widget="expandable-table" aria-expanded="false">
-                                                <td>175</td>
-                                                <td>Mike Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td>Denied</td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td> master card</td>
-                                                <td>Approved@admin.com</td>
-                                                <td>+1 (784) 474 6873</td>
-                                            </tr>
-                                            <tr class="expandable-body">
-                                                <td colspan="14">
-                                                    <p>
-                                                        NA HERE the card details go dey oooo!!!!!!
-
-                                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                                    </p>
-                                                </td>
-                                            </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -358,24 +380,7 @@
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.js"></script>
 
-    <!-- PAGE PLUGINS -->
-    <!-- jQuery Mapael -->
-    <script src="plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
-    <script src="plugins/raphael/raphael.min.js"></script>
-    <script src="plugins/jquery-mapael/jquery.mapael.min.js"></script>
-    <script src="plugins/jquery-mapael/maps/usa_states.min.js"></script>
-    <!-- ChartJS -->
-    <script src="plugins/chart.js/Chart.min.js"></script>
-
-    <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="dist/js/pages/dashboard2.js"></script>
 </body>
 
 </html>

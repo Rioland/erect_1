@@ -390,7 +390,7 @@ if ($data->status == 0) {
                                                 <p>comfirm your wallet address for withdrawal</p>
                                                 <!-- <p>or send funds to the address below</p> -->
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control rounded-0" value="396MTn4Z7drQZUvyXEgDTVjpXxxGTcSZ59">
+                                                    <input type="text" class="form-control rounded-0" value="<?php echo Database::getMyWallel()  ?>">
                                                     <span class="input-group-append">
                                                         <button type="button" class="btn btn-info btn-flat">update</button>
                                                     </span>
@@ -459,8 +459,28 @@ $(".wdthbtn").click(function (e) {
     let amt_dolla=$(".widthtxt").val();
     let btcrate = "<?php echo $bitcoin ?>";
     let amt_btc=amt_dolla/btcrate
-    alert(amt_btc)
-    
+    let addre="<?php  echo Database::getMyWallel()  ?>";
+    let mybtcbalance=<?php echo $btc?>;
+    if(Number(mybtcbalance)>Number(amt_btc)){
+    $.ajax({
+        type: "post",
+        url: "auth",
+        data: {
+            requestWith:true,
+            amt_dolla:amt_dolla,
+            amt_btc:amt_btc,
+            addre:addre
+
+        },
+        dataType: "text",
+        success: function (response) {
+            alert(response);
+            window.location.reload();
+        }
+    });
+    }else{
+        alert("Insuficient funds")
+    }
 });
 
 
@@ -561,77 +581,29 @@ $(".widthtxt").keyup(function (e) {
                                                     <tr>
                                                         <th>ID</th>
                                                         <th>Crypto.</th>
-                                                        <th>Date</th>
+                                                        
                                                         <th>Amount($)</th>
+                                                        <th>Date</th>
                                                         <th>Status</th>
                                                         <!-- <th>Notes</th> -->
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                <?php  
+                     $data=DataBase::getAllwithdraw();
+                     for ($i=0 ; $i <count($data)  ; $i++ ) { 
+                        
+                    
+                                                ?>
                                                     <tr>
-                                                        <td>183</td>
-                                                        <td>BTC</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>474</td>
-                                                        <td><span class="tag tag-success">Approved</span></td>
+                                                        <td><?php echo $i ?></td>
+                                                        <td><?php echo $data[$i]->amount_btc ?></td>
+                                                        <td><?php echo $data[$i]->amount_usd ?></td>
+                                                        <td><?php echo $data[$i]->date ?></td>
+                                                        <td><span class="tag tag-success"><?php echo $data[$i]->status ?></span></td>
                                                         <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
                                                     </tr>
-                                                    <tr>
-                                                        <td>219</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>89</td>
-                                                        <td><span class="tag tag-warning">Pending</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>657</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>561</td>
-                                                        <td><span class="tag tag-primary">Approved</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>175</td>
-                                                        <td>BTC</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>869</td>
-                                                        <td><span class="tag tag-danger">Denied</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>134</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>14</td>
-                                                        <td><span class="tag tag-success">Approved</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>494</td>
-                                                        <td>BTC</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>209</td>
-                                                        <td><span class="tag tag-warning">Pending</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>832</td>
-                                                        <td>BTC</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>789</td>
-                                                        <td><span class="tag tag-primary">Approved</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                                                    <tr>
-                                                        <td>982</td>
-                                                        <td>ETH</td>
-                                                        <td>11-7-2014</td>
-                                                        <td>95</td>
-                                                        <td><span class="tag tag-danger">Denied</span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
+                     <?php }?>
                                                 </tbody>
                                             </table>
                                         </div>
