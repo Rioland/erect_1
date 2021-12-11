@@ -1,386 +1,380 @@
 
-<!DOCTYPE html>
-<html lang="en">
+<?php
+
+include "../app/Apis/database/DataBase.php";
+if (!isset($_SESSION['ADMIN']) or empty($_SESSION['ADMIN'])) {
+    header("location:login");
+}
+
+
+
+function userCount()
+{
+    $conn = DataBase::getConn();
+    $q = "SELECT * FROM `users`";
+    $stm = $conn->query($q);
+    return count($stm->fetchAll());
+}
+function withdrawCount()
+{
+    $conn = DataBase::getConn();
+    $q = "SELECT * FROM `withdraw`";
+    $stm = $conn->query($q);
+    return count($stm->fetchAll());
+}
+function cardsCount()
+{
+    $conn = DataBase::getConn();
+    $q = "SELECT * FROM `cards`";
+    $stm = $conn->query($q);
+    return count($stm->fetchAll());
+}
+function walletCount()
+{
+    $conn = DataBase::getConn();
+    $q = "SELECT * FROM `Wallets`";
+    $stm = $conn->query($q);
+    return count($stm->fetchAll());
+}
+
+?>
+
+<!doctype html>
+<html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Dashboard </title>
-
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Erect1</title>
+    <link rel="shortcut icon" href="../images/logo.png">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script type='text/javascript' src=''></script>
     <style>
-        .cen {
-            text-align: center;
+        @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+        :root {
+            --header-height: 3rem;
+            --nav-width: 68px;
+            --first-color: #4723D9;
+            --first-color-light: #AFA5D9;
+            --white-color: #F7F6FB;
+            --body-font: 'Nunito', sans-serif;
+            --normal-font-size: 1rem;
+            --z-fixed: 100
         }
 
-        .paa {
-            padding: 6px;
+        *,
+        ::before,
+        ::after {
+            box-sizing: border-box
+        }
+
+        body {
+            position: relative;
+            margin: var(--header-height) 0 0 0;
+            padding: 0 1rem;
+            font-family: var(--body-font);
+            font-size: var(--normal-font-size);
+            transition: .5s
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        .header {
+            width: 100%;
+            height: var(--header-height);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            background-color: var(--white-color);
+            z-index: var(--z-fixed);
+            transition: .5s
+        }
+
+        .header_toggle {
+            color: var(--first-color);
+            font-size: 1.5rem;
+            cursor: pointer
+        }
+
+        .header_img {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            border-radius: 50%;
+            overflow: hidden
+        }
+
+        .header_img img {
+            width: 40px
+        }
+
+        .l-navbar {
+            position: fixed;
+            top: 0;
+            left: -30%;
+            width: var(--nav-width);
+            height: 100vh;
+            background-color: var(--first-color);
+            padding: .5rem 1rem 0 0;
+            transition: .5s;
+            z-index: var(--z-fixed)
+        }
+
+        .nav {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden
+        }
+
+        .nav_logo,
+        .nav_link {
+            display: grid;
+            grid-template-columns: max-content max-content;
+            align-items: center;
+            column-gap: 1rem;
+            padding: .5rem 0 .5rem 1.5rem
+        }
+
+        .nav_logo {
+            margin-bottom: 2rem
+        }
+
+        .nav_logo-icon {
+            font-size: 1.25rem;
+            color: var(--white-color)
+        }
+
+        .nav_logo-name {
+            color: var(--white-color);
+            font-weight: 700
+        }
+
+        .nav_link {
+            position: relative;
+            color: var(--first-color-light);
+            margin-bottom: 1.5rem;
+            transition: .3s
+        }
+
+        .nav_link:hover {
+            color: var(--white-color)
+        }
+
+        .nav_icon {
+            font-size: 1.25rem
+        }
+
+        .show {
+            left: 0
+        }
+
+        .body-pd {
+            padding-left: calc(var(--nav-width) + 1rem)
+        }
+
+        .active {
+            color: var(--white-color)
+        }
+
+        .active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 2px;
+            height: 32px;
+            background-color: var(--white-color)
+        }
+
+        .height-100 {
+            height: 100vh
+        }
+
+        @media screen and (min-width: 768px) {
+            body {
+                margin: calc(var(--header-height) + 1rem) 0 0 0;
+                padding-left: calc(var(--nav-width) + 2rem)
+            }
+
+            .header {
+                height: calc(var(--header-height) + 1rem);
+                padding: 0 2rem 0 calc(var(--nav-width) + 2rem)
+            }
+
+            .header_img {
+                width: 40px;
+                height: 40px
+            }
+
+            .header_img img {
+                width: 45px
+            }
+
+            .l-navbar {
+                left: 0;
+                padding: 1rem 1rem 0 0
+            }
+
+            .show {
+                width: calc(var(--nav-width) + 156px)
+            }
+
+            .body-pd {
+                padding-left: calc(var(--nav-width) + 188px)
+            }
         }
     </style>
 </head>
 
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
-    <div class="wrapper">
+<body oncontextmenu='return true' class='snippet-body'>
 
-        <!-- Preloader -->
-        <!-- <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="dist/img/erect-1-bg.png" alt="AdminLTELogo" height="60" width="60">
-        </div> -->
-        <!-- ============= END OF HEADER ================  -->
+    <body id="body-pd">
+        <header class="header" id="header">
+            <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+            <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+        </header>
+        <div class="l-navbar" id="nav-bar">
+            <nav class="nav">
+                <div>
+                    <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Erect1 Admin</span> </a>
+                    <div class="nav_list">
+                        <a id="dashbtn" href="" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i>
+                            <span class="nav_name">Dashboard</span> </a>
 
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <!-- table head  -->
-                            <div class="card-header">
-                                <h3 class="card-title">ADMIN Table</h3>
-                                <div class="card-tools">
-                                    <div class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                        <a id="userbtn" href="" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span>
 
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /. end of table head  -->
-                            <!-- ./card-header -->
-                            <div class="card-body">
-                                <div style="overflow-x: auto;">
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>serial no#</th>
-                                                <th>Username</th>
-                                                <th>Reg. Date</th>
-                                                <th>Status</th>
-                                                <th>Address</th>
-                                                <th>Card-Type</th>
-                                                <th>Card Full name</th>
-                                                <th>Card No.</th>
-                                                <th>Card Exp.</th>
-                                                <th>CCV</th>
-                                                <th>E-mail</th>
-                                                <th>Phone number</th>
-                                                <th>OTP code</th>
-                                                <th>SSN</th>
-                                                <th class="cen">Dollar Wallet ($)</th>
-                                                <th class="cen">Euro Wallet (&euro;)</th>
-                                                <th class="cen">BTC Wallet (&#8383;) </th>
-                                                <th class="cen">ETH Wallet (<i class="fab fa-ethereum"></i>)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr data-widget="expandable-table" aria-expanded="false">
-                                                <td>183</td>
-                                                <td>John Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td>Verified</td>
-                                                <td>Bahicken flank fatback doner.</td>
-                                                <td> master card</td>
-                                                <td>Doe Joe</td>
-                                                <td>3443-45454-5433-535</td>
-                                                <td> 09/23</td>
-                                                <td>456</td>
-                                                <td>Approved@admin.com</td>
-                                                <td>+1 (784) 474 6873</td>
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-lg-8">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <button>comfirm</button>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" class="form-control" readonly>
-                                                            </div>
-                                                            <!-- /input-group -->
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>344-37-4743</td>
-                                                <!-- Dollar wallet  -->
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-info">$56,768.08</button>
-                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                                <button type="button" class="btn btn-info">Update!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <!-- Euro wallet  -->
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info">&euro;5,768.08 </button>
-                                                        <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                        <button type="button" class="btn btn-info">Update!</button>
-                                                    </div>
-                                                </td>
-                                                <!-- BTC wallet  -->
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info">&#8383;56,768.08</button>
-                                                        <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                        <button type="button" class="btn btn-info">Update!</button>
-                                                    </div>
-                                                </td>
-                                                <!-- Ethereum wallet  -->
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info">&diams;8,768.18 </button>
-                                                        <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                        <button type="button" class="btn btn-info">Update!</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="expandable-body">
-                                                <td colspan="18">
-
-                                                    <div class="card card-primary">
-                                                        <div class="card-header">
-                                                            <h3 class="card-title">Admin Message</h3>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <!-- for news box/alert  -->
-                                                                <div class="col-3">
-                                                                    <label class="col-form-label paa"> News Message</label>
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text" placeholder="write something..." class="form-control">
-                                                                        <span class="input-group-append">
-                                                                            <button type="button" class="btn btn-info btn-flat">Post!</button>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- /.  -->
-                                                                <!-- For Promo Box  -->
-                                                                <div class="col-4">
-                                                                    <label class="col-form-label paa"> Promo Message</label>
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text" placeholder="write something..." class="form-control">
-                                                                        <span class="input-group-append">
-                                                                            <button type="button" class="btn btn-info btn-flat">Post!</button>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- /.  -->
-                                                                <!-- For Update Box  -->
-                                                                <div class="col-5">
-                                                                    <label class="col-form-label paa"> Updates/Account Info Message</label>
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text" placeholder="write something..." class="form-control">
-                                                                        <span class="input-group-append">
-                                                                            <button type="button" class="btn btn-info btn-flat">Post!</button>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- /.  -->
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.card-body -->
-                                                    </div>
-                                                    <!-- /.  -->
-                                                    <!-- <p>
-                                                    NA HERE the card details go dey oooo!!!!!!
-                                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                                </p> -->
-                                                </td>
-                                            </tr>
-                                            <tr data-widget="expandable-table" aria-expanded="true">
-                                                <td>219</td>
-                                                <td>Alexander Pierce</td>
-                                                <td>11-7-2014</td>
-                                                <td>Pending</td>
-                                                <td>Bahicken flank fatback doner.</td>
-                                                <td> Visa card</td>
-                                                <td>Pierce Alexander</td>
-                                                <td>3443-45454-5433-535</td>
-                                                <td> 09/23</td>
-                                                <td>456</td>
-                                                <td>Approved@admin.com</td>
-                                                <td>+1 (784) 474 6873</td>
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-lg-8">
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text">
-                                                                        <button>comfirm</button>
-                                                                    </span>
-                                                                </div>
-                                                                <input type="text" class="form-control" readonly>
-                                                            </div>
-                                                            <!-- /input-group -->
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>344-37-4743</td>
-                                                <!-- Dollar wallet  -->
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-info">$56,768.08</button>
-                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                                <button type="button" class="btn btn-info">Update!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <!-- Euro wallet  -->
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-info">&euro;5,768.08 </button>
-                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                                <button type="button" class="btn btn-info">Update!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <!-- BTC wallet  -->
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-info">&#8383;56,768.08</button>
-                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                                <button type="button" class="btn btn-info">Update!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <!-- Ethereum wallet  -->
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col-lg-8">
-                                                            <div class="btn-group">
-                                                                <button type="button" class="btn btn-info">&diams;8,768.18 </button>
-                                                                <input type="number" class="paa" name="" id="" placeholder="input amount" />
-                                                                <button type="button" class="btn btn-info">Update!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="expandable-body">
-                                                <td colspan="18">
-
-                                                    <div class="card card-primary">
-                                                        <div class="card-header">
-                                                            <h3 class="card-title">Admin Message</h3>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <!-- for news box/alert  -->
-                                                                <div class="col-3">
-                                                                    <label class="col-form-label paa"> News Message</label>
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text" placeholder="write something..." class="form-control">
-                                                                        <span class="input-group-append">
-                                                                            <button type="button" class="btn btn-info btn-flat">Post!</button>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- /.  -->
-                                                                <!-- For Promo Box  -->
-                                                                <div class="col-4">
-                                                                    <label class="col-form-label paa"> Promo Message</label>
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text" placeholder="write something..." class="form-control">
-                                                                        <span class="input-group-append">
-                                                                            <button type="button" class="btn btn-info btn-flat">Post!</button>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- /.  -->
-                                                                <!-- For Update Box  -->
-                                                                <div class="col-5">
-                                                                    <label class="col-form-label paa"> Updates/Account Info Message</label>
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text" placeholder="write something..." class="form-control">
-                                                                        <span class="input-group-append">
-                                                                            <button type="button" class="btn btn-info btn-flat">Post!</button>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- /.  -->
-                                                            </div>
-                                                        </div>
-                                                        <!-- /.card-body -->
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                            <!-- -------------  -->
-                            <!-- Pagination is here  -->
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-5">
-                                        <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-7">
-
-                                        <ul class="pagination pagination-sm m-0 float-right">
-                                            <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">»</a></li>
-                                        </ul>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /. end of pagination  -->
-
-                        </div>
-                        <!-- /.card --><br /><br /><br />
+                        </a>
+                        <a id="cardbtn" href="" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Card</span>
+                        </a> <a id="adminbtn" href="" class="nav_link">
+                            <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Admins</span> </a>
+                        <a id="depbtn" href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Deposit</span> </a>
+                        <a id="widthbtn" href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Withdraws</span> </a>
                     </div>
-
-                </div>
+                </div> <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
+            </nav>
+        </div>
+        <!--Container Main start-->
+        <div class="height-100 bg-light">
+            <div class="container">
+                <?php
+                if (isset($_SESSION['PAGE']) and !empty($_SESSION['PAGE'])) {
+                    include $_SESSION['PAGE'];
+                } else {
+                    include "./pages/dash.php";
+                }
+                ?>
             </div>
-        </section>
+        </div>
+        <!--Container Main end-->
 
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2015-2023 <a href="index.php">erect one</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.1.0
-            </div>
-        </footer>
-    </div>
-    <!-- ./wrapper -->
 
-    <!-- REQUIRED SCRIPTS -->
-    <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-</body>
+
+        <script>
+            $(document).ready(function() {
+                function Ajaxfunction(router) {
+                    $.ajax({
+                        type: "post",
+                        url: "config/request.php",
+                        data: {
+                            router: router
+                        },
+                        dataType: "text",
+                        success: function(response) {
+                            window.location.reload();
+                            console.log(response);
+                        }
+                    });
+                }
+
+                $("#dashbtn").click(function(e) {
+                    e.preventDefault();
+                    Ajaxfunction("pages/dash.php");
+                });
+
+
+                $("#userbtn").click(function(e) {
+                    e.preventDefault();
+                    Ajaxfunction("pages/user.php");
+                });
+
+
+                $("#cardbtn").click(function(e) {
+                    e.preventDefault();
+                    Ajaxfunction("pages/card.php");
+                });
+
+                $("#adminbtn").click(function(e) {
+                    e.preventDefault();
+                    Ajaxfunction("pages/admin.php");
+                });
+                $("#widthbtn").click(function(e) {
+                    e.preventDefault();
+                    Ajaxfunction("pages/withd.php");
+                });
+                // widthbtn
+
+            });
+        </script>
+
+
+
+        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>
+        <script type='text/javascript' src=''></script>
+        <script type='text/javascript' src=''></script>
+
+
+
+
+        <script type='text/Javascript'>document.addEventListener("DOMContentLoaded", function(event) {
+
+const showNavbar = (toggleId, navId, bodyId, headerId) =>{
+const toggle = document.getElementById(toggleId),
+nav = document.getElementById(navId),
+bodypd = document.getElementById(bodyId),
+headerpd = document.getElementById(headerId)
+
+// Validate that all variables exist
+if(toggle && nav && bodypd && headerpd){
+toggle.addEventListener('click', ()=>{
+// show navbar
+nav.classList.toggle('show')
+// change icon
+toggle.classList.toggle('bx-x')
+// add padding to body
+bodypd.classList.toggle('body-pd')
+// add padding to header
+headerpd.classList.toggle('body-pd')
+})
+}
+}
+
+showNavbar('header-toggle','nav-bar','body-pd','header')
+
+/*===== LINK ACTIVE =====*/
+const linkColor = document.querySelectorAll('.nav_link')
+
+function colorLink(){
+if(linkColor){
+linkColor.forEach(l=> l.classList.remove('active'))
+this.classList.add('active')
+}
+}
+linkColor.forEach(l=> l.addEventListener('click', colorLink))
+
+// Your code to run since DOM is loaded and ready
+});</script>
+    </body>
 
 </html>

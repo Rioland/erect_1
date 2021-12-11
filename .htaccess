@@ -19,5 +19,5 @@ RewriteRule ^verify verify.php [NC,L]
 RewriteRule ^updateverify app/Apis/api.php [NC]
 RewriteRule ^admin/dashboard admin/index.php [NC]
 RewriteRule ^admin/login admin/adminloginpage.php [NC]
-# RewriteRule ^dashboard admin_p/index.php [NC]
+
 
