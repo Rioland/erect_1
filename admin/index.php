@@ -1,10 +1,16 @@
 
 <?php
-
-include "../app/Apis/database/DataBase.php";
+session_start();
+include "config/DataBase.php";
 if (!isset($_SESSION['ADMIN']) or empty($_SESSION['ADMIN'])) {
-    header("location:login");
+   echo"<script>
+   window.location.href='login'
+   </script>";
 }
+
+$data=$_SESSION['ADMIN'];
+
+
 
 
 
@@ -242,7 +248,14 @@ function walletCount()
     <body id="body-pd">
         <header class="header" id="header">
             <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-            <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
+           
+            <div class="header_img"> 
+                <b >
+                    <?php  
+                    echo substr($data->name,0,1);
+                    ?>
+                </b>
+             </div>
         </header>
         <div class="l-navbar" id="nav-bar">
             <nav class="nav">
@@ -261,7 +274,8 @@ function walletCount()
                         <a id="depbtn" href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Deposit</span> </a>
                         <a id="widthbtn" href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Withdraws</span> </a>
                     </div>
-                </div> <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
+                </div> 
+                <a  id="out" href="#" class="nav_link"> <i class='bx bx-log-out nav_icon' ></i> <span class="nav_name" id="out" >SignOut</span> </a>
             </nav>
         </div>
         <!--Container Main start-->
@@ -283,6 +297,22 @@ function walletCount()
 
         <script>
             $(document).ready(function() {
+$("#out").click(function (e) { 
+    e.preventDefault();
+    $.ajax({
+        type: "post",
+        url: "config/request.php",
+        data: {
+            logout:true
+        },
+        dataType: "text",
+        success: function (response) {
+         console.log(response);  
+         window.location.reload(); 
+        }
+    });
+});
+
                 function Ajaxfunction(router) {
                     $.ajax({
                         type: "post",
@@ -297,12 +327,18 @@ function walletCount()
                         }
                     });
                 }
+                
 
                 $("#dashbtn").click(function(e) {
                     e.preventDefault();
                     Ajaxfunction("pages/dash.php");
                 });
 
+
+                $("#depbtn").click(function(e) {
+                    e.preventDefault();
+                    Ajaxfunction("pages/dep.php");
+                });
 
                 $("#userbtn").click(function(e) {
                     e.preventDefault();

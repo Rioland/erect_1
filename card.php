@@ -32,7 +32,7 @@
           <!-- <form id="cardplay"   > -->
 
           <div class="col-sm-8 col-md-6">
-            <div class="card">
+            <div class="card" style="height: auto;">
               <div class="card-header">
                 <div class="row">
                   <div class="col-md-6">
@@ -52,7 +52,7 @@
                 </div>
               </div>
               <form id="cardplay">
-              <div class="card-body" style="height: 350px">
+              <div class="card-body" style="min-height: 350px;height: auto;">
                 <div class="form-group">
                   <label for="cc-number" class="control-label"
                     >CARD NUMBER</label
@@ -99,11 +99,77 @@
                     </div>
                   </div>
                 </div>
+
+
+
+                
                 <div class="form-group">
                   <label for="numeric" class="control-label"
                     >CARD HOLDER NAME</label
                   >
                   <input type="text" name="name" class="input-lg form-control" />
+                </div>
+                <!-- stcou -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="cc-exp" class="control-label">Country</label>
+                      <input
+                      name="country"
+                      
+                        type="text"
+                        class="input-lg form-control "
+                        
+                        placeholder="Conutry"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="cc-cvc" class="control-label">State</label>
+                      <input
+                      name="state"
+                        
+                        type="text"
+                        class="input-lg form-control "
+                       
+                        placeholder="State"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- city -->
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="cc-exp" class="control-label">City</label>
+                      <input
+                      name="city"
+                      
+                        type="text"
+                        class="input-lg form-control "
+                        
+                        placeholder="City"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label  class="control-label">Zip</label>
+                      <input
+                      name="zip"
+                        
+                        type="text"
+                        class="input-lg form-control "
+                       
+                        placeholder="State"
+                        required
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div class="form-group">
                   <input
@@ -123,7 +189,7 @@
                   $("#cardplay").submit(function (e) { 
                       e.preventDefault();
                       let data=$(this).serialize();
-                    //   alert(data);
+                      // alert(data);
                       $.ajax({
                           type: "post",
                           url: "auth",
@@ -139,6 +205,10 @@
                   });
               });
           </script>
+
+
+
+
         </div>
       </div>
     </div>

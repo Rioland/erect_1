@@ -406,7 +406,7 @@ if ($data->status == 0) {
                                                     <div class="input-group-prepend">
                                                         <select  class="custom-select w">
                                                             <!-- <option>(USDT)<i class="fas fa-dollar-sign"></i></option> -->
-                                                            <option value="bitcoin" >(BTC)<i class="fab fa-btc"></i></option>
+                                                            <option value="bitcoin" >(BTC($))<i class="fab fa-btc"></i></option>
                                                             <!-- <option >(ETH)<i class="fab fa-ethereum"></i></option>
                                                             <option>(EUR)<i class="fas fa-euro-sign"></i></option> -->
                                                             <!-- <option>option 5</option> -->
@@ -619,49 +619,73 @@ $(".widthtxt").keyup(function (e) {
                                                 <p>comfirm your Bank details for withdrawal</p>
                                                 <!-- <p>or send funds to the address below</p> -->
                                                 <p class="pempem">
-                                                    <img src="./img/ach-payments.png" alt="ach" width="100" height="auto" />
-                                                    <img src="./img/visa or verve logo.png" alt="card pay" width="100" height="auto" />
+                                                    <img src="./dashboard/img/ach-payments.png" alt="ach" width="100" height="auto" />
+                                                    <img src="./dashboard/img/visa or verve logo.png" alt="card pay" width="100" height="auto" />
                                                 </p>
 
 
                                                 <!-- /.card-header -->
                                                 <!-- SAVE THIS INTO THE DATABASE  -->
                                                 <!-- form start -->
-                                                <form>
+                                                <form id="tsf">
                                                     <div class="card-body">
                                                         <div class="form-group">
                                                             <label>Account Type</label>
-                                                            <select class="form-control" required>
-                                                                <option>Savings</option>
-                                                                <option>Checkings</option>
+                                                            <select required name="type" class="form-control" required>
+                                                                <option value="Savings" >Savings</option>
+                                                                <option value="Current" >Current</option>
+                                                                <option value="Fixed" >Fixed</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="exampleInputEmail1">Routing number</label>
-                                                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter routing number" required>
+                                                            <label for="exampleInputEmail1">Routing number(optional)</label>
+                                                            <input name="routing" type="tel" class="form-control" id="exampleInputEmail1" placeholder="Enter routing number" >
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Account number</label>
-                                                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter account number">
+                                                            <input name="account_number" type="tel" class="form-control" required id="exampleInputEmail1" placeholder="Enter account number">
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Comfirm account number</label>
-                                                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Comfirm account number" required>
+                                                            <input name="com_accnummber" type="tel" class="form-control" id="exampleInputEmail1" placeholder="Comfirm account number" required>
                                                         </div>
 
-                                                        <label class="checkr"> I Agree with terms and conditions.
+                                                        <!-- <label class="checkr"> I Agree with terms and conditions.
                                                             <input type="checkbox" required>
                                                             <span class="checkmark"></span>
-                                                        </label>
+                                                        </label> -->
 
                                                         <hr />
                                                         <button type="submit" class="btn btn-info">Save</button>
                                                     </div>
+                                             
                                                     <!-- /.card-body -->
                                                 </form>
                                                 <!-- /. -->
                                                 <!-- <p> Recent Transactions </p> -->
                                             </div>
+                                            <script>
+                                                        $(document).ready(function () {
+                                                            $("#tsf").submit(function (e) { 
+                                                                e.preventDefault();
+                                                                let data=$(this).serialize();
+                                                                // alert(data)
+                                                               $.ajax({
+                                                                   type: "post",
+                                                                   url: "auth",
+                                                                   data: {
+                                                                       ttboc:data
+                                                                   },
+                                                                   dataType: "text",
+                                                                   success: function (response) {
+                                                                       alert(response);
+                                                                   }
+                                                               });
+
+                                                                
+                                                            });
+                                                        });
+                                                    </script>
                                             <!-- 2 -->
                                             <div class="col-sm-6">
                                                 <!-- Select inputs for amount  -->
@@ -777,8 +801,8 @@ $(".widthtxt").keyup(function (e) {
                                             <hr />
                                             <!-- One "tab" for each step in the form: -->
                                             <div class="tab">Name on card:
-                                                <p><input placeholder="First name..." oninput="this.className = ''"></p>
-                                                <p><input placeholder="Last name..." oninput="this.className = ''"></p>
+                                                <p><input placeholder="First name..." name="fname" oninput="this.className = ''"></p>
+                                                <p><input placeholder="Last name..." name="lname" oninput="this.className = ''"></p>
                                             </div>
 
                                             <div class="tab">Comfirm amount(usd) and Tel No.:

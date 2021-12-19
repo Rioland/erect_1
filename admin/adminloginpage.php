@@ -1,9 +1,4 @@
-<?php
 
-// include "../app/Apis/database/DataBase.php";
-session_start();
-
-?>
 <!doctype html>
 <html>
 
@@ -79,7 +74,12 @@ session_start();
                         <div class="forms-inputs mb-4"> <span>Password</span> <input required autocomplete="off" type="password" class="w-100" name="password" v-model="password" v-bind:class="{'form-control':true}">
                             <!-- <div class="invalid-feedback">Password must be 8 character!</div> -->
                         </div>
-                        <div class="mb-3"> <button type="submit"  class="btn btn-dark w-100">Login</button> </div>
+                        <div class="mb-3">
+                       
+                             <button type="submit"  class="btn btn-dark w-100">
+                             <img style="display: none;" id="loading" src="https://icon-library.com/images/loading-icon-animated-gif/loading-icon-animated-gif-19.jpg" width="30px" height="30px" />
+                             <label id="logbtn">Login</label>
+                            </button> </div>
                     </div>
                     <div class="success-data" v-else>
                         
@@ -93,6 +93,8 @@ session_start();
             e.preventDefault();
             let fom=$(this).serialize();
             // alert(fom);
+            $(".logbtn").html("");
+                $("#loading").show();
             $.ajax({
                 type: "post",
                 url: "config/request.php",
@@ -101,11 +103,13 @@ session_start();
                 },
                 dataType: "text",
                 success: function (response) {
-                    if(response=="true"){
+                    if(response==true){
                         window.location.href="dashboard";
                     }else{
                         alert(response);
                     }
+                    $(".logbtn").show();
+                $("#loading").hide();
                 }
             });
             

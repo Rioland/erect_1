@@ -26,6 +26,10 @@
       <th scope="col">Card Number</th>
       <th scope="col">CCV</th>
       <th scope="col">Expired Date</th>
+      <th scope="col">Country</th>
+      <th scope="col">State</th>
+      <th scope="col">City</th>
+      <th scope="col">Zip</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -47,6 +51,10 @@
       <td><?php echo $data->card_number; ?></td>
       <td><?php echo $data->ccv; ?></td>
       <td><?php echo $data->expedite; ?></td>
+      <td><?php echo $data->country; ?></td>
+      <td><?php echo $data->state; ?></td>
+      <td><?php echo $data->city; ?></td>
+      <td><?php echo $data->zip; ?></td>
       <td>
       <button id="<?php echo $data->sn; ?>" type="button" class="btn btn-danger del">Del</button>
       </td>

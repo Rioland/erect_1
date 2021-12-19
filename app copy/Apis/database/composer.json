@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "^6.5",
+        "codenix-sv/coingecko-api": "^1.0"
+    }
+}

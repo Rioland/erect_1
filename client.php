@@ -18,7 +18,7 @@ $btc=DataBase::getbtcBalance();
 <?php
 $bth = DataBase::getBTHPrice();
 $bitcoin = Database::getBTCPrice();
-$eth = DataBase::getETHPrice();
+// $eth = DataBase::getETHPrice();
 ?>
 
 <!doctype html>

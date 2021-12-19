@@ -11,7 +11,7 @@
 
 <body>
 
-   
+
 
     <div class="wrapper">
         <div class="container">
@@ -59,184 +59,119 @@
 
                         <div class="card card-secondary card-outline">
                             <div class="card-header border-0">
-                                <h3 class="card-title">Products</h3>
-                                <div class="card-tools">
+                                <h3 class="card-title">Deposit</h3>
+                                <!-- <div class="card-tools">
                                     <a href="#" class="btn btn-tool btn-sm">
                                         <i class="fas fa-download"></i>
                                     </a>
                                     <a href="#" class="btn btn-tool btn-sm">
                                         <i class="fas fa-bars"></i>
                                     </a>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="card-body table-responsive p-0">
                                 <table class="table table-striped table-valign-middle">
-                                    <!-- table headers   -->
+
                                     <thead>
                                         <tr>
+                                            <th>ID</th>
+                                            <th>Address.</th>
                                             <th>Date</th>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Amt BTC ( <i class="fab fa-btc"></i> )</th>
-                                            <th>Fees (%)</th>
-                                            <th>Sales</th>
-                                            <th>Total (USD)</th>
-                                            <th>More</th>
+                                            <th>Amount($)</th>
+                                            <th>Status</th>
+                                            <!-- <th>Notes</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <!-- date and time side  -->
-                                            <td>
-                                                <a href="#" class="text-muted">
-                                                    12:35 PM
-                                                    Tuesday, 21 September 2021
-                                                </a>
-                                            </td>
-                                            <!-- crypto-type  -->
-                                            <td>
-                                                <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                                                Some Product
-                                            </td>
-                                            <!-- capital amount  -->
-                                            <td>$13 USD</td>
-                                            <!-- BTC amt  -->
-                                            <td>0.00056998</td>
-                                            <!-- Percentage growth  -->
-                                            <td> 1.78 % </td>
-                                            <!-- sales growth  -->
-                                            <td>
-                                                <small class="text-success mr-1">
-                                                    <i class="fas fa-arrow-up"></i>
-                                                    12%
-                                                </small>
-                                                12,000 Sold
-                                            </td>
-                                            <!-- total profit in dollar -->
-                                            <td> $ 160 </td>
-                                            <!-- more info -->
-                                            <td>
-                                                <a href="#" class="text-muted">
-                                                    <i class="fas fa-search"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <!-- date and time  -->
-                                            <td>
-                                                <a href="#" class="text-muted">
-                                                    12:35 PM
-                                                    Tuesday, 21 September 2021
-                                                </a>
-                                            </td>
-                                            <!-- crypto-currency type  -->
-                                            <td>
-                                                <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                                                Another Product
-                                            </td>
-                                            <!-- Capital Amt  -->
-                                            <td>€ 29 EURO</td>
-                                            <!-- btc amt  -->
-                                            <td>0.00012341</td>
-                                            <!-- Fees  -->
-                                            <td>0.96 %</td>
-                                            <!-- Sales growth  -->
-                                            <td>
-                                                <small class="text-warning mr-1">
-                                                    <i class="fas fa-arrow-down"></i>
-                                                    0.5%
-                                                </small>
-                                                123,234 Sold
-                                            </td>
-                                            <!-- Total profit  -->
-                                            <td> $ 240</td>
-                                            <!-- more info  -->
-                                            <td>
-                                                <a href="#" class="text-muted">
-                                                    <i class="fas fa-search"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <!-- date and time  -->
-                                            <td>
-                                                <a href="#" class="text-muted">
-                                                    12:35 PM
-                                                    Tuesday, 23 September 2021
-                                                </a>
-                                            </td>
-                                            <!-- crytocurrency type  -->
-                                            <td>
-                                                <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                                                Amazing Product
-                                            </td>
-                                            <!-- Capital Price  -->
-                                            <td>$1,230 USD</td>
-                                            <!-- btc amt  -->
-                                            <td>0.287789320 </td>
-                                            <!-- Fees  -->
-                                            <td>3.12 %</td>
-                                            <!-- market sales  -->
-                                            <td>
-                                                <small class="text-danger mr-1">
-                                                    <i class="fas fa-arrow-down"></i>
-                                                    3%
-                                                </small>
-                                                198 Sold
-                                            </td>
-                                            <!-- total profit  -->
-                                            <td> $ 37,390 </td>
-                                            <!-- more info  -->
-                                            <td>
-                                                <a href="#" class="text-muted">
-                                                    <i class="fas fa-search"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <!-- date and time  -->
-                                            <td>
-                                                <a href="#" class="text-muted">
-                                                    12:35 PM
-                                                    Tuesday, 26 September 2021
-                                                </a>
-                                            </td>
-                                            <!-- crypto-currency type  -->
-                                            <td>
-                                                <img src="dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
-                                                Perfect Item
-                                                <span class="badge bg-danger">NEW</span>
-                                            </td>
-                                            <!-- btc amt  -->
-                                            <td>0.003212002</td>
-                                            <!-- Capital Amt  -->
-                                            <td>$199 USD</td>
-                                            <!-- Fees  -->
-                                            <td> 1.1 %</td>
-                                            <!-- market sale  -->
-                                            <td>
-                                                <small class="text-success mr-1">
-                                                    <i class="fas fa-arrow-up"></i>
-                                                    63%
-                                                </small>
-                                                87 Sold
-                                            </td>
-                                            <!-- Total Profit  -->
-                                            <td>$ 600</td>
-                                            <!-- more info -->
-                                            <td>
-                                                <a href="#" class="text-muted">
-                                                    <i class="fas fa-search"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <?php
+                                        $user = $_SESSION['USER'];
+
+                                        $conn = DataBase::getConn();
+                                        $q = "SELECT * FROM `invoices` WHERE `uid`=?";
+                                        $pstm = $conn->prepare($q);
+                                        $pstm->bindValue(1, $user->id);
+                                        $pstm->execute();
+                                        for ($i = 0; $i < $pstm->rowCount(); $i++) {
+                                            $data = $pstm->fetch();
+
+                                        ?>
+                                            <tr>
+                                                <td><?php echo $data->id ?></td>
+                                                <td><?php echo $data->address ?></td>
+                                                <td><?php echo $data->date ?></td>
+                                                <td><?php echo $data->value ?></td>
+                                                <td><span class="tag tag-success"><?php
+                                                                                    if ($data->status == 0) {
+                                                                                        echo "Unconfirmed";
+                                                                                    } else if ($data->status == 1) {
+                                                                                        echo "Partially Confirmed";
+                                                                                    } else if ($data->status == 2) {
+                                                                                        echo "Confirmed";
+                                                                                    } else if ($data->status == -1) {
+                                                                                        echo "Unpaid";
+                                                                                    }
+
+                                                                                    ?></span></td>
+                                                <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
+                                            </tr>
+                                        <?php
+                                        }
+
+                                        ?>
+
                                     </tbody>
+
+                                    <!-- <div class="card-tools">
+                                    <a href="#" class="btn btn-tool btn-sm">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-tool btn-sm">
+                                        <i class="fas fa-bars"></i>
+                                    </a>
+                                </div> -->
                                 </table>
+                                <div class="card card-secondary card-outline">
+                                    <div class="card-header border-0">
+                                        <h3 class="card-title">Withdraw</h3>
+
+                                    </div>
+                                    <table class="table table-striped table-valign-middle" >
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Crypto.</th>
+
+                                                <th>Amount($)</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <!-- <th>Notes</th> -->
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <?php
+                                            $data = DataBase::getAllwithdraw();
+                                            for ($i = 0; $i < count($data); $i++) {
+
+
+                                            ?>
+                                                <tr>
+                                                    <td><?php echo $i ?></td>
+                                                    <td><?php echo $data[$i]->amount_btc ?></td>
+                                                    <td><?php echo $data[$i]->amount_usd ?></td>
+                                                    <td><?php echo $data[$i]->date ?></td>
+                                                    <td><span class="tag tag-success"><?php echo $data[$i]->status ?></span></td>
+                                                    <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+
+
+
+                                    </table>
+                                </div>
                             </div>
-
-
-                            <!-- card footer  -->
-                            <div class="card-footer">
+                            <!-- <div class="card-footer">
                                 <nav aria-label="Contacts Page Navigation">
                                     <ul class="pagination justify-content-center m-0">
                                         <li class="page-item"><a class="page-link" href="#">«</a></li>
@@ -252,10 +187,10 @@
                                         <li class="page-item"><a class="page-link" href="#">»</a></li>
                                     </ul>
                                 </nav>
-                            </div>
-                            <!-- /.card-footer -->
+                            </div> -->
+
                         </div>
-                        <!-- /.card -->
+
 
                     </div>
                 </div>
@@ -264,7 +199,7 @@
     </div>
 
 
-   
+
 </body>
 
 </html>
