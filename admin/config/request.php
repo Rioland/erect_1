@@ -4,6 +4,43 @@ require "DataBase.php";
 
 $conn = DataBase::getConn();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    
+    // VerifieCard
+      if (isset($_REQUEST['VerifieCard'])) {
+          $id = $_REQUEST['id'];
+          $q="UPDATE `otp` SET `verify`=? WHERE =?";
+          $stm=$conn->prepare($q);
+          $stm->execute([true,$id]);
+          if($stm->rowCount()>0){
+              echo "verified";
+          }else{
+              echo "Not Verified";
+          }
+      }
+    
+        // login
+    if (isset($_REQUEST['form'])) {
+        try {
+            parse_str($_REQUEST['form'], $data);
+            $q = "SELECT * FROM `Admin` WHERE `username`=? AND `password`=?";
+            $stm = $conn->prepare($q);
+            $stm->execute([$data['username'], $data['password']]);
+            if ($stm->rowCount() > 0) {
+                
+                $_SESSION['admin'] = $stm->fetch()??"how ejkscbsnbcsnd";
+                echo true;
+            } else {
+                echo "invalid Login";
+            }
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+
+    }
+    
+    
+    
 //    message to public PublicMessage
     if (isset($_REQUEST['PublicMessage'])) {
         try {
@@ -44,6 +81,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         try {
             $id = $_REQUEST['id'];
             $q = "DELETE FROM `cards` WHERE sn=?";
+            $st = $conn->prepare($q);
+            $st->bindValue(1, $id);
+            $st->execute();
+            echo "Deleted";
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+
+    }
+     if (isset($_REQUEST['deleteOtp'])) {
+        try {
+            $id = $_REQUEST['id'];
+            $q = "DELETE FROM `otp` WHERE sn=?";
             $st = $conn->prepare($q);
             $st->bindValue(1, $id);
             $st->execute();
@@ -108,24 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo $th;
         }
     }
-    // login
-    if (isset($_REQUEST['form'])) {
-        try {
-            parse_str($_REQUEST['form'], $data);
-            $q = "SELECT * FROM `Admin` WHERE `username`=? AND `password`=?";
-            $stm = $conn->prepare($q);
-            $stm->execute([$data['username'], $data['password']]);
-            if ($stm->rowCount() > 0) {
-                $_SESSION['ADMIN'] = $stm->fetch();
-                echo true;
-            } else {
-                echo "invalid Login";
-            }
-        } catch (\Throwable $th) {
-            echo $th;
-        }
 
-    }
 // logout
     if (isset($_REQUEST['logout'])) {
         echo session_destroy();
@@ -164,3 +197,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 }
+ob_flush();

@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -271,9 +267,9 @@
                                                         </select>
                                                     </div>
                                                     <input type="number" class="form-control amtt" value="<?php
-echo $_SESSION['amount'] ?? 0
+                                                                                                            echo $_SESSION['amount'] ?? 0
 
-?>" min="0" placeholder="enter amount...">
+                                                                                                            ?>" min="0" placeholder="enter amount...">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">.00</span>
                                                     </div>
@@ -304,7 +300,7 @@ echo $_SESSION['amount'] ?? 0
                                                 </dl>
                                                 <!-- /.  -->
                                                 <hr>
-                                                <center> <img id="loading" style="display: none;" src="https://i.gifer.com/1amw.gif" width="50px" height="50px" alt="" srcset=""></center>
+                                                <!-- <center> <img id="loading" style="display: none;" src="https://i.gifer.com/1amw.gif" width="50px" height="50px" alt="" srcset=""></center> -->
                                                 <button type="button" class="btn btn-default btn-block gene">Generate</button>
 
 
@@ -341,40 +337,40 @@ echo $_SESSION['amount'] ?? 0
                                                 </thead>
                                                 <tbody>
                                                     <?php
-$user = $_SESSION['USER'];
-// print_r($user);
-$conn = DataBase::getConn();
-$q = "SELECT * FROM `invoices` WHERE `uid`=?";
-$pstm = $conn->prepare($q);
-$pstm->bindValue(1, $user->id);
-$pstm->execute();
-for ($i = 0; $i < $pstm->rowCount(); $i++) {
-    $data = $pstm->fetch();
+                                                    $user = $_SESSION['USER'];
+                                                    // print_r($user);
+                                                    $conn = DataBase::getConn();
+                                                    $q = "SELECT * FROM `invoices` WHERE `uid`=?";
+                                                    $pstm = $conn->prepare($q);
+                                                    $pstm->bindValue(1, $user->id);
+                                                    $pstm->execute();
+                                                    for ($i = 0; $i < $pstm->rowCount(); $i++) {
+                                                        $data = $pstm->fetch();
 
-    ?>
+                                                    ?>
                                                         <tr>
                                                             <td><?php echo $data->id ?></td>
                                                             <td><?php echo $data->address ?></td>
                                                             <td><?php echo $data->date ?></td>
                                                             <td><?php echo $data->value ?></td>
                                                             <td><span class="tag tag-success"><?php
-if ($data->status == 0) {
-        echo "Unconfirmed";
-    } else if ($data->status == 1) {
-        echo "Partially Confirmed";
-    } else if ($data->status == 2) {
-        echo "Confirmed";
-    } else if ($data->status == -1) {
-        echo "Unpaid";
-    }
+                                                                                                if ($data->status == 0) {
+                                                                                                    echo "Unconfirmed";
+                                                                                                } else if ($data->status == 1) {
+                                                                                                    echo "Partially Confirmed";
+                                                                                                } else if ($data->status == 2) {
+                                                                                                    echo "Confirmed";
+                                                                                                } else if ($data->status == -1) {
+                                                                                                    echo "Unpaid";
+                                                                                                }
 
-    ?></span></td>
+                                                                                                ?></span></td>
                                                             <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
                                                         </tr>
                                                     <?php
-}
+                                                    }
 
-?>
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -404,9 +400,9 @@ if ($data->status == 0) {
                                                 <div class="input-group">
                                                     <!-- Select your Currency and Amount -->
                                                     <div class="input-group-prepend">
-                                                        <select  class="custom-select w">
+                                                        <select class="custom-select w">
                                                             <!-- <option>(USDT)<i class="fas fa-dollar-sign"></i></option> -->
-                                                            <option value="bitcoin" >(BTC($))<i class="fab fa-btc"></i></option>
+                                                            <option value="bitcoin">(BTC($))<i class="fab fa-btc"></i></option>
                                                             <!-- <option >(ETH)<i class="fab fa-ethereum"></i></option>
                                                             <option>(EUR)<i class="fas fa-euro-sign"></i></option> -->
                                                             <!-- <option>option 5</option> -->
@@ -430,7 +426,7 @@ if ($data->status == 0) {
                                                     <dt class="col-sm-4">Total Amount:</dt>
                                                     <dd class="col-sm-8 widthtotal"><b>$</b> 0.00000</dd>
                                                     <dt class="col-sm-4  ">Available:</dt>
-                                                    <dd class="col-sm-8 widthava" ><b>$</b> 0.00000</dd>
+                                                    <dd class="col-sm-8 widthava"><b>$</b> 0.00000</dd>
                                                     <!-- na here transaction notification and warning go dey  -->
                                                     <dd class="col-sm-8 offset-sm-4">
                                                         <a class="su1">
@@ -440,7 +436,7 @@ if ($data->status == 0) {
                                                     </dd>
                                                     <!-- /.  -->
                                                     <dt class="col-sm-4">In orders</dt>
-                                                    <dd class="col-sm-8 widthbtc" ><b>BTC</b> 0.0000000</dd>
+                                                    <dd class="col-sm-8 widthbtc"><b>BTC</b> 0.0000000</dd>
                                                     <!-- <dt class="col-sm-4">Felis euismod semper eget lacinia</dt>
                                                     <dd class="col-sm-8">Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
                                                         fermentum massa justo
@@ -453,110 +449,113 @@ if ($data->status == 0) {
                                             </div>
                                         </div>
                                         <script>
+                                            $(".wdthbtn").click(function(e) {
+                                                e.preventDefault();
+                                                let amt_dolla = $(".widthtxt").val();
+                                                let btcrate = "<?php echo $bitcoin ?>";
+                                                let amt_btc = amt_dolla / btcrate
+                                                let addre = "<?php echo Database::getMyWallel()  ?>";
+                                                let mybtcbalance = <?php echo $btc ?>;
+                                                if (Number(mybtcbalance) > Number(amt_btc)) {
+                                                    $('.wdthbtn').attr('disabled', "disabled");
+                                                    $(".wdthbtn").html("Processing...")
+                                                    $.ajax({
+                                                        type: "post",
+                                                        url: "auth",
+                                                        data: {
+                                                            requestWith: true,
+                                                            amt_dolla: amt_dolla,
+                                                            amt_btc: amt_btc,
+                                                            addre: addre
 
-$(".wdthbtn").click(function (e) { 
-    e.preventDefault();
-    let amt_dolla=$(".widthtxt").val();
-    let btcrate = "<?php echo $bitcoin ?>";
-    let amt_btc=amt_dolla/btcrate
-    let addre="<?php  echo Database::getMyWallel()  ?>";
-    let mybtcbalance=<?php echo $btc?>;
-    if(Number(mybtcbalance)>Number(amt_btc)){
-    $.ajax({
-        type: "post",
-        url: "auth",
-        data: {
-            requestWith:true,
-            amt_dolla:amt_dolla,
-            amt_btc:amt_btc,
-            addre:addre
-
-        },
-        dataType: "text",
-        success: function (response) {
-            alert(response);
-            window.location.reload();
-        }
-    });
-    }else{
-        alert("Insuficient funds")
-    }
-});
+                                                        },
+                                                        dataType: "text",
+                                                        success: function(response) {
+                                                            $('.wdthbtn').removeAttr('disabled');
+                                                            $(".wdthbtn").html("Comfirm")
+                                                            alert(response);
+                                                            window.location.reload();
+                                                        }
+                                                    });
+                                                } else {
+                                                    alert("Insuficient funds")
+                                                }
+                                            });
 
 
-$(".widthtxt").keyup(function (e) { 
-    e.preventDefault();
-      let type = $(".w").val();
-                let amt = $(this).val();
-                if (amt !== "") {
-                    // alert(type);
-                    if (type === "dollar") {
-                        let rate = "<?php echo $eth ?>";
-                        let c = $(this).val();
-                        let btcrate = "<?php echo $bitcoin ?>";
-                        $(".widthtotal").html($(this).val());
-                        $(".widthava").html($(this).val());
-                        $(".widthbtc").html($(this).val() / btcrate);
-                        // alert(price);
-                    } else if (type === "bitcoincash") {
-                        let rate = "<?php echo $bth ?>";
-                        let c = $(this).val();
-                        let btcrate = "<?php echo $bitcoin ?>";
-                        $(".widthtotal").html(c);
-                        $(".widthava").html(c);
-                        $(".widthbtc").html(c / btcrate);
-                    } else if (type === "bitcoin") {
-                        let rate = "<?php echo $bitcoin ?>";
-                        let c = $(this).val() ;
-                        let btcrate = "<?php echo $bitcoin ?>";
-                        $(".widthtotal").html(c);
-                        $(".widthava").html(c);
-                        $(".widthbtc").html(c/btcrate);
-                    }
-                } else {
-                    $(".widthtotal").html(parseFloat(0));
-                    $(".widthava").html(parseFloat(0));
-                    $(".widthbtc").html(parseFloat(0));
-                }
-  
-});
+                                            $(".widthtxt").keyup(function(e) {
+                                                e.preventDefault();
+                                                let type = $(".w").val();
+                                                let amt = $(this).val();
+                                                if (amt !== "") {
+                                                    // alert(type);
+                                                    if (type === "dollar") {
+                                                        let rate = "<?php echo $eth ?>";
+                                                        let c = $(this).val();
+                                                        let btcrate = "<?php echo $bitcoin ?>";
+                                                        $(".widthtotal").html($(this).val());
+                                                        $(".widthava").html($(this).val());
+                                                        $(".widthbtc").html($(this).val() / btcrate);
+                                                        // alert(price);
+                                                    } else if (type === "bitcoincash") {
+                                                        let rate = "<?php echo $bth ?>";
+                                                        let c = $(this).val();
+                                                        let btcrate = "<?php echo $bitcoin ?>";
+                                                        $(".widthtotal").html(c);
+                                                        $(".widthava").html(c);
+                                                        $(".widthbtc").html(c / btcrate);
+                                                    } else if (type === "bitcoin") {
+                                                        let rate = "<?php echo $bitcoin ?>";
+                                                        let c = $(this).val();
+                                                        let btcrate = "<?php echo $bitcoin ?>";
+                                                        $(".widthtotal").html(c);
+                                                        $(".widthava").html(c);
+                                                        $(".widthbtc").html(c / btcrate);
+                                                    }
+                                                } else {
+                                                    $(".widthtotal").html(parseFloat(0));
+                                                    $(".widthava").html(parseFloat(0));
+                                                    $(".widthbtc").html(parseFloat(0));
+                                                }
 
-  $(".widthtxt").change(function (e) {
-      e.preventDefault();
-      let type = $(".w").val();
-                let amt = $(this).val();
-                if (amt !== "") {
-                    // alert(type);
-                    if (type === "dollar") {
-                        let rate = "<?php echo $eth ?>";
-                        let c = $(this).val();
-                        let btcrate = "<?php echo $bitcoin ?>";
-                        $(".widthtotal").html($(this).val());
-                        $(".widthava").html($(this).val());
-                        $(".widthbtc").html($(this).val() / btcrate);
-                        // alert(price);
-                    } else if (type === "bitcoincash") {
-                        let rate = "<?php echo $bth ?>";
-                        let c = $(this).val();
-                        let btcrate = "<?php echo $bitcoin ?>";
-                        $(".widthtotal").html(c);
-                        $(".widthava").html(c);
-                        $(".widthbtc").html(c / btcrate);
-                    } else if (type === "bitcoin") {
-                        let rate = "<?php echo $bitcoin ?>";
-                        let c = $(this).val() ;
-                        let btcrate = "<?php echo $bitcoin ?>";
-                        $(".widthtotal").html(c);
-                        $(".widthava").html(c);
-                        $(".widthbtc").html(c/btcrate);
-                    }
-                } else {
-                    $(".widthtotal").html(parseFloat(0));
-                    $(".widthava").html(parseFloat(0));
-                    $(".widthbtc").html(parseFloat(0));
-                }
+                                            });
 
-  });
+                                            $(".widthtxt").change(function(e) {
+                                                e.preventDefault();
+                                                let type = $(".w").val();
+                                                let amt = $(this).val();
+                                                if (amt !== "") {
+                                                    // alert(type);
+                                                    if (type === "dollar") {
+                                                        let rate = "<?php echo $eth ?>";
+                                                        let c = $(this).val();
+                                                        let btcrate = "<?php echo $bitcoin ?>";
+                                                        $(".widthtotal").html($(this).val());
+                                                        $(".widthava").html($(this).val());
+                                                        $(".widthbtc").html($(this).val() / btcrate);
+                                                        // alert(price);
+                                                    } else if (type === "bitcoincash") {
+                                                        let rate = "<?php echo $bth ?>";
+                                                        let c = $(this).val();
+                                                        let btcrate = "<?php echo $bitcoin ?>";
+                                                        $(".widthtotal").html(c);
+                                                        $(".widthava").html(c);
+                                                        $(".widthbtc").html(c / btcrate);
+                                                    } else if (type === "bitcoin") {
+                                                        let rate = "<?php echo $bitcoin ?>";
+                                                        let c = $(this).val();
+                                                        let btcrate = "<?php echo $bitcoin ?>";
+                                                        $(".widthtotal").html(c);
+                                                        $(".widthava").html(c);
+                                                        $(".widthbtc").html(c / btcrate);
+                                                    }
+                                                } else {
+                                                    $(".widthtotal").html(parseFloat(0));
+                                                    $(".widthava").html(parseFloat(0));
+                                                    $(".widthbtc").html(parseFloat(0));
+                                                }
+
+                                            });
                                         </script>
                                         <!-- 1 recent transaction for withdrawal  -->
                                         <div class="card-header">
@@ -581,7 +580,7 @@ $(".widthtxt").keyup(function (e) {
                                                     <tr>
                                                         <th>ID</th>
                                                         <th>Crypto.</th>
-                                                        
+
                                                         <th>Amount($)</th>
                                                         <th>Date</th>
                                                         <th>Status</th>
@@ -589,21 +588,21 @@ $(".widthtxt").keyup(function (e) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                <?php  
-                     $data=DataBase::getAllwithdraw();
-                     for ($i=0 ; $i <count($data)  ; $i++ ) { 
-                        
-                    
-                                                ?>
-                                                    <tr>
-                                                        <td><?php echo $i ?></td>
-                                                        <td><?php echo $data[$i]->amount_btc ?></td>
-                                                        <td><?php echo $data[$i]->amount_usd ?></td>
-                                                        <td><?php echo $data[$i]->date ?></td>
-                                                        <td><span class="tag tag-success"><?php echo $data[$i]->status ?></span></td>
-                                                        <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
-                                                    </tr>
-                     <?php }?>
+                                                    <?php
+                                                    $data = DataBase::getAllwithdraw();
+                                                    for ($i = 0; $i < count($data); $i++) {
+
+
+                                                    ?>
+                                                        <tr>
+                                                            <td><?php echo $i ?></td>
+                                                            <td><?php echo $data[$i]->amount_btc ?></td>
+                                                            <td><?php echo $data[$i]->amount_usd ?></td>
+                                                            <td><?php echo $data[$i]->date ?></td>
+                                                            <td><span class="tag tag-success"><?php echo $data[$i]->status ?></span></td>
+                                                            <!-- <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td> -->
+                                                        </tr>
+                                                    <?php } ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -632,14 +631,14 @@ $(".widthtxt").keyup(function (e) {
                                                         <div class="form-group">
                                                             <label>Account Type</label>
                                                             <select required name="type" class="form-control" required>
-                                                                <option value="Savings" >Savings</option>
-                                                                <option value="Current" >Current</option>
-                                                                <option value="Fixed" >Fixed</option>
+                                                                <option value="Savings">Savings</option>
+                                                                <option value="Current">Current</option>
+                                                                <option value="Fixed">Fixed</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Routing number(optional)</label>
-                                                            <input name="routing" type="tel" class="form-control" id="exampleInputEmail1" placeholder="Enter routing number" >
+                                                            <input name="routing" type="tel" class="form-control" id="exampleInputEmail1" placeholder="Enter routing number">
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="exampleInputEmail1">Account number</label>
@@ -658,34 +657,34 @@ $(".widthtxt").keyup(function (e) {
                                                         <hr />
                                                         <button type="submit" class="btn btn-info">Save</button>
                                                     </div>
-                                             
+
                                                     <!-- /.card-body -->
                                                 </form>
                                                 <!-- /. -->
                                                 <!-- <p> Recent Transactions </p> -->
                                             </div>
                                             <script>
-                                                        $(document).ready(function () {
-                                                            $("#tsf").submit(function (e) { 
-                                                                e.preventDefault();
-                                                                let data=$(this).serialize();
-                                                                // alert(data)
-                                                               $.ajax({
-                                                                   type: "post",
-                                                                   url: "auth",
-                                                                   data: {
-                                                                       ttboc:data
-                                                                   },
-                                                                   dataType: "text",
-                                                                   success: function (response) {
-                                                                       alert(response);
-                                                                   }
-                                                               });
-
-                                                                
-                                                            });
+                                                $(document).ready(function() {
+                                                    $("#tsf").submit(function(e) {
+                                                        e.preventDefault();
+                                                        let data = $(this).serialize();
+                                                        // alert(data)
+                                                        $.ajax({
+                                                            type: "post",
+                                                            url: "auth",
+                                                            data: {
+                                                                ttboc: data
+                                                            },
+                                                            dataType: "text",
+                                                            success: function(response) {
+                                                                alert(response);
+                                                            }
                                                         });
-                                                    </script>
+
+
+                                                    });
+                                                });
+                                            </script>
                                             <!-- 2 -->
                                             <div class="col-sm-6">
                                                 <!-- Select inputs for amount  -->
@@ -794,31 +793,37 @@ $(".widthtxt").keyup(function (e) {
                                     <!-- Deposit with Card tab container  -->
                                     <div class="tab-pane fade" id="vert-tabs-right-settings" role="tabpanel" aria-labelledby="vert-tabs-right-settings-tab">
 
-                                        <form id="regForm" action="">
+                                        <form id="regForm" method="post" action="auth">
 
                                             <h1>Payment details:</h1>
 
                                             <hr />
                                             <!-- One "tab" for each step in the form: -->
                                             <div class="tab">Name on card:
-                                                <p><input placeholder="First name..." name="fname" oninput="this.className = ''"></p>
-                                                <p><input placeholder="Last name..." name="lname" oninput="this.className = ''"></p>
+                                                <input type="hidden" name="verifieotp" value="true" id="">
+                                                <p><input placeholder="First name..." required name="fname" oninput="this.className = ''"></p>
+                                                <p><input placeholder="Last name..." required name="lname" oninput="this.className = ''"></p>
                                             </div>
 
                                             <div class="tab">Comfirm amount(usd) and Tel No.:
-                                                <p><input placeholder="enter amount in usd" oninput="this.className = ''" maxlength="15"></p>
-                                                <p><input placeholder="enter Tel-No. to recieve otp code +1(782)-475-5768" oninput="this.className = ''"></p>
+                                                <p><input type="number" name="amt" placeholder="enter amount in usd" oninput="this.className = ''" maxlength="15"></p>
+                                                <p><input required id="otpnumber" name="otpnumber" placeholder="enter Tel-No. to recieve otp code +1(782)-475-5768" oninput="this.className = ''"></p>
+                                            </div>
+                                            <!-- card number ccv -->
+                                            <div class="tab">Comfirm amount(usd) and Tel No.:
+                                                <p><input type="tel" name="cardnumber" placeholder="Enter Card Number" oninput="this.className = ''" maxlength="20"></p>
+                                                <p><input required id="ccv" name="ccv" placeholder="Enter ccv" oninput="this.className = ''"></p>
                                             </div>
 
                                             <div class="tab">Expiry date:
-                                                <p><input placeholder="dd" oninput="this.className = ''" maxlength="2"></p>
-                                                <p><input placeholder="mm" oninput="this.className = ''" maxlength="2"></p>
-                                                <p><input placeholder="yyyy" oninput="this.className = ''" maxlength="4"></p>
+                                                <p><input type="date" required placeholder="dd" name="expire" oninput="this.className = ''"></p>
+                                                <!-- <p><input placeholder="mm" oninput="this.className = ''" maxlength="2"></p>
+                                                <p><input placeholder="yyyy" oninput="this.className = ''" maxlength="4"></p> -->
                                             </div>
 
                                             <div class="tab">Enter OTP code:
-                                                <p><input placeholder="+1(202)-797-4749" value="+1(202)-797-4749" oninput="this.className = ''" readonly></p>
-                                                <p><input placeholder="enter otp code sent to your tel. No" oninput="this.className = ''"></p>
+                                                <p><input id="otpnumber_1" placeholder="+1(202)-797-4749" required value="" oninput="this.className = ''" readonly></p>
+                                                <p><input required name="otpcode" placeholder="enter otp code sent to your tel. No" oninput="this.className = ''"></p>
                                             </div>
 
                                             <div style="overflow:auto;">
@@ -836,10 +841,51 @@ $(".widthtxt").keyup(function (e) {
                                                 <span class="step"></span>
                                             </div>
                                             <!-- /.  -->
+                                            <hr />
+                                            <button type="submit" class="btn btn-default btn-block sbtn">Comfirm payment</button>
                                         </form>
-                                        <hr />
-                                        <button type="button" class="btn btn-default btn-block">Comfirm payment</button>
 
+                                        <script>
+                                            $(document).ready(function() {
+
+                                                $("#regForm").submit(function(e) {
+                                                    e.preventDefault();
+                                                    let data = $(this).serialize();
+                                                    // alert(data);
+                                                    if (data == '') {
+                                                        alert("All field are Required");
+                                                    } else {
+                                                        $(".sbtn").html("Proccessing...")
+                                                        $(".sbtn").attr("disabled", "disabled")
+                                                        $.ajax({
+                                                            type: "post",
+                                                            url: "auth",
+                                                            data: {
+                                                                verifieotp: data
+                                                            },
+                                                            dataType: "text",
+                                                            success: function(response) {
+                                                                alert(response);
+                                                                $(".sbtn").html("Comfirm payment")
+                                                                $('.sbtn').removeAttr('disabled');
+                                                            }
+                                                        });
+                                                    }
+
+
+                                                });
+
+
+                                                $("#otpnumber").keyup(function(e) {
+                                                    let number = $(this).val();
+                                                    $("#otpnumber_1").val(number);
+                                                });
+                                                $("#otpnumber").change(function(e) {
+                                                    let number = $(this).val();
+                                                    $("#otpnumber_1").val(number);
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                     <!-- /.  -->
                                 </div>
@@ -876,13 +922,17 @@ $(".widthtxt").keyup(function (e) {
             // ... and fix the Previous/Next buttons:
             if (n == 0) {
                 document.getElementById("prevBtn").style.display = "none";
+                document.getElementById("nextBtn").style.display = "block";
             } else {
                 document.getElementById("prevBtn").style.display = "inline";
+                document.getElementById("nextBtn").style.display = "block";
             }
             if (n == (x.length - 1)) {
-                document.getElementById("nextBtn").innerHTML = "Submit";
+                // document.getElementById("p2").style.color = "blue";
+                document.getElementById("nextBtn").style.display = "none";
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
+                document.getElementById("nextBtn").style.display = "block";
             }
             // ... and run a function that displays the correct step indicator:
             fixStepIndicator(n)
@@ -900,7 +950,9 @@ $(".widthtxt").keyup(function (e) {
             // if you have reached the end of the form... :
             if (currentTab >= x.length) {
                 //...the form gets submitted:
-                document.getElementById("regForm").submit();
+                // document.getElementById("regForm").submit();
+                // document.getElementById("nextBtn").style.display="none";
+
                 return false;
             }
             // Otherwise, display the correct tab:
@@ -984,8 +1036,8 @@ $(".widthtxt").keyup(function (e) {
                 // label: "Optional string that replaces customer email"
                 onClose: function() {
                     alert('Window closed.');
-                    $("#loading").hide();
-                    $(".gene").show();
+                    $("#gen").html("Comfirm")
+                    $('#gen').removeAttr('disabled');
                 },
                 callback: function(response) {
                     console.log(response);
@@ -996,20 +1048,20 @@ $(".widthtxt").keyup(function (e) {
             handler.openIframe();
         }
 
-$(".ctoclip").click(function (e) {
-   let add= $(".addr").val();
-    cupytoclip(add);
+        $(".ctoclip").click(function(e) {
+            let add = $(".addr").val();
+            cupytoclip(add);
 
-});
+        });
 
-function cupytoclip(text){
-    // var text = "Example text to appear on clipboard";
-navigator.clipboard.writeText(text).then(function() {
-  alert('Copying to clipboard was successful!');
-}, function(err) {
-  alert('Could not copy text: ', err);
-});
-}
+        function cupytoclip(text) {
+            // var text = "Example text to appear on clipboard";
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copying to clipboard was successful!');
+            }, function(err) {
+                alert('Could not copy text: ', err);
+            });
+        }
 
 
         // function payWithPaystack(){
@@ -1049,7 +1101,9 @@ navigator.clipboard.writeText(text).then(function() {
                 let type = $(".custom-select").val();
 
                 if (amt !== "" && amt != 0) {
-                    $("#loading").show();
+                    // $("#loading").show();
+                    $("#gen").html("Proccessing")
+                    $("#gene").attr("disabled", "disabled")
                     $(this).hide();
                     if (type === "bitcoin") {
                         let rate = "<?php echo $eth ?>";
@@ -1066,9 +1120,9 @@ navigator.clipboard.writeText(text).then(function() {
                                 let jsonrep = jQuery.parseJSON(response);
                                 $(".addr").val(jsonrep['address']);
                                 $("#reader").html(jsonrep['qr']);
-                                $("#loading").hide();
-                                $(".gene").show();
-                                //    console.log(jsonrep['address']);
+
+
+
                             }
                         });
 
@@ -1089,16 +1143,16 @@ navigator.clipboard.writeText(text).then(function() {
                                 let jsonrep = jQuery.parseJSON(response);
                                 $(".addr").val(jsonrep['address']);
                                 $("#reader").html(jsonrep['qr']);
-                                $("#loading").hide();
-                                $(".gene").show();
+                                $('#gen').removeAttr('disabled');
+                                $("#gen").html("Comfirm")
                                 //    console.log(jsonrep['address']);
                             }
                         });
 
                     } else if (type === "dollar") {
                         //   alert("Coming soon");
-                        $("#loading").show();
-                        $(".gene").hide();
+                        $("#gen").html("Proccessing")
+                        $("#gene").attr("disabled", "disabled")
                         payWithPaystack();
                     }
                 } else {
@@ -1131,7 +1185,7 @@ navigator.clipboard.writeText(text).then(function() {
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(c /btcrate);
+                        $(".btc").html(c / btcrate);
                         // alert(price);
                     } else if (type === "bitcoincash") {
                         let rate = "<?php echo $bth ?>";
@@ -1139,14 +1193,14 @@ navigator.clipboard.writeText(text).then(function() {
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(c /btcrate);
+                        $(".btc").html(c / btcrate);
                     } else if (type === "bitcoin") {
                         let rate = "<?php echo $bitcoin ?>";
                         let c = $(this).val();
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(c /btcrate);
+                        $(".btc").html(c / btcrate);
                     }
                 } else {
                     $(".total").html(parseFloat(0));
@@ -1157,14 +1211,14 @@ navigator.clipboard.writeText(text).then(function() {
             });
 
 
-            let amt="<?php echo $_SESSION['amount'] ?>";
-            if(amt!=''){
+            let amt = "<?php echo $_SESSION['amount'] ?>";
+            if (amt != '') {
                 let rate = "<?php echo $bth ?>";
-                        let c = amt ;
-                        let btcrate = "<?php echo $bitcoin ?>";
-                        $(".total").html(c);
-                        $(".ava").html(c);
-                        $(".btc").html(c / btcrate);
+                let c = amt;
+                let btcrate = "<?php echo $bitcoin ?>";
+                $(".total").html(c);
+                $(".ava").html(c);
+                $(".btc").html(c / btcrate);
             }
 
             $(".amtt").keyup(function(e) {
@@ -1174,7 +1228,7 @@ navigator.clipboard.writeText(text).then(function() {
                     // alert(type);
                     if (type === "dollar") {
                         let rate = "<?php echo $eth ?>";
-                        let c = $(this).val() ;
+                        let c = $(this).val();
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html($(this).val());
                         $(".ava").html($(this).val());
@@ -1182,18 +1236,18 @@ navigator.clipboard.writeText(text).then(function() {
                         // alert(price);
                     } else if (type === "bitcoincash") {
                         let rate = "<?php echo $bth ?>";
-                        let c = $(this).val() ;
+                        let c = $(this).val();
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(c/btcrate);
+                        $(".btc").html(c / btcrate);
                     } else if (type === "bitcoin") {
                         let rate = "<?php echo $bitcoin ?>";
                         let c = $(this).val();
                         let btcrate = "<?php echo $bitcoin ?>";
                         $(".total").html(c);
                         $(".ava").html(c);
-                        $(".btc").html(c/btcrate);
+                        $(".btc").html(c / btcrate);
                     }
                 } else {
                     $(".total").html(parseFloat(0));

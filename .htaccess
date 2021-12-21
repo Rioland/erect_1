@@ -17,7 +17,7 @@ RewriteRule ^updatepassword app/Apis/api.php [NC]
 RewriteRule ^verifypassword changepasspage.php [NC]
 RewriteRule ^verify verify.php [NC,L]
 RewriteRule ^updateverify app/Apis/api.php [NC]
-RewriteRule ^admin/dashboard admin/index.php [NC]
+RewriteRule ^admin admin/index.php [NC]
 RewriteRule ^admin/login admin/adminloginpage.php [NC]
 
 

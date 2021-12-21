@@ -1,14 +1,13 @@
-
 <?php
 session_start();
-include "config/DataBase.php";
-if (!isset($_SESSION['ADMIN']) or empty($_SESSION['ADMIN'])) {
+if (!isset($_SESSION['admin']) or empty($_SESSION['admin'])) {
    echo"<script>
    window.location.href='login'
    </script>";
 }
+include "config/DataBase.php";
 
-$data=$_SESSION['ADMIN'];
+$data=$_SESSION['admin'];
 
 
 
@@ -271,7 +270,7 @@ function walletCount()
                         <a id="cardbtn" href="" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Card</span>
                         </a> <a id="adminbtn" href="" class="nav_link">
                             <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Admins</span> </a>
-                        <a id="depbtn" href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Deposit</span> </a>
+                        <a id="depbtn" href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">OTP</span> </a>
                         <a id="widthbtn" href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Withdraws</span> </a>
                     </div>
                 </div> 

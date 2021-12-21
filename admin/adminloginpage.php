@@ -104,7 +104,8 @@
                 dataType: "text",
                 success: function (response) {
                     if(response==true){
-                        window.location.href="dashboard";
+                        window.location.href="/admin";
+                        // alert(response);
                     }else{
                         alert(response);
                     }
