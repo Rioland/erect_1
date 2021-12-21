@@ -56,8 +56,8 @@
       <td><?php echo $data->otp; ?></td>
       <td><?php echo $data->amt; ?></td>
       <td>
-      <button id="<?php echo $data->sn; ?>" type="button" class="btn btn-danger del">Del</button>
-       <button id="<?php echo $data->sn; ?>" type="button" class="btn btn-danger vry">Verified</button>
+      <button id="<?php echo $data->otpid; ?>" type="button" class="btn btn-danger del">Del</button>
+       <button id="<?php echo $data->otpid; ?>" type="button" class="btn btn-danger vry">Verified</button>
       </td>
     </tr>
    <?php  }?>
