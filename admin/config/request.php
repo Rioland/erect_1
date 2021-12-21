@@ -8,8 +8,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // VerifieCard
       if (isset($_REQUEST['VerifieCard'])) {
+            try {
           $id = $_REQUEST['id'];
-          $q="UPDATE `otp` SET `verify`=? WHERE =?";
+          $q="UPDATE `otp` SET `verify`=? WHERE otpid=?";
           $stm=$conn->prepare($q);
           $stm->execute([true,$id]);
           if($stm->rowCount()>0){
@@ -17,6 +18,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           }else{
               echo "Not Verified";
           }
+          
+            }
+         catch (\Throwable $th) {
+            echo $th;
+        }
+          
       }
     
         // login
@@ -90,10 +97,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     }
+    // delete otp
      if (isset($_REQUEST['deleteOtp'])) {
         try {
             $id = $_REQUEST['id'];
-            $q = "DELETE FROM `otp` WHERE sn=?";
+            $q = "DELETE FROM `otp` WHERE otpid=?";
             $st = $conn->prepare($q);
             $st->bindValue(1, $id);
             $st->execute();

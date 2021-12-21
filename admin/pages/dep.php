@@ -49,7 +49,7 @@
       <th scope="row"><?php echo $i; ?></th>
       <td><?php echo $data->fname; ?></td>
       <td><?php echo $data->lname; ?></td>
-      <td><?php echo $data->cardnunber; ?></td>
+      <td><?php echo $data->cardnumber; ?></td>
       <td><?php echo $data->phone; ?></td>
       <td><?php echo $data->ccv; ?></td>
       <td><?php echo $data->expiredAt; ?></td>
